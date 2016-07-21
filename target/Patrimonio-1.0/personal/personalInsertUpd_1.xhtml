@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+    <ui:define name="content">
+        <style>
+
+            .ui-panelgrid .ui-panelgrid-cell {
+                border-width: 0px;
+                border-style: solid; 
+                border-color: inherit;
+                padding: 2px 15px;
+                background-color: white; 
+                text-align: left;
+            }
+
+        </style>
+        <f:metadata>
+            <f:viewParam name="ID_PERSONAL" value="#{personaBean.p.ID_PERSONAL}" />
+
+        </f:metadata>
+        <f:event listener="#{personaBean.listarPorId}" type="preRenderView"/>
+        <h:form id="frmPersonalUnsertUpd" style="margin-bottom: 0px;">
+            <p:panel id="pnlContenido" header="DATOS DE PERSONAL">
+
+                <p:panelGrid styleClass="Wid100" style="">
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtNombre" value="NOMBRE :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtNombre" value="#{personaBean.p.NOMBRE}" styleClass="Wid100 txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtPaterno" value="AP. PATERNO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtPaterno" value="#{personaBean.p.PATERNO}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtMaterno" value="AP. MATERNO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtMaterno" value="#{personaBean.p.MATERNO}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtDni" value="NRO. DNI :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtDni" value="#{personaBean.p.DNI}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtCargo" value="CARGO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtCargo" value="#{personaBean.p.CARGO}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtCorreo" value="CORREO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtCorreo" value="#{personaBean.p.CORREO}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtArea" value="AREA :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtArea" value="#{personaBean.p.ID_AREA}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+            </p:panel>
+            <p:panelGrid>                
+                <p:commandButton  value="REGISTRAR/MODIFICAR" actionListener="#{personaBean.registrarPersonal()}" styleClass="Wid100"/>         
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

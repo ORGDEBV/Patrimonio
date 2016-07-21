@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <h:outputStylesheet name="primefaces-tema/theme.css" />
+        <h:outputStylesheet name="primefaces-tema/primefaces.css" />
+        <h:outputScript name="primefaces-tema/jquery/jquery.js" />
+        <h:outputScript name="primefaces-tema/jquery/jquery-plugins.js" />
+        <h:outputScript name="primefaces-tema/primefaces.js" />
+        <h:outputStylesheet name="primefaces-tema/css/core-layout.css" />
+        <h:outputStylesheet name="primefaces-tema/css/animate.css" />
+        <h:outputStylesheet name="primefaces-tema/css/tema-font.css" />
+        <h:outputStylesheet name="primefaces-tema/css/font-awesome.css" />
+        <h:outputStylesheet name="primefaces-tema/css/tema-layout.css" />
+        <h:outputScript name="primefaces-tema/js/layout.js" />
+        <title>DEPDB-BNP</title>
+    </h:head>
+    <h:body styleClass="BlueBody">
+        
+        <f:event listener="#{usuarioBean.validaLogIn}" type="preRenderView"/>
+        <p:growl id="gMensaje" for="gMensaje" showDetail="true" life="700000" widgetVar="gMensaje" escape="true" />
+        <div id="layout-topbar">
+            <div id="layout-topbar-indent">
+                <a id="menu-button"><i class="icon-th-menu"></i></a>
+                <a href="/Patrimonio/depdb/inicio.xhtml"><img id="logo" src="/Patrimonio/resources/primefaces-tema/images/logo.svg" /></a>
+                <div class="DispInlBlock Fright" style="margin:10px 10px 0px 0px;" id="toprightmenu">
+                    <h:form class="DispInline">
+                        <p:splitButton value="Menu" icon="fa fa-cog">
+                            <p:menuitem value="Usuarios" icon="fa fa-user"/>
+                            <p:menuitem value="Reportes" icon="fa fa-file-text-o"/>
+                            <p:menuitem value="Gráficos" icon="fa fa-line-chart"/>
+                            <p:separator />
+                            <p:menuitem value="Tareas" icon="fa fa-tasks"/>
+                            <p:menuitem value="Mensajes" icon="fa fa-envelope-o"/>
+                            <p:menuitem value="Notas" icon="fa fa-file-zip-o"/>
+                            <p:separator />
+                            <p:menuitem value="Cerrar Sesión" icon="fa fa-key"/>
+                        </p:splitButton> 
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        <!-- TOPBAR END -->
+        <!-- TOPMENU START -->
+        <ul id="top-menu">
+            <li style="float:left; border:none;">
+                <a href="#"><i class="icon-vcard Opac80"></i><span><span class="Fs16">#{usuarioBean.p.NOMBRE} #{usuarioBean.p.PATERNO} #{usuarioBean.p.MATERNO}</span> <br /> <span class="Opac50 Fs12">#{usuarioBean.p.CARGO}</span></span></a>
+            </li>
+            <li>
+                <a href="#"><i class="icon-printer2 Opac80"></i><span><span class="Fs16">Orders</span> <br /> <span class="Opac50 Fs12">Totally 23 Orders</span></span></a>
+            </li>
+            <li>
+                <a href="#"><i class="icon-paperclip Opac80"></i><span><span class="Fs16">Notes</span> <br /> <span class="Opac50 Fs12">241 Notes</span></span></a>
+            </li>
+            <li>
+                <a href="#"><i class="icon-stopwatch Opac80"></i><span><span class="Fs16">Tasks</span> <br /> <span class="Opac50 Fs12">26 Unread Tasks</span></span></a>
+            </li>
+        </ul>
+        <!-- TOPMENU END -->
+        <div id="layout-portlets-cover">
+            <div id="layout-portlets-cover-indent">
+                <div id="layout-portlets-table">
+                    <div id="layout-portlets-tablerow">
+                        <div id="layout-portlets-tablecell-left">
+                            <div id="layout-menu-cover">
+                                <ul class="layout-menu">
+                                    <c:forEach items="#{usuarioBean.lmenu}" var="x">
+                                        <c:if test="#{x.ID_MENU_PADRE == 0}">
+                                            <li id="Li#{x.ID_MENU}" >
+                                                <a href="#" class="menulink"><i class="#{x.ICONO}"></i> <span> #{x.MENU}</span></a>
+                                                <ul id="Ul#{x.ID_MENU}">
+                                                </ul>
+                                            </li>
+                                        </c:if>
+                                        <div style="display:none;">
+                                            <c:if test="#{x.ID_MENU_PADRE != 0}">
+                                                <li id="Li#{x.ID_MENU}" >
+                                                    <a href="#{x.URL}" class="menulink"><i class="#{x.ICONO}"></i> <span> #{x.MENU}</span></a>
+                                                    <ul id="Ul#{x.ID_MENU}">
+                                                    </ul>
+                                                </li>
+                                                <script>
+                                                    if ($("#Ul#{x.ID_MENU_PADRE}").length > 0) {
+                                                        $("#Li#{x.ID_MENU}").appendTo("#Ul#{x.ID_MENU_PADRE}");
+                                                    }
+                                                </script>
+                                            </c:if>
+                                        </div>
+                                    </c:forEach>
+                                </ul>
+                                <script type="text/javascript">Patrimonio.restaurarMenu();</script>
+                            </div>
+                        </div>
+                        <div id="layout-portlets-tablecell-right">
+                            <div class="Container100">
+                                <div class="Card TexAlCenter">
+                                    <!--<div class="CardTopic Blue">Empty Page</div> titulo de cada pagina-->
+                                    <ui:insert name="content">Content</ui:insert>
+                                </div>
+                            </div>
+                            <!-- FOOTER  -->
+                            <div class="Container100" style="border-top:solid 1px #CCCCCC; margin-top:20px;" id="footerlinks">
+                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">TERMS OF CONDITIONS</a>
+                                <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
+                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">SITEMAP</a>
+                                <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
+                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">PRIVACY</a>
+                                <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
+                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">LINKING POLICY</a>
+                                <div class="EmptyBox10 ShowOnMobile"></div>
+                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight FloatNoneOnMobile"> PrimeFaces Volt Theme And Layout</span>
+                            </div>
+                            <div class="Container50 Responsive100">
+                                <img src="/Patrimonio/resources/primefaces-tema/images/logo.svg" style="height:20px;" class="Fleft" />
+                                <div class="Container100 NoIndent">
+                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-facebook-square"></i></a>
+                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-twitter-square"></i></a>
+                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-linkedin-square"></i></a>
+                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-google-plus-square"></i></a>
+                                </div>
+                            </div>
+                            <div class="Container50 Responsive100">
+                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight">+1 888 123 4567 <br /> info@voltvolt.com</span>
+                            </div>
+                            <div class="EmptyBox10"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

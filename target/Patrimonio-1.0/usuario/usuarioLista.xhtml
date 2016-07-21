@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmUsuariolListar">
+            <p:dataTable id="tblUsuario" var="u" value="#{usuarioBean.lstUsuario}"
+                         paginator="true"
+                         paginatorPosition="top"
+                         widgetVar="tblUsuario"
+                         emptyMessage="No se encontraron registros"
+                         resizableColumns="false"
+                         resizeMode="false"
+                         tableStyle="width:auto;min-width:100%"
+                         rows="10"
+                         >
+                <p:column filterStyle="display:none"  headerText="Editar"  style="text-align: center;">
+                    <p:commandButton  actionListener="#{usuarioBean.redireccionar(u[0])}" 
+                                       icon="fa fa-fw fa-edit" >
+                    </p:commandButton>
+                </p:column>
+                 <p:column filterStyle="display:none"  rendered="true" headerText="Id Usuario"  style="text-align: center;">
+                    <h:outputText value="#{u[0]}"/>
+                </p:column>
+                <p:column filterStyle="display:none" rendered="false" headerText="Id Personal"  style="text-align: center;">
+                    <h:outputText value="#{u[1]}"/>
+                </p:column>
+                  <p:column filterStyle="display:none"  headerText="Nombres-Apellidos"  style="text-align: center;">
+                    <h:outputText value="#{u[2]}"/>
+                </p:column>
+                  <p:column filterStyle="display:none"  headerText="Usuario"  style="text-align: center;">
+                    <h:outputText value="#{u[3]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Contraseña"  style="text-align: center;">
+                    <h:outputText value="#{u[4]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Id Perfil"  style="text-align: center;">
+                    <h:outputText value="#{u[5]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Perfil"  style="text-align: center;">
+                    <h:outputText value="#{u[6]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Perfil-Personalizado"  style="text-align: center;">
+                    <h:outputText value="#{u[7]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="cambio-Contraseña"  style="text-align: center;">
+                    <h:outputText value="#{u[8]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Activo"  style="text-align: center;">
+                    <h:outputText value="#{u[9]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="Fecha Registro"  style="text-align: center;">
+                    <h:outputText value="#{u[10]}"/>
+                </p:column>
+                
+            </p:dataTable>
+            
+            
+        </h:form>
+    </ui:define>
+
+</ui:composition>

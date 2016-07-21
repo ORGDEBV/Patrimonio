@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet name="primefaces-tema/theme.css" />
+        <h:outputStylesheet name="primefaces-tema/primefaces.css" />
+        <h:outputScript name="primefaces-tema/jquery/jquery.js" />
+        <h:outputScript name="primefaces-tema/jquery/jquery-plugins.js" />
+        <h:outputScript name="primefaces-tema/primefaces.js" />
+        <h:outputStylesheet name="primefaces-tema/css/core-layout.css" />
+        <h:outputStylesheet name="primefaces-tema/css/animate.css" />
+        <h:outputStylesheet name="primefaces-tema/css/tema-font.css" />
+        <h:outputStylesheet name="primefaces-tema/css/font-awesome.css" />
+        <h:outputStylesheet name="primefaces-tema/css/tema-layout.css" />
+        <style>
+            .Card{
+                padding: 15px 25px !important;
+            }
+        </style>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body styleClass="BlueBody">
+        <f:event listener="#{usuarioBean.validaLogOut}" type="preRenderView"/>
+        <div class="Container100">
+            <div class="Container100">
+                <div class="Wid40 OvHidden DispBlock MarAuto WidAutoOnMobile" style="margin-top:7%;">
+                    <div class="Card ShadowEffect">
+                        <div class="Container100">
+                            <div class="Card OrangeBack White TexAlCenter Fs20 FontVoltBold">¡Bienvenido al Sistema!</div>
+                        </div>
+
+                        <div class="Container30 TexAlCenter Responsive100"><img src="/Patrimonio/resources/primefaces-tema/images/logo.svg" style="max-width:200px;" class="Wid80" />
+                            <div class="EmptyBox10"></div>
+                            <span class="FontVoltSemiBold DispBlock Fs20">Dirección Ejecutiva de Patrimonio Documental Bibliográfico</span>
+                            <div class="EmptyBox10"></div>
+                            <span class="FontVoltRegular Fs12">Lima - Perú</span>
+                        </div>
+                        <div class="Container70 Responsive100">
+                            <h:form>
+                                <div class="Card TexAlCenter">
+                                    <i class="icon-unlocked2 Fs60 TealGreen"></i>
+                                    <div class="EmptyBox10"></div>
+                                    <p:inputText value="#{usuarioBean.u.USUARIO}" placeholder="Usuario..." styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all Wid90" />
+                                    <div class="EmptyBox10"></div>
+                                    <p:inputText value="#{usuarioBean.u.CONTRASENA}" type="password" placeholder="Contraseña..." styleClass="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all Wid90"/>
+                                    <div class="Separator"></div>
+                                    <p:commandButton actionListener="#{usuarioBean.logIn()}" icon="fa fa-unlock" value="Ingreso" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left GreenButton"/>
+                                    <div class="SeparatorFull"></div>
+                                    <span class="Fs14"> ¿Olvidó su contraseña? - <a href="login-2.html" class="ui-link ui-widget">Siguiente</a></span>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

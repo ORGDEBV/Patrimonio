@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form id="frmPersonalListar">
+            <p:dataTable id="tblPersonal" var="per" value="#{personaBean.lstPersonal}"
+                         paginator="true"
+                         paginatorPosition="top"
+                         widgetVar="tblPersonal"
+                         emptyMessage="No se encontraron registros"
+                         resizableColumns="false"
+                         resizeMode="false"
+                         tableStyle="width:auto;min-width:100%"
+                         rows="8"
+                         >
+                 <p:column filterStyle="display:none"  headerText="Editar"  style="text-align: center;">
+                     <p:commandButton  actionListener="#{personaBean.redireccionar(per.ID_PERSONAL)}" 
+                                       icon="fa fa-fw fa-edit" >
+                    </p:commandButton>
+                </p:column>
+                
+                <p:column filterStyle="display:none"  headerText="Id"  style="text-align: center;">
+                    <h:outputText value="#{per.ID_PERSONAL}"/>
+                </p:column>
+                
+                <p:column filterStyle="display:none"  headerText="Nombre"  style="text-align: center;">
+                    <h:outputText value="#{per.NOMBRE}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Ap. Paterno"  style="text-align: center;">
+                    <h:outputText value="#{per.PATERNO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Ap. Materno"  style="text-align: center;">
+                    <h:outputText value="#{per.MATERNO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Dni"  style="text-align: center;">
+                    <h:outputText value="#{per.DNI}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Cargo"  style="text-align: center;">
+                    <h:outputText value="#{per.CARGO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Correo"  style="text-align: center;">
+                    <h:outputText value="#{per.CORREO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="Fecha Registro"  style="text-align: center;">
+                    <h:outputText value="#{per.FECHA_REGISTRO}"/>
+                                    </p:column>
+                <p:column filterStyle="display:none"  headerText="Id Area"  style="text-align: center;">
+                    <h:outputText value="#{per.ID_AREA}"/>
+                </p:column>
+             
+                
+                
+                
+            </p:dataTable>
+            
+            
+        </h:form>
+    </ui:define>
+
+</ui:composition>
