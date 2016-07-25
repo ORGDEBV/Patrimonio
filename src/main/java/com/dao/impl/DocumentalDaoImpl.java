@@ -11,24 +11,14 @@ import com.entidad.Marc260;
 import com.entidad.Marc300;
 import com.entidad.Marc500;
 import com.entidad.Marc504;
-import com.util.cnSQL;
-import java.sql.Connection;
 import java.util.List;
 
-/**
- *
- * @author virtual
- */
-public class DocumentalDaoImpl implements DocumentalDao {
+
+public class DocumentalDaoImpl implements DocumentalDao{
 
     @Override
     public String insertarDocumental(Marc001 marc001, Marc017 marc017, Marc100 marc100, Marc245 marc245, Marc250 marc250, Marc260 marc260, Marc300 marc300, Marc504 marc504, List<Marc500> listaMarc500, List<Ejemplar> listaEjemplar) {
-        Connection conn = cnSQL.getConnection();
-        try {
-            conn.setAutoCommit(false);
-        } catch (Exception e) {
-        }
-
-        return "";
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }

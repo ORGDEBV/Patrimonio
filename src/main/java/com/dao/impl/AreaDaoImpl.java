@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dao.impl;
 
 import com.dao.AreaDao;
@@ -21,14 +16,13 @@ import java.util.List;
  */
 public class AreaDaoImpl implements AreaDao {
 
-    cnSQL SQL = new cnSQL();
     CallableStatement cs = null;
     ResultSet rs = null;
 
     @Override
     public List<Area> listar() {
         List<Area> lstArea = new ArrayList<>();
-        Connection cn = SQL.getConnection();
+        Connection cn = cnSQL.getConnection();
         Area area = null;
         try {
             cs = cn.prepareCall("{CALL PT.SP_AREA_Listar}");
@@ -53,7 +47,7 @@ public class AreaDaoImpl implements AreaDao {
 
     @Override
     public Area buscar(Integer codigo) {
-        Connection cn = SQL.getConnection();
+        Connection cn = cnSQL.getConnection();
         Area area = null;
         try {
             cs = cn.prepareCall("{CALL PT.SP_AREA_BUSCAR(?)}");
@@ -81,7 +75,7 @@ public class AreaDaoImpl implements AreaDao {
     @Override
     public List<Object[]> listarCombo() {
         List<Object[]> lstArea = new ArrayList<>();
-        Connection cn = SQL.getConnection();
+        Connection cn = cnSQL.getConnection();
         try {
             cs = cn.prepareCall("{CALL PT.SP_AREA_Listar}");
             rs = cs.executeQuery();

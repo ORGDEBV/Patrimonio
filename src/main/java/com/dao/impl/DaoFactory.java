@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dao.impl;
 
 import com.dao.*;
@@ -22,18 +17,6 @@ public class DaoFactory {
         switch (tipo) {
             case AREA:
                 dao = new AreaDaoImpl();
-                break;
-            default:
-                dao = null;
-        }
-        return dao;
-    }
-
-    public DocumentalDao getDocumentalDao(int tipo) {
-        DocumentalDao dao;
-        switch (tipo) {
-            case DOCUMENTAL:
-                dao = new DocumentalDaoImpl();
                 break;
             default:
                 dao = null;
@@ -82,6 +65,30 @@ public class DaoFactory {
         switch (tipo) {
             case USUARIO:
                 dao = new UsuarioDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
+    
+    public CajaDao getCajaDao(int tipo) {
+        CajaDao dao;
+        switch (tipo) {
+            case CAJA:
+                dao = new CajaDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
+    
+    public DocumentalDao getDocumentalDao(int tipo) {
+        DocumentalDao dao;
+        switch (tipo) {
+            case DOCUMENTAL:
+                dao = new DocumentalDaoImpl();
                 break;
             default:
                 dao = null;

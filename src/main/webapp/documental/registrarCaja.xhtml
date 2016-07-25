@@ -14,41 +14,44 @@
             <div class="Separator"></div>
             <p:messages id="msgLista" autoUpdate="true" closable="true" showDetail="true" />
             <div class="EmptyBox5"></div>
+            <p:fragment>
+                <div class="Container50 Responsive100">
+                    <p:inputText id="txtNumCaja" placeholder="Número de caja" value="#{cajaBean.objCaja.NRO_CAJA}" style="width:75%" required="true" />
+                    <div class="EmptyBox10"></div>            
+                    <p:spinner id="txtEjemCaja" placeholder="Cantidad de ejemplares" value="#{cajaBean.objCaja.NRO_EJEMPLARES}" style="width:75%" required="true"/>
+                    <div class="EmptyBox10"></div>
+                </div>
 
-            <div class="Container50 Responsive100">
-                <p:inputText id="txtNumCaja" placeholder="Número de caja" value="#{cajaBean.objCaja.NRO_CAJA}" style="width:75%" />
-                <div class="EmptyBox10"></div>            
-                <p:spinner id="txtEjemCaja" placeholder="Cantidad de ejemplares" value="#{cajaBean.objCaja.NRO_EJEMPLARES}" style="width:75%" />
-                <div class="EmptyBox10"></div>
-            </div>
-
-            <div class="Container50 Responsive100">
-                <p:inputText id="txtMemoCaja" placeholder="Código Memorandum" value="#{cajaBean.objCaja.CODIGO_MEMO}" style="width:75%" />
-                <div class="EmptyBox10"></div>
-                <p:selectOneMenu id="cboSalaCaja" widgetVar="cboSalaCaja" value="#{cajaBean.objCaja.SALA}" required="true" styleClass="Wid67Imp" >
-                    <f:selectItem itemLabel="Seleccione una sala" itemValue="-1" noSelectionOption="true" />
-                    <f:selectItem itemLabel="Gullermo Loham Villena" itemValue="1" noSelectionOption="true" />
-                </p:selectOneMenu>
-                <div class="EmptyBox10"></div>
-            </div>
+                <div class="Container50 Responsive100">
+                    <p:inputText id="txtMemoCaja" placeholder="Código Memorandum" value="#{cajaBean.objCaja.CODIGO_MEMO}" style="width:78%" required="true"/>
+                    <div class="EmptyBox10"></div>
+                    <p:selectOneMenu id="cboSalaCaja" widgetVar="cboSalaCaja" value="#{cajaBean.objCaja.SALA}" required="true" styleClass="Wid70Imp">
+                        <f:selectItem itemLabel="Seleccione una sala" itemValue="-1" noSelectionOption="true" />
+                        <f:selectItem itemLabel="Guillermo Lohmann Villena" itemValue="Guillermo Lohmann Villena" />
+                    </p:selectOneMenu>
+                    <div class="EmptyBox10"></div>
+                </div>
+                <div class="Container100 TexAlLeft" style="padding-left: 7%;">
+                    <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" />               
+                </div>
+            </p:fragment>
             <div class="EmptyBox5"></div>       
 
-            <div class="Container100 Responsive100 TexAlLeft" style="padding-left: 7%;">
-                <p:fileUpload label="Selecione" uploadLabel="Subir"  cancelLabel="Cancelar"  fileUploadListener="#{cajaBean.handleFileUpload}" 
-                                          mode="advanced" dragDropSupport="false" multiple="true" fileLimitMessage="Solo se permite un archivo"
-                                          sizeLimit="600000" fileLimit="1" allowTypes="/(\.|\/)(xml)$/"
-                                          invalidFileMessage="Archivo no permitido" auto="false" previewWidth="50"
-                                          invalidSizeMessage="Tamaño del archivo excedido " styleClass="Wid80" />
-                
-            </div>
+            <h:panelGroup layout="block" rendered="false">
+                <div class="Container100 Responsive100 TexAlLeft" style="padding-left: 7%;">
+                    <p:fileUpload label="Selecione" uploadLabel="Subir"  cancelLabel="Cancelar"  fileUploadListener="#{cajaBean.handleFileUpload}" 
+                                  mode="advanced" dragDropSupport="false" multiple="true" fileLimitMessage="Solo se permite un archivo"
+                                  sizeLimit="600000" fileLimit="1" allowTypes="/(\.|\/)(xml)$/"
+                                  invalidFileMessage="Archivo no permitido" auto="false" previewWidth="50"
+                                  invalidSizeMessage="Tamaño del archivo excedido " styleClass="Wid80" />
 
-            <div class="EmptyBox20"></div>
-
-
-            <div class="Container100 TexAlRight">
-                <p:commandButton styleClass="TealGreenButton MarRight10" value="Procesar" />
-                <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" />
-            </div>
+                </div>
+                <div class="EmptyBox20"></div>
+                <div class="Container100 TexAlRight">
+                    <p:commandButton styleClass="TealGreenButton MarRight10" value="Procesar" />
+                    <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" />
+                </div>
+            </h:panelGroup>
 
         </h:form>
     </ui:define>

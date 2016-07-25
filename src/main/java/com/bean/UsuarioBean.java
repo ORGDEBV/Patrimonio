@@ -336,5 +336,16 @@ public class UsuarioBean implements Serializable {
         }
 
     }
+    public void redireccionarPersMenu(String Id) {
+        try {
+//            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta!", "Modificando DOCUMENTAL: " + ID_DOCUMENTAL));
+//            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/usuario/menuPersonalizado.xhtml?ID=" + Id);
+
+        } catch (IOException ex) {
+            System.out.println("error" + ex);
+        }
+
+    }
 
 }
