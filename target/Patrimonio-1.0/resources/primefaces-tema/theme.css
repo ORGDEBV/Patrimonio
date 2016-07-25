@@ -4836,6 +4836,7 @@ hr.ui-widget-header {
 }
 /*Style For Spinner --------------------------------------------------------------------------------------*/
 .ui-spinner .ui-spinner-input {
+  width: 100%;
   text-align: left;
   padding: 9px 9px !important;
 }

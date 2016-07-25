@@ -26,7 +26,7 @@ import org.marc4j.marc.Subfield;
 public class pruebaFicha {
 
     public static void main(String[] args) throws FileNotFoundException {
-        
+
         Marc001 marc001;
         Marc017 marc017;
         Marc100 marc100;
@@ -36,12 +36,11 @@ public class pruebaFicha {
         Marc300 marc300;
         Marc504 marc504;
         int Error = 0;
-        InputStream in = new FileInputStream("C:\\Users\\virtual\\Desktop\\FormatoRaro\\xml-completo.xml");
+        InputStream in = new FileInputStream("C:\\Users\\virtual\\Desktop\\FormatoRaro\\xml-464812.xml");
         MarcReader reader = new MarcXmlReader(in);
 
         while (reader.hasNext()) {
             Record record = reader.next();
-            
 
             ControlField campo001 = (ControlField) record.getVariableField("001");
             DataField campo17 = (DataField) record.getVariableField("017");
@@ -212,17 +211,19 @@ public class pruebaFicha {
             if (!campo583.isEmpty() && !campo852.isEmpty()) {
                 Ejemplar ejemplar = new Ejemplar();
                 if (campo583.size() < campo852.size()) {
-                    System.out.println("Error en campo 583..Faltan " + (campo852.size() - campo583.size()) + " registros");
+                    System.out.println("Error en campo 583..Faltan agregar " + (campo852.size() - campo583.size()) + " registros");
                     Error = 1;
                 } else {
+
                     for (int i = 0; i < campo852.size(); i++) {
                         DataField datoi = (DataField) campo852.get(i);
                         List subcampoi = datoi.getSubfields();
+
                         Iterator it = subcampoi.iterator();
                         while (it.hasNext()) {
                             Subfield subfield = (Subfield) it.next();
                             String code = String.valueOf(subfield.getCode());
-                            String data = subfield.getData();
+                            String data = subfield.getData().trim();
                             switch (code) {
                                 case "a":
                                     ejemplar.setA852(data);
@@ -259,7 +260,7 @@ public class pruebaFicha {
                         while (it.hasNext()) {
                             Subfield subfield = (Subfield) it.next();
                             String code = String.valueOf(subfield.getCode());
-                            String data = subfield.getData();
+                            String data = subfield.getData().trim();
                             switch (code) {
                                 case "a":
                                     ejemplar.setA583(data);
@@ -278,9 +279,12 @@ public class pruebaFicha {
                                     break;
                             }
                         }
-                        listaEjemplar.add(ejemplar);
+                        System.out.println(ejemplar.getA852()+"-"+ejemplar.getC852());
+                        if (ejemplar.getA852().equals("BNP") && ejemplar.getC852().equals("Guillermo Lohmann Villena- Libros peruanos")) {
+                            listaEjemplar.add(ejemplar);
+                        }
                     }
-                    System.out.println("hay " + listaEjemplar.size() + " registros ... deben haber " + campo852.size() + " registros");
+                    System.out.println("hay " + listaEjemplar.size() + " registros en BNP... de " + campo852.size() + " registros TOTALES");
                 }
             } else {
                 System.out.print("Campo ejemplar : ");

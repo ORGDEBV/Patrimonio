@@ -16,7 +16,6 @@ public class Caja implements Serializable{
 
     public Caja() {
     }
-      
 
     public int getID_CAJA() {
         return ID_CAJA;

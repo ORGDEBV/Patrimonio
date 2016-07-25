@@ -139,6 +139,10 @@ input[type="text"], input[type="password"], textarea{ -webkit-appearance: none; 
 /* Width */
 .Wid100{ width:100%;}
 .Wid100Imp{ width:100% !important;}
+.Wid75Imp{ width:75% !important;}
+.Wid70Imp{ width:70% !important;}
+.Wid65Imp{ width:65% !important;}
+.Wid60Imp{ width:60% !important;}
 .Wid100Imp input{
     width:100% !important;
 }
