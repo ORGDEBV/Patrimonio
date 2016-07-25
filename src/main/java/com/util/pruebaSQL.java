@@ -15,8 +15,13 @@ public class pruebaSQL {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        cnSQL cn = new cnSQL();
-        cn.createConnection();
+//        cnSQL cn = new cnSQL();
+//        cn.createConnection();
+
+        String texto="  jinmi vega  ";
+        System.out.println("*"+texto+"*");   
+        System.out.println("*"+texto.trim()+"*");   
+       
     }
     
 }

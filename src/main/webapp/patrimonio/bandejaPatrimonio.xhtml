@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="frmUsuariolListar">
+            <p:dataTable id="tblUsuario" var="u" value="#{usuarioBean.lstUsuario}"
+                         paginator="true"
+                         paginatorPosition="top"
+                         widgetVar="tblUsuario"
+                         emptyMessage="No se encontraron registros"
+                         resizableColumns="false"
+                         resizeMode="false"
+                         tableStyle="width:auto;min-width:100%"
+                         rows="10"
+                         >
+                   <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en todos los campos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('frmUsuariolListar').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column filterStyle="display:none"  headerText="PROCESAR"  style="text-align: center;">
+                    <p:commandButton  actionListener="#{usuarioBean.redireccionar(u[0])}" 
+                                       icon="fa fa-cog" >
+                    </p:commandButton>
+                </p:column>
+                 <p:column filterStyle="display:none"  rendered="true" headerText="COD MEMO"  style="text-align: center;">
+                    <h:outputText value="#{u[0]}"/>
+                </p:column>
+                <p:column filterStyle="display:none" rendered="false" headerText="CAJA"  style="text-align: center;">
+                    <h:outputText value="#{u[1]}"/>
+                </p:column>
+                  <p:column filterStyle="display:none"  headerText="EMISOR"  style="text-align: center;">
+                    <h:outputText value="#{u[2]}"/>
+                </p:column>
+                  <p:column filterStyle="display:none"  headerText="FECHA INGRESO"  style="text-align: center;">
+                    <h:outputText value="#{u[3]}"/>
+                </p:column>
+                 <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
+                    <h:outputText value="#{u[4]}"/>
+                </p:column>
+                
+                
+            </p:dataTable>
+            
+            
+        </h:form>
+    </ui:define>
+
+</ui:composition>
