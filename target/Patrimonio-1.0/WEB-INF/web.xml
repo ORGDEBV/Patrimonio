@@ -25,10 +25,6 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>tema</param-value>
     </context-param>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/404</location>
-    </error-page>
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>application/x-font-ttf</mime-type>

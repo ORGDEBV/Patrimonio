@@ -8,7 +8,7 @@
 
     <ui:define name="content">
         <h:form id="frmUsuariolListar">
-            <p:dataTable id="tblUsuario" var="u" value="#{usuarioBean.lstUsuario}"
+            <p:dataTable id="tblUsuario" var="u" value="#{cajaBean.lstBandejaParimonio()}"
                          paginator="true"
                          paginatorPosition="top"
                          widgetVar="tblUsuario"
@@ -44,6 +44,16 @@
                  <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
                     <h:outputText value="#{u[4]}"/>
                 </p:column>
+                <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
+                    <h:outputText value="#{u[5]}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
+                    <h:outputText value="#{u[6]}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
+                    <h:outputText value="#{u[7]}"/>
+                </p:column>
+               
                 
                 
             </p:dataTable>

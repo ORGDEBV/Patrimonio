@@ -7,23 +7,20 @@ com\dao\impl\UsuarioDaoImpl.class
 com\entidad\Perfil.class
 com\dao\impl\AreaDaoImpl.class
 com\bean\PruebaBean.class
+com\dao\MenuPersonalizadoDao.class
+com\dao\impl\MenuPersonalizadoDaoImpl.class
 com\dao\PersonalDao.class
 com\dao\impl\PerfilDaoImpl.class
-<<<<<<< HEAD
 com\dao\DocumentalDao.class
-=======
->>>>>>> 72f42cf3eab6954481c89bd4eae0980d4ba0435b
 com\bean\UsuarioBean.class
+com\entidad\MenuPersonalizado.class
 com\entidad\UsuarioInterface.class
 com\dao\AreaDao.class
 com\entidad\Ejemplar.class
 com\dao\PerfilDao.class
-com\servicio\MenuServicio.class
+com\dao\impl\CajaDaoImpl.class
 com\util\Constantes.class
-<<<<<<< HEAD
 com\dao\impl\DocumentalDaoImpl.class
-=======
->>>>>>> 72f42cf3eab6954481c89bd4eae0980d4ba0435b
 com\entidad\Marc017.class
 com\entidad\Marc245.class
 com\entidad\Marc300.class
@@ -38,13 +35,13 @@ com\dao\impl\DaoFactory$1.class
 com\entidad\Marc250.class
 com\entidad\Marc001.class
 com\bean\PerfilBean.class
+com\dao\CajaDao.class
 com\entidad\Document.class
 com\dao\impl\DaoFactory.class
 com\entidad\PerfilMenu.class
 com\bean\MenuBean.class
 com\dao\UsuarioDao.class
 com\dao\impl\MenuDaoImpl.class
-com\entidad\UsuarioMemuPersonalizado.class
 com\bean\PersonalBean.class
 com\entidad\Marc504.class
 com\entidad\Personal.class

@@ -3,29 +3,42 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/templatePatrimonio.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:viewParam name="ID_USUARIO" value="#{menuBean.ID_USUARIO}" />
+    </f:metadata>
 
     <ui:define name="content">
-        <h:form>
-            <h3>Checkbox</h3>
-            <p:tree value="#{menuBean.checkMenu}" var="doc"
-                    selectionMode="checkbox"
-                    selection="#{menuBean.checkMenuSeleccionado}"
-                    styleClass="Wid100Imp TexAlLeft">
-                <p:treeNode icon="ui-icon-note">
-                    <h:outputText value="#{doc.MENU}"/>
-                </p:treeNode>
-                <p:treeNode type="document" icon="ui-icon-document">
-                    <h:outputText value="#{doc.MENU}" />
-                </p:treeNode>
-                <p:treeNode type="picture" icon="ui-icon-image">
-                    <h:outputText value="#{doc.MENU}" />
-                </p:treeNode>
-                <p:treeNode type="mp3" icon="ui-icon-video">
-                    <h:outputText value="#{doc.MENU}" />
-                </p:treeNode>
-            </p:tree>
-        </h:form>
+        <f:event listener="#{menuBean.cargaPagina()}" type="preRenderComponent"/>
+        <p:panel header="PERSONALIZAR MENU">
+            <h:panelGrid styleClass="Wid100" columns="2" columnClasses="Wid50,Wid50 VerAlTop">
+                <h:column>
+                    <h:form id="frmMenu">
+                        <p:tree id="menuTree"
+                                value="#{menuBean.checkMenu}" 
+                                var="doc"
+                                selectionMode="checkbox"
+                                selection="#{menuBean.checkMenuSeleccionado}"
+                                styleClass="TexAlLeft Wid100"
+                                propagateSelectionDown="false"
+                                propagateSelectionUp="false"    >
+                            <p:ajax event="select" listener="#{menuBean.eventCheckBox()}"/>
+                            <p:ajax event="unselect" listener="#{menuBean.eventCheckBox()}" />
+                            <p:treeNode>
+                                <h:outputText value="#{doc.MENU} #{doc.ID_MENU})"/>
+                            </p:treeNode>
+                        </p:tree>
+                    </h:form>
+                </h:column>
+                <h:column>
+                    <h:form>
+                        <p:commandButton styleClass="Wid100 LeadenBack  MarTop10" value="GRABAR CAMBIOS" actionListener="#{menuBean.grabarCambios()}"></p:commandButton>
+                        <p:commandButton styleClass="Wid100 LeadenBack  MarTop10" value="RESTABLECER PERFIL"></p:commandButton>
+                        <p:commandButton styleClass="Wid100 LeadenBack  MarTop10" value="CAMBIAR PERFÍL"></p:commandButton>
+                    </h:form>
+                </h:column>
+            </h:panelGrid>
+        </p:panel>
     </ui:define>
-
 </ui:composition>

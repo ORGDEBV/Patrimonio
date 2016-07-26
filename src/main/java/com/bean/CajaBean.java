@@ -356,5 +356,12 @@ public class CajaBean {
         String msgRespuesta = "";
         return msgRespuesta;
     }
+    public ArrayList<Object[]> lstBandejaParimonio(){
+    ArrayList<Object[]> lst=new ArrayList<>();
+    
+    lst=cajaDao.bandejaPattrimonio();
+    
+    return lst; 
+    }
 
 }
