@@ -4,7 +4,6 @@ import com.dao.AreaDao;
 import com.dao.MenuDao;
 import com.dao.PersonalDao;
 import com.dao.UsuarioDao;
-import com.dao.impl.AreaDaoImpl;
 import com.dao.impl.DaoFactory;
 import com.entidad.Area;
 import com.entidad.Menu;
@@ -14,11 +13,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.context.RequestContext;
 import static com.util.Constantes.*;
 

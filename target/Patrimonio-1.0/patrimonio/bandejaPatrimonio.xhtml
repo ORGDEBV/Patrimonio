@@ -7,48 +7,55 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="frmUsuariolListar">
-            <p:dataTable id="tblUsuario" var="u" value="#{usuarioBean.lstUsuario}"
-                         paginator="true"
-                         paginatorPosition="top"
-                         widgetVar="tblUsuario"
-                         emptyMessage="No se encontraron registros"
+        <h:form id="frmCaja">
+
+            <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaPatrimonioDto()}"
+                         paginator="true" paginatorPosition="top" widgetVar="tblcaja"
                          resizableColumns="false"
-                         resizeMode="false"
-                         tableStyle="width:auto;min-width:100%"
-                         rows="10"
+                         resizeMode="false" 
+                         rows="20"
+                        scrollable="true" scrollHeight="50%" scrollWidth="100%"
                          >
-                   <f:facet name="header">
+
+
+                <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar en todos los campos:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('frmUsuariolListar').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
                     </p:outputPanel>
                 </f:facet>
-                <p:column filterStyle="display:none"  headerText="PROCESAR"  style="text-align: center;">
-                    <p:commandButton  actionListener="#{usuarioBean.redireccionar(u[0])}" 
-                                       icon="fa fa-cog" >
+                <p:column width="5%" headerText="PROC." style="text-align: center;" >
+                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa  fa-cogs">
+                      
                     </p:commandButton>
                 </p:column>
-                 <p:column filterStyle="display:none"  rendered="true" headerText="COD MEMO"  style="text-align: center;">
-                    <h:outputText value="#{u[0]}"/>
+                <p:column width="5%" filterStyle="display:none"  filterBy="#{c.ID_CAJA}" rendered="false" headerText="ID"  style="text-align: center;">
+                    <h:outputText value="#{c.ID_CAJA}"/>
                 </p:column>
-                <p:column filterStyle="display:none" rendered="false" headerText="CAJA"  style="text-align: center;">
-                    <h:outputText value="#{u[1]}"/>
+                <p:column width="30%" filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}" rendered="true" headerText="COD_MEMO"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_MEMO}"/>
                 </p:column>
-                  <p:column filterStyle="display:none"  headerText="EMISOR"  style="text-align: center;">
-                    <h:outputText value="#{u[2]}"/>
+                <p:column  width="5%" filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="#CAJA"  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_CAJA}"/>
                 </p:column>
-                  <p:column filterStyle="display:none"  headerText="FECHA INGRESO"  style="text-align: center;">
-                    <h:outputText value="#{u[3]}"/>
+                <p:column  width="10%" filterStyle="display:none" filterBy="#{c.CODIGO_LISTADO}" headerText="COD_LISTADO"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_LISTADO}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="ESTADO"  style="text-align: center;">
-                    <h:outputText value="#{u[4]}"/>
+                <p:column width="5%" filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="# EJEM."  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_EJEMPLARES}"/>
                 </p:column>
-                
-                
+                <p:column width="20%" filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE"  style="text-align: center;">
+                    <h:outputText value="#{c.AREA}"/>
+                </p:column>
+                <p:column width="20%" filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA"  style="text-align: center;">
+                    <h:outputText value="#{c.SALA}"/>
+                </p:column>
+                <p:column width="10%" filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA"  style="text-align: center;">
+                    <h:outputText value="#{c.FECHA}"/>
+                </p:column>
             </p:dataTable>
-            
-            
+
+
         </h:form>
     </ui:define>
 

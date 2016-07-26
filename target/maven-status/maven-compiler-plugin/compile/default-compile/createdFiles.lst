@@ -9,25 +9,21 @@ com\dao\impl\AreaDaoImpl.class
 com\bean\PruebaBean.class
 com\dao\PersonalDao.class
 com\dao\impl\PerfilDaoImpl.class
-<<<<<<< HEAD
 com\dao\DocumentalDao.class
-=======
->>>>>>> 72f42cf3eab6954481c89bd4eae0980d4ba0435b
 com\bean\UsuarioBean.class
 com\entidad\UsuarioInterface.class
 com\dao\AreaDao.class
 com\entidad\Ejemplar.class
 com\dao\PerfilDao.class
+com\dao\impl\CajaDaoImpl.class
 com\servicio\MenuServicio.class
 com\util\Constantes.class
-<<<<<<< HEAD
 com\dao\impl\DocumentalDaoImpl.class
-=======
->>>>>>> 72f42cf3eab6954481c89bd4eae0980d4ba0435b
 com\entidad\Marc017.class
 com\entidad\Marc245.class
 com\entidad\Marc300.class
 com\entidad\Menu.class
+com\dto\BandejaPatrimonioDto.class
 com\bean\pruebaFicha.class
 com\entidad\Usuario.class
 com\entidad\Documental.class
@@ -38,6 +34,7 @@ com\dao\impl\DaoFactory$1.class
 com\entidad\Marc250.class
 com\entidad\Marc001.class
 com\bean\PerfilBean.class
+com\dao\CajaDao.class
 com\entidad\Document.class
 com\dao\impl\DaoFactory.class
 com\entidad\PerfilMenu.class

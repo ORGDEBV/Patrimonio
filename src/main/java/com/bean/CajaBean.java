@@ -3,6 +3,7 @@ package com.bean;
 import com.dao.CajaDao;
 import com.dao.DocumentalDao;
 import com.dao.impl.DaoFactory;
+import com.dto.BandejaPatrimonioDto;
 import com.entidad.Caja;
 import com.entidad.Ejemplar;
 import com.entidad.Marc001;
@@ -23,10 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
 import org.marc4j.marc.ControlField;
@@ -50,6 +53,7 @@ public class CajaBean {
     private Marc260 marc260;
     private Marc300 marc300;
     private Marc504 marc504;
+    ArrayList<Object[]> lstFilter = new ArrayList<>();
     List<Marc500> listaMarc500;
     List<Ejemplar> listaEjemplar;
     private Caja objCaja = new Caja();
@@ -75,6 +79,14 @@ public class CajaBean {
 
     public void setRenderInputFile(boolean renderInputFile) {
         this.renderInputFile = renderInputFile;
+    }
+
+    public ArrayList<Object[]> getLstFilter() {
+        return lstFilter;
+    }
+
+    public void setLstFilter(ArrayList<Object[]> lstFilter) {
+        this.lstFilter = lstFilter;
     }
 
     public void handleFileUpload(FileUploadEvent event) throws FileNotFoundException {
@@ -355,6 +367,28 @@ public class CajaBean {
     public String grabarFicha() {
         String msgRespuesta = "";
         return msgRespuesta;
+    }
+    public ArrayList<BandejaPatrimonioDto> listarBandejaPatrimonioDto(){
+    ArrayList<BandejaPatrimonioDto> lst=new ArrayList<>();
+    
+    lst = cajaDao.bandejaPattrimonio();
+    return lst;
+    }
+
+  
+
+    public void redireccionar(String Id) {
+
+        try {
+            String red = "/Patrimonio/depdb/patrimonio/controlPatrimonio.xhtml?ID=" + Id;
+//            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta!", "Modificando DOCUMENTAL: " + ID_DOCUMENTAL));
+//            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            FacesContext.getCurrentInstance().getExternalContext().redirect(red);
+
+        } catch (IOException ex) {
+            System.out.println("error" + ex);
+        }
+
     }
 
 }

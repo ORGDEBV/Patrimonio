@@ -3,11 +3,12 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/templatePatrimonio.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
         <h:form id="frmPersonalListar">
-            <p:dataTable id="tblPersonal" var="per" value="#{personaBean.lstPersonal}"
+            <p:dataTable id="tblPersonal" var="per" value="#{personalBean.lstPersonal}"
                          paginator="true"
                          paginatorPosition="top"
                          widgetVar="tblPersonal"
@@ -18,7 +19,7 @@
                          rows="8"
                          >
                  <p:column filterStyle="display:none"  headerText="Editar"  style="text-align: center;">
-                     <p:commandButton  actionListener="#{personaBean.redireccionar(per.ID_PERSONAL)}" 
+                     <p:commandButton  actionListener="#{personalBean.redireccionar(per.ID_PERSONAL)}" 
                                        icon="fa fa-fw fa-edit" >
                     </p:commandButton>
                 </p:column>
