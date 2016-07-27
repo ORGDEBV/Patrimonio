@@ -9,18 +9,18 @@ package com.dto;
  *
  * @author virtual
  */
-public class BandejaPatrimonioDto {
+public class BandejaDto {
 
-    String ID_CAJA;
-    String CODIGO_MEMO;
-    String NRO_CAJA;
-    String CODIGO_LISTADO;
-    String NRO_EJEMPLARES;
-    String AREA;
-    String SALA;
-    String FECHA;
+    private String ID_CAJA;
+    private String CODIGO_MEMO;
+    private String NRO_CAJA;
+    private String CODIGO_LISTADO;
+    private String NRO_EJEMPLARES;
+    private String AREA;
+    private String SALA;
+    private String FECHA;
 
-    public BandejaPatrimonioDto() {
+    public BandejaDto() {
     }
     
 

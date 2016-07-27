@@ -3,7 +3,7 @@ package com.bean;
 import com.dao.CajaDao;
 import com.dao.DocumentalDao;
 import com.dao.impl.DaoFactory;
-import com.dto.BandejaPatrimonioDto;
+import com.dto.BandejaDto;
 import com.entidad.Caja;
 import com.entidad.Ejemplar;
 import com.entidad.Marc001;
@@ -58,11 +58,15 @@ public class CajaBean {
     List<Ejemplar> listaEjemplar;
     private Caja objCaja = new Caja();
     private boolean renderInputFile = false;
+    
+    //lista para bandeja registro
+    private List<BandejaDto> lbandejacreado;
 
     public CajaBean() {
         DaoFactory factory = DaoFactory.getInstance();
         cajaDao = factory.getCajaDao(CAJA);
         documentalDao = factory.getDocumentalDao(DOCUMENTAL);
+        lbandejacreado = cajaDao.bandejaCreado();
     }
 
     public Caja getObjCaja() {
@@ -369,15 +373,12 @@ public class CajaBean {
         return msgRespuesta;
     }
 
-    public ArrayList<BandejaPatrimonioDto> listarBandejaPatrimonioDto(){
-    ArrayList<BandejaPatrimonioDto> lst=new ArrayList<>();
-    
-    lst = cajaDao.bandejaPattrimonio();
-    return lst;
+    public ArrayList<BandejaDto> listarBandejaPatrimonioDto() {
+        ArrayList<BandejaDto> lst = new ArrayList<>();
+        lst = cajaDao.bandejaPattrimonio();
+        return lst;
     }
-
-  
-
+    
     public void redireccionar(String Id) {
 
         try {
@@ -390,7 +391,14 @@ public class CajaBean {
             System.out.println("error" + ex);
         }
 
+    }
 
+    public List<BandejaDto> getLbandejacreado() {
+        return lbandejacreado;
+    }
+
+    public void setLbandejacreado(List<BandejaDto> lbandejacreado) {
+        this.lbandejacreado = lbandejacreado;
     }
 
 }

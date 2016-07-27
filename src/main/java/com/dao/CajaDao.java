@@ -1,13 +1,15 @@
 package com.dao;
 
-import com.dto.BandejaPatrimonioDto;
+import com.dto.BandejaDto;
 import com.entidad.Caja;
 import java.util.ArrayList;
 
 public interface CajaDao {
-     
+
     String insertarCaja(Caja objCaja);
-   
-     ArrayList<BandejaPatrimonioDto> bandejaPattrimonio();
-    
+
+    ArrayList<BandejaDto> bandejaPattrimonio();
+
+    ArrayList<BandejaDto> bandejaCreado();
+
 }

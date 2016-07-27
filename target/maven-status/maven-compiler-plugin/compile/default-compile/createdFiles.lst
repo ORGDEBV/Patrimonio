@@ -11,6 +11,7 @@ com\dao\MenuPersonalizadoDao.class
 com\dao\impl\MenuPersonalizadoDaoImpl.class
 com\dao\PersonalDao.class
 com\dao\impl\PerfilDaoImpl.class
+com\dto\BandejaDto.class
 com\dao\DocumentalDao.class
 com\bean\UsuarioBean.class
 com\entidad\MenuPersonalizado.class
@@ -25,7 +26,6 @@ com\entidad\Marc017.class
 com\entidad\Marc245.class
 com\entidad\Marc300.class
 com\entidad\Menu.class
-com\dto\BandejaPatrimonioDto.class
 com\bean\pruebaFicha.class
 com\entidad\Usuario.class
 com\entidad\Documental.class
