@@ -115,7 +115,7 @@ public class MenuBean implements Serializable {
             context.addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "Información", aux + " Menús no pudieron ser asignados."));
         }
         RequestContext.getCurrentInstance().update("gMensaje");
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/usuario/menuPersonalizado.xhtml?ID_USUARIO="+ID_USUARIO);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/usuario/menuPersonalizado.xhtml?ID_USUARIO=" + ID_USUARIO);
     }
 
     public List<MenuPersonalizado> preparaInsert(List<Menu> lArrayMenu, int flag) {
@@ -151,6 +151,18 @@ public class MenuBean implements Serializable {
                 }
             }
         }
+    }
+
+    public void restablecerPerfil() throws IOException {
+        int i = mpDao.restablecerPerfil(ID_USUARIO);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (i != 0) {
+            context.addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Se reinició el perfíl con éxito."));
+        } else {
+            context.addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Ocurrió un error."));
+        }
+        RequestContext.getCurrentInstance().update("gMensaje");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/usuario/menuPersonalizado.xhtml?ID_USUARIO=" + ID_USUARIO);
     }
 
     public TreeNode getCheckMenu() {

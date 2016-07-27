@@ -125,9 +125,4 @@ public class MenuDaoImpl implements MenuDao, Serializable {
         return lMenu;
     }
 
-    @Override
-    public int restablecerPerfil(int ID_USUARIO) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

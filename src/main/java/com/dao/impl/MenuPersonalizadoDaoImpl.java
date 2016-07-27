@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * @author virtual
  */
 public class MenuPersonalizadoDaoImpl implements MenuPersonalizadoDao {
-    
+
     cnSQL SQL = new cnSQL();
     CallableStatement cs = null;
     ResultSet rs = null;
@@ -37,6 +37,31 @@ public class MenuPersonalizadoDaoImpl implements MenuPersonalizadoDao {
             cs.setString(5, mp.getELIMINACION());
             cs.setInt(6, mp.getID_USUARIO_REGISTRO());
             cs.setInt(7, mp.getFLAG());
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                out = rs.getInt(1);
+                msg = rs.getString(2);
+            }
+        } catch (Exception e) {
+            System.out.println("Error de consulta: " + e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex.getMessage());
+            }
+        }
+        return out;
+    }
+
+    @Override
+    public int restablecerPerfil(int ID_USUARIO) {
+        int out = 0;
+        String msg = "";
+        Connection cn = SQL.getConnection();
+        try {
+            cs = cn.prepareCall("{CALL [PT].[SP_PERFIL_RESTABLECER](?)}");
+            cs.setInt(1, ID_USUARIO);
             rs = cs.executeQuery();
             if (rs.next()) {
                 out = rs.getInt(1);
