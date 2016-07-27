@@ -1,6 +1,7 @@
 package com.dao.impl;
 
 import com.dao.CajaDao;
+import com.dto.BandejaPatrimonioDto;
 import com.entidad.Caja;
 import com.entidad.Ejemplar;
 import com.entidad.Marc001;
@@ -47,8 +48,10 @@ public class CajaDaoImpl implements CajaDao {
     }
 
     @Override
-    public ArrayList<Object[]> bandejaPattrimonio() {
-    ArrayList<Object[]> lstBandejaPatrimonio=new ArrayList<>();
+
+    public ArrayList<BandejaPatrimonioDto> bandejaPattrimonio() {
+    ArrayList<BandejaPatrimonioDto> lstBandejaPatrimonio=new ArrayList<>();
+
     Connection cn = cnSQL.getConnection();
             try {
                 
@@ -56,19 +59,23 @@ public class CajaDaoImpl implements CajaDao {
             cs = cn.prepareCall(procedure);
             cs.setString(1, "BANDEJA_PATRIMONIO");
             rs = cs.executeQuery();
-            /*
-                C.ID_CAJA,
-		C.CODIGO_MEMO,
-		C.NRO_CAJA,
-		C.CODIGO_LISTADO,
-		C.NRO_EJEMPLARES,
-		A.AREA AS REMITE,
-		C.SALA,
-		ACE.FECHA
-            */
-            //SELECT ID_PERSONAL,DNI,NOMBRE,PATERNO,MATERNO,CARGO,CORREO,ID_AREA 
+
+            BandejaPatrimonioDto bp;
+
             while (rs.next()) {
-              lstBandejaPatrimonio.add(new Object[]{rs.getInt(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)});
+
+                bp=new BandejaPatrimonioDto();
+                bp.setID_CAJA(rs.getString(1));
+                bp.setCODIGO_MEMO(rs.getString(2));
+                bp.setNRO_CAJA(rs.getString(3));
+                bp.setCODIGO_LISTADO(rs.getString(4));
+                bp.setNRO_EJEMPLARES(rs.getString(5));
+                bp.setAREA(rs.getString(6));
+                bp.setSALA(rs.getString(7));
+                bp.setFECHA(rs.getString(8));
+                           
+              lstBandejaPatrimonio.add(bp);
+
             }
 
         } catch (SQLException e) {
