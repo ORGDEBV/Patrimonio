@@ -39,7 +39,6 @@ public class cnSQL {
         try {
             Class.forName(driver);
             cn = DriverManager.getConnection(url, usuario, contrasena);
-            System.out.println("Conexión exitosa");
         } catch (ClassNotFoundException | SQLException objException) {
             System.out.println("Error: " + objException.getMessage());
         }

@@ -16,6 +16,7 @@ public class Menu implements Serializable{
     private String DESCRIPCION_MENU;
     private String ICONO;
     private int ASIGNADO;
+    private int PERSONALIZADO;
 
     public int getID_MENU() {
         return ID_MENU;
@@ -80,4 +81,13 @@ public class Menu implements Serializable{
     public void setASIGNADO(int ASIGNADO) {
         this.ASIGNADO = ASIGNADO;
     }
+
+    public int getPERSONALIZADO() {
+        return PERSONALIZADO;
+    }
+
+    public void setPERSONALIZADO(int PERSONALIZADO) {
+        this.PERSONALIZADO = PERSONALIZADO;
+    }
+    
 }

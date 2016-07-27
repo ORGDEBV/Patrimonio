@@ -368,6 +368,7 @@ public class CajaBean {
         String msgRespuesta = "";
         return msgRespuesta;
     }
+
     public ArrayList<BandejaPatrimonioDto> listarBandejaPatrimonioDto(){
     ArrayList<BandejaPatrimonioDto> lst=new ArrayList<>();
     
@@ -388,6 +389,7 @@ public class CajaBean {
         } catch (IOException ex) {
             System.out.println("error" + ex);
         }
+
 
     }
 

@@ -48,8 +48,10 @@ public class CajaDaoImpl implements CajaDao {
     }
 
     @Override
+
     public ArrayList<BandejaPatrimonioDto> bandejaPattrimonio() {
     ArrayList<BandejaPatrimonioDto> lstBandejaPatrimonio=new ArrayList<>();
+
     Connection cn = cnSQL.getConnection();
             try {
                 
@@ -57,19 +59,11 @@ public class CajaDaoImpl implements CajaDao {
             cs = cn.prepareCall(procedure);
             cs.setString(1, "BANDEJA_PATRIMONIO");
             rs = cs.executeQuery();
+
             BandejaPatrimonioDto bp;
-            /*
-                C.ID_CAJA,
-		C.CODIGO_MEMO,
-		C.NRO_CAJA,
-		C.CODIGO_LISTADO,
-		C.NRO_EJEMPLARES,
-		A.AREA AS REMITE,
-		C.SALA,
-		ACE.FECHA
-            */
-            //SELECT ID_PERSONAL,DNI,NOMBRE,PATERNO,MATERNO,CARGO,CORREO,ID_AREA 
+
             while (rs.next()) {
+
                 bp=new BandejaPatrimonioDto();
                 bp.setID_CAJA(rs.getString(1));
                 bp.setCODIGO_MEMO(rs.getString(2));
@@ -81,6 +75,7 @@ public class CajaDaoImpl implements CajaDao {
                 bp.setFECHA(rs.getString(8));
                            
               lstBandejaPatrimonio.add(bp);
+
             }
 
         } catch (SQLException e) {

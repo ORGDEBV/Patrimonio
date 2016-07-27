@@ -23,7 +23,7 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
     public MenuDao getMenuDao(int tipo) {
         MenuDao dao;
         switch (tipo) {
@@ -35,7 +35,19 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
+    public MenuPersonalizadoDao getMenuPersonalizadoDao(int tipo) {
+        MenuPersonalizadoDao dao;
+        switch (tipo) {
+            case MENU_PERSONALIZADO:
+                dao = new MenuPersonalizadoDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
+
     public PerfilDao getPerfilDao(int tipo) {
         PerfilDao dao;
         switch (tipo) {
@@ -47,7 +59,7 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
     public PersonalDao getPersonalDao(int tipo) {
         PersonalDao dao;
         switch (tipo) {
@@ -59,7 +71,7 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
     public UsuarioDao getUsuarioDao(int tipo) {
         UsuarioDao dao;
         switch (tipo) {
@@ -71,7 +83,7 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
     public CajaDao getCajaDao(int tipo) {
         CajaDao dao;
         switch (tipo) {
@@ -83,7 +95,7 @@ public class DaoFactory {
         }
         return dao;
     }
-    
+
     public DocumentalDao getDocumentalDao(int tipo) {
         DocumentalDao dao;
         switch (tipo) {
@@ -104,8 +116,5 @@ public class DaoFactory {
 
         private static final DaoFactory INSTANCE = new DaoFactory();
     }
-    
-    
-    
-    
+
 }
