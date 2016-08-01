@@ -26,7 +26,6 @@ com\entidad\Marc017.class
 com\entidad\Marc245.class
 com\entidad\Marc300.class
 com\entidad\Menu.class
-com\bean\pruebaFicha.class
 com\entidad\Usuario.class
 com\entidad\Documental.class
 com\entidad\Marc100.class
@@ -34,7 +33,6 @@ com\entidad\Marc260.class
 com\bean\AreaBean.class
 com\dao\impl\DaoFactory$1.class
 com\entidad\Marc250.class
-com\entidad\Marc001.class
 com\bean\PerfilBean.class
 com\dao\CajaDao.class
 com\dao\impl\DaoFactory.class

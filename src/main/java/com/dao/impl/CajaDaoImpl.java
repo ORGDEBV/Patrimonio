@@ -15,24 +15,45 @@ public class CajaDaoImpl implements CajaDao {
     CallableStatement cs = null;
     ResultSet rs = null;
 
+
+    /**
+     *
+     * Crea un nuevo registro de una caja
+     *
+     * @param objCaja Objeto de la entidad Caja
+     * @return respuesta de insercion
+     */
     @Override
-    public String insertarCaja(Caja objCaja) {
+    public String[] insertarCaja(Caja objCaja) {
+        String[] arreglo = new String[3];
+        Connection cn = cnSQL.getConnection();
         try {
-            Connection cn = cnSQL.getConnection();
-            String procedure = "{call [PT].[SP_CAJA_Insertar](?,?,?,?,?,?,?)}";
-            CallableStatement cs = cn.prepareCall(procedure);
+            String procedure = "{CALL [PT].[SP_CAJA_Insertar](?,?,?,?,?,?,?)}";
+            cs = cn.prepareCall(procedure);
             cs.setString(1, objCaja.getNRO_CAJA());
-            cs.setString(2, objCaja.getCODIGO_LISTADO());
+            cs.setString(2, objCaja.getCODIGO_MEMO());
             cs.setInt(3, objCaja.getNRO_EJEMPLARES());
             cs.setInt(4, objCaja.getID_DEPOSITO());
             cs.setString(5, objCaja.getSALA());
             cs.setString(6, objCaja.getCODIGO_MEMO());
             cs.setInt(7, objCaja.getID_USUARIO());
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                arreglo[0] = rs.getString(1);
+                arreglo[1] = rs.getString(2);
+                arreglo[2] = rs.getString(3);
+            }
 
         } catch (Exception e) {
+            System.out.println("ERROR EN insertarCaja" + e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println("ERROR sql EN insertarCaja" + ex.getMessage());
+            }
         }
-
-        return "";
+        return arreglo;
     }
 
     @Override
@@ -100,6 +121,11 @@ public class CajaDaoImpl implements CajaDao {
             }
         }
         return lCreado;
+    }
+
+    @Override
+    public int insertarAreaCajaEstado(int ID_CAJA) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

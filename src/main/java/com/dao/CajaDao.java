@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 public interface CajaDao {
 
-    String insertarCaja(Caja objCaja);
+    String[] insertarCaja(Caja objCaja);
 
     ArrayList<BandejaDto> bandejaPattrimonio();
 
     ArrayList<BandejaDto> bandejaCreado();
+    
+    int insertarAreaCajaEstado(int ID_CAJA);
 
 }
