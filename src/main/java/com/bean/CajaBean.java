@@ -271,8 +271,9 @@ public class CajaBean {
         }
 
         if (!campo100.isEmpty()) {
-            Marc100 marc100 = new Marc100();
+            Marc100 marc100 ;
             for (int i = 0; i < campo100.size(); i++) {
+                marc100 = new Marc100();
                 DataField datox = (DataField) campo100.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -300,8 +301,9 @@ public class CajaBean {
         }
 
         if (!campo245.isEmpty()) {
-            Marc245 marc245 = new Marc245();
+            Marc245 marc245 ;
             for (int i = 0; i < campo245.size(); i++) {
+                marc245 = new Marc245();
                 DataField datox = (DataField) campo245.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -324,8 +326,8 @@ public class CajaBean {
                             System.out.print(" " + marc245.getC());
                             break;
                     }
-                    listaMarc245.add(marc245);
                 }
+                listaMarc245.add(marc245);
             }
         } else {
             System.out.print("Campo 245 : ");
@@ -333,8 +335,9 @@ public class CajaBean {
         }
 
         if (!campo250.isEmpty()) {
-            Marc250 marc250 = new Marc250();
+            Marc250 marc250 ;
             for (int i = 0; i < campo250.size(); i++) {
+                marc250 = new Marc250();
                 DataField datox = (DataField) campo250.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -349,8 +352,8 @@ public class CajaBean {
                             System.out.print("Campo 250 : " + marc250.getA());
                             break;
                     }
-                    listaMarc250.add(marc250);
                 }
+                listaMarc250.add(marc250);
             }
         } else {
             System.out.print("Campo 250 : ");
@@ -358,8 +361,9 @@ public class CajaBean {
         }
 
         if (!campo260.isEmpty()) {
-            Marc260 marc260 = new Marc260();
+            Marc260 marc260 ;
             for (int i = 0; i < campo260.size(); i++) {
+                marc260 = new Marc260();
                 DataField datox = (DataField) campo260.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -382,8 +386,8 @@ public class CajaBean {
                             System.out.print(" " + marc260.getC());
                             break;
                     }
-                    listaMarc260.add(marc260);
                 }
+                listaMarc260.add(marc260);
             }
         } else {
             System.out.print("Campo 260 : ");
@@ -391,8 +395,9 @@ public class CajaBean {
         }
 
         if (!campo300.isEmpty()) {
-            Marc300 marc300 = new Marc300();
+            Marc300 marc300 ;
             for (int i = 0; i < campo300.size(); i++) {
+                marc300 = new Marc300();
                 DataField datox = (DataField) campo300.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -415,8 +420,8 @@ public class CajaBean {
                             System.out.print(" " + marc300.getC());
                             break;
                     }
-                    listaMarc300.add(marc300);
                 }
+                listaMarc300.add(marc300);
             }
         } else {
             System.out.print("Campo 300 : ");
@@ -424,8 +429,9 @@ public class CajaBean {
         }
 
         if (!campo500.isEmpty()) {
-            Marc500 marc500 = new Marc500();
+            Marc500 marc500 ;
             for (int i = 0; i < campo500.size(); i++) {
+                marc500 = new Marc500();
                 DataField datox = (DataField) campo500.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -444,8 +450,9 @@ public class CajaBean {
         }
 
         if (!campo504.isEmpty()) {
-            Marc504 marc504 = new Marc504();
+            Marc504 marc504 ;
             for (int i = 0; i < campo504.size(); i++) {
+                marc504 = new Marc504();
                 DataField datox = (DataField) campo504.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -460,8 +467,8 @@ public class CajaBean {
                             System.out.print("Campo 504 : " + marc504.getA());
                             break;
                     }
-                    listaMarc504.add(marc504);
                 }
+                listaMarc504.add(marc504);
             }
         } else {
             System.out.print("Campo 504 : ");
@@ -469,8 +476,9 @@ public class CajaBean {
         }
 
         if (!campo017.isEmpty()) {
-            Marc017 marc017 = new Marc017();
+            Marc017 marc017 ;
             for (int i = 0; i < campo017.size(); i++) {
+                marc017 = new Marc017();
                 DataField datox = (DataField) campo017.get(i);
                 List subcampos = datox.getSubfields();
                 Iterator it = subcampos.iterator();
@@ -485,8 +493,8 @@ public class CajaBean {
                             System.out.print("Campo 017 : D.L." + marc017.getA());
                             break;
                     }
-                    listaMarc017.add(marc017);
                 }
+                listaMarc017.add(marc017);
             }
         } else {
             System.out.print("Campo 017 : ");
@@ -494,12 +502,13 @@ public class CajaBean {
         }
 
         if (!campo583.isEmpty() && !campo852.isEmpty()) {
-            Ejemplar ejemplar = new Ejemplar();
+            Ejemplar ejemplar;
             if (campo583.size() < campo852.size()) {
                 estado = error;
                 msgEstado = "Ver ABSYSNET: en campo 583..Faltan " + (campo852.size() - campo583.size()) + " registros";
             } else {
                 for (int i = 0; i < campo852.size(); i++) {
+                    ejemplar = new Ejemplar();
                     DataField datoi = (DataField) campo852.get(i);
                     List subcampoi = datoi.getSubfields();
                     Iterator it = subcampoi.iterator();
