@@ -40,13 +40,12 @@ public class MenuBean implements Serializable {
     private int ID_USUARIO;
 
     public MenuBean() {
-        //ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
-    }
-
-    public void cargaPagina() throws IOException {
         DaoFactory factory = DaoFactory.getInstance();
         mDao = factory.getMenuDao(MENU);
         mpDao = factory.getMenuPersonalizadoDao(MENU_PERSONALIZADO);
+    }
+
+    public void cargaPagina() throws IOException {
         if (ID_USUARIO != 0) {
             lMenuInicial = mDao.buscarIdUsuario(ID_USUARIO);
             cargaCheckMenu();

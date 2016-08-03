@@ -2,6 +2,8 @@ package com.dao.impl;
 
 import com.dao.CajaDao;
 import com.dto.BandejaDto;
+import com.dto.EjemplarDocumentalDto;
+import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import com.util.cnSQL;
 import java.sql.CallableStatement;
@@ -9,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CajaDaoImpl implements CajaDao {
 
@@ -100,6 +103,93 @@ public class CajaDaoImpl implements CajaDao {
             }
         }
         return lCreado;
+    }
+
+    @Override
+    public int insertarAreaCajaEstado(AreaCajaEstado ace) {
+        int out = 0;
+        String msg = "";
+        Connection cn = cnSQL.getConnection();
+        try {
+            cs = cn.prepareCall("{CALL [PT].[SP_AREA_CAJA_ESTADO_Insertar](?,?,?,?)}");
+            cs.setInt(1, ace.getID_CAJA());
+            cs.setInt(2, ace.getID_AREA());
+            cs.setInt(3, ace.getID_ESTADO_PROCESO());
+            cs.setInt(4, ace.getID_USUARIO());
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                out = rs.getInt(1);
+                msg = rs.getString(2);
+            }
+        } catch (Exception e) {
+            System.out.println("Error de consulta: " + e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar conexión: " + ex.getMessage());
+            }
+        }
+        return out;
+    }
+
+    @Override
+    public Caja buscarCaja(int ID_CAJA) {
+        Caja caja = new Caja();
+        Connection cn = cnSQL.getConnection();
+        try {
+            cs = cn.prepareCall("{CALL [PT].[SP_CAJA_BUSCAR](?)}");
+            cs.setInt(1, ID_CAJA);
+            rs = cs.executeQuery();
+            if(rs.next()) {
+                caja.setID_CAJA(ID_CAJA);
+                caja.setNRO_CAJA(rs.getString(2));
+                caja.setSALA(rs.getString(3));
+                caja.setCODIGO_MEMO(rs.getString(4));
+                caja.setCODIGO_LISTADO(rs.getString(5));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de consulta:" + e);
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return caja;
+    }
+
+    @Override
+    public List<EjemplarDocumentalDto> listarCajaEjemplarDocumental(int ID_CAJA) {
+        List<EjemplarDocumentalDto> lEjeDocDto = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        EjemplarDocumentalDto ed = null;
+        try {
+            cs = cn.prepareCall("{CALL PT.SP_CAJA_EJEMPLAR_DOCUMENTAL_LISTAR(?)}");
+            cs.setInt(1, ID_CAJA);
+            rs = cs.executeQuery();
+            int aux = 1;
+            while (rs.next()) {
+                ed = new EjemplarDocumentalDto();
+                ed.setNRO_EJEMPLAR(aux);
+                ed.setID_EJEMPLAR(rs.getInt(1));
+                ed.setCODIGO_BARRAS(rs.getString(2));
+                ed.setMFN(rs.getString(3));
+                ed.setID_DOCUMENTAL(rs.getInt(4));
+                lEjeDocDto.add(ed);
+                aux++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return lEjeDocDto;
     }
 
 }

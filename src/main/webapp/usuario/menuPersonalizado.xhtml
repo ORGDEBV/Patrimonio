@@ -7,10 +7,10 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <f:metadata>
         <f:viewParam name="ID_USUARIO" value="#{menuBean.ID_USUARIO}" />
+        <f:viewAction action="#{menuBean.cargaPagina()}"/>
     </f:metadata>
 
     <ui:define name="content">
-        <f:event listener="#{menuBean.cargaPagina()}" type="preRenderComponent"/>
         <p:panel header="PERSONALIZAR MENU">
             <h:panelGrid styleClass="Wid100" columns="2" columnClasses="Wid50,Wid50 VerAlTop">
                 <h:column>

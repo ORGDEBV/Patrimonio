@@ -107,6 +107,30 @@ public class DaoFactory {
         }
         return dao;
     }
+    
+    public DepositoDao getDepositoDao(int tipo) {
+        DepositoDao dao;
+        switch (tipo) {
+            case DEPOSITO:
+                dao = new DepositoDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
+    
+    public EjemplarDao getEjemplarDao(int tipo) {
+        EjemplarDao dao;
+        switch (tipo) {
+            case EJEMPLAR:
+                dao = new EjemplarDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
 
     public static DaoFactory getInstance() {
         return DaoFactoryHolder.INSTANCE;
