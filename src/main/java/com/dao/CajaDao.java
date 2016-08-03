@@ -11,5 +11,7 @@ public interface CajaDao {
     ArrayList<BandejaDto> bandejaPattrimonio();
 
     ArrayList<BandejaDto> bandejaCreado();
+    
+    int insertarAreaCajaEstado(int ID_CAJA);
 
 }

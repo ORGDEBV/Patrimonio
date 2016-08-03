@@ -13,17 +13,19 @@
                          value="#{cajaBean.lbandejacreado}"
                          widgetVar="tblcaja"
                          scrollable="true"
-                         scrollHeight="50%"
                          scrollWidth="100%"
+                         scrollHeight="100%"
                          style="height: 100%;max-height: 400px;"
-                         resizableColumns="true"
-                         tableStyle="width:auto">
+                         styleClass="width:auto;">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar en todos los campos:" />
                         <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
                     </p:outputPanel>
                 </f:facet>
+                <p:column headerText="PROCESAR" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.procesarCaja(c.ID_CAJA)}" icon="fa fa-cogs"></p:commandButton>
+                </p:column>
                 <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;">
                     <h:outputText value="#{c.ID_CAJA}"/>
                 </p:column>

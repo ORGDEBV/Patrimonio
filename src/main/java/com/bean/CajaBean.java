@@ -58,7 +58,7 @@ public class CajaBean {
     List<Ejemplar> listaEjemplar;
     private Caja objCaja = new Caja();
     private boolean renderInputFile = false;
-    
+
     //lista para bandeja registro
     private List<BandejaDto> lbandejacreado;
 
@@ -378,7 +378,7 @@ public class CajaBean {
         lst = cajaDao.bandejaPattrimonio();
         return lst;
     }
-    
+
     public void redireccionar(String Id) {
 
         try {
@@ -391,6 +391,10 @@ public class CajaBean {
             System.out.println("error" + ex);
         }
 
+    }
+
+    public void procesarCaja(int ID_CAJA) {
+        int insert = cajaDao.insertarAreaCajaEstado(ID_CAJA);
     }
 
     public List<BandejaDto> getLbandejacreado() {

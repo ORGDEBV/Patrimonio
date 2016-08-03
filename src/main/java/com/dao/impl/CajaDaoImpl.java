@@ -102,4 +102,9 @@ public class CajaDaoImpl implements CajaDao {
         return lCreado;
     }
 
+    @Override
+    public int insertarAreaCajaEstado(int ID_CAJA) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
