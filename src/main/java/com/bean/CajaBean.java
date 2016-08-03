@@ -672,6 +672,37 @@ public class CajaBean {
         RequestContext.getCurrentInstance().update("pnlFicha");
     }
 
+    public void validaEjemplar(int ID_EJEMPLAR) {
+        int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
+        int insert = ejemplarDao.validarEjemplar(ID_EJEMPLAR, ID_USUARIO);
+        if (insert == 1) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se validó el ejemplar correctamente."));
+            lbandejacreado = cajaDao.bandejaCreado();
+        } else {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
+        }
+        lejedocdto = cajaDao.listarCajaEjemplarDocumental(ID_CAJA);
+        RequestContext.getCurrentInstance().update("frmControlPatrimonio:tblcaja");
+        RequestContext.getCurrentInstance().update("gMensaje");
+    }
+
+    public void validaCaja() {
+        int aux = 0;
+        for (int i = 0; i < lejedocdto.size(); i++) {
+            if (lejedocdto.get(i).getCLASS_VALIDADO().equals("RedBack")) {
+                aux++;
+            }
+        }
+        if (aux > 0) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Existen " + aux + " ejemplares sin validar."));
+        } else if (ID_DEPOSITO != -1) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Debe seleccionar un deposito."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja se valido correctamente."));
+        }
+        RequestContext.getCurrentInstance().update("gMensaje");
+    }
+
     public List<BandejaDto> getLbandejacreado() {
         return lbandejacreado;
     }

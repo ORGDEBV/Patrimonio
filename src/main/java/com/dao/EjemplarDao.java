@@ -12,5 +12,8 @@ import com.dto.FichaEjemplarDto;
  * @author virtual
  */
 public interface EjemplarDao {
+
     FichaEjemplarDto buscarFichaEjemplar(int ID_EJEMPLAR);
+
+    int validarEjemplar(int ID_EJEMPLAR, int ID_USUARIO);
 }

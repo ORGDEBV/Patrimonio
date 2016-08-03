@@ -3466,7 +3466,7 @@ hr.ui-widget-header {
 }
 .ui-button.ui-state-hover,
 .ui-buttonset .ui-state-hover {
-  background-color: #176ba0;
+  /*background-color: #176ba0;*/
 }
 .ui-button-icon-left {
   margin-left: 8px;
@@ -5592,7 +5592,7 @@ hr.ui-widget-header {
   -webkit-box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.9) !important;
   -moz-box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.9) !important;
   box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.9) !important;
-  background-color: #176ba0;
+  /*background-color: #176ba0;*/
 }
 .ui-inputswitch-handle.ui-state-focus {
   -webkit-box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.7) !important;

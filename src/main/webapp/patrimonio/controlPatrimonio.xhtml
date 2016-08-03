@@ -27,6 +27,12 @@
             .ui-selectonemenu, .ui-selectcheckboxmenu{
                 padding: 0px 0px 0px 0px !important;
             }
+            .ui-button.ui-state-focus{
+                background-color: none !important;
+            }
+            .ui-button.ui-state-hover, .ui-buttonset .ui-state-hover{
+                background-color: none !important;
+            }
         </style>
 
         <h:form id="frmControlPatrimonio">
@@ -45,6 +51,9 @@
                         <p:column styleClass="Wid35">
                             <p:inputText id="txtMemo"  value="#{cajaBean.objCaja.CODIGO_MEMO}" styleClass="Wid100 txtMemo" readonly="true"/>
                         </p:column>
+                        <p:column styleClass="Wid35">
+                            <p:commandButton value="Validar Caja" styleClass="Wid100" actionListener="#{cajaBean.validaCaja()}"></p:commandButton>
+                        </p:column>
                     </p:row>
                     <p:row styleClass="Wid100">
                         <p:column styleClass="Wid15">
@@ -59,6 +68,9 @@
                         <p:column styleClass="Wid35">
                             <p:inputText id="txtCodLista"  value="#{cajaBean.objCaja.CODIGO_LISTADO}" styleClass="Wid100 txtCodLista" readonly="true"/>
                         </p:column>
+                        <p:column styleClass="Wid35">
+                            
+                        </p:column>
                     </p:row>
                     <p:row styleClass="Wid100">
                         <p:column styleClass="Wid15">
@@ -72,9 +84,12 @@
                         </p:column>
                         <p:column styleClass="Wid35">
                             <p:selectOneMenu id="txtDeposito" styleClass="Wid100Imp txtCodLista" value="#{cajaBean.ID_DEPOSITO}">
-                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
                                 <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
                             </p:selectOneMenu>
+                        </p:column>
+                        <p:column styleClass="Wid35">
+                            
                         </p:column>
                     </p:row>
                 </p:panelGrid>  
@@ -93,7 +108,7 @@
                     </p:outputPanel>
                 </f:facet>
                 <p:column headerText="APROBAR" style="text-align: center;">
-                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_EJEMPLAR)}" icon="fa fa-check-square-o" styleClass="RedBack"></p:commandButton>
+                    <p:commandButton actionListener="#{cajaBean.validaEjemplar(c.ID_EJEMPLAR)}" icon="fa fa-check-square-o" styleClass="#{c.CLASS_VALIDADO}"></p:commandButton>
                 </p:column>
                 <p:column headerText="DESCRIPCIÓN" style="text-align: center;">
                     <p:commandButton actionListener="#{cajaBean.infoEjemplar(c.ID_DOCUMENTAL,c.ID_EJEMPLAR)}" icon="fa fa-file-text-o" onclick="PF('dlgFicha').show();"></p:commandButton>
