@@ -9,16 +9,15 @@ import java.util.List;
 
 public interface CajaDao {
 
-    String insertarCaja(Caja objCaja);
+    String[] insertarCaja(Caja objCaja);
 
     ArrayList<BandejaDto> bandejaPattrimonio();
 
     ArrayList<BandejaDto> bandejaCreado();
     
-    int insertarAreaCajaEstado(AreaCajaEstado ace);
-    
     Caja buscarCaja(int ID_CAJA);
     
     List<EjemplarDocumentalDto> listarCajaEjemplarDocumental(int ID_CAJA);
 
+    int insertarAreaCajaEstado(AreaCajaEstado ace);
 }
