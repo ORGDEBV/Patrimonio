@@ -68,7 +68,6 @@ public class CajaBean {
     private Marc260 marc260;
     private Marc300 marc300;
     private Marc504 marc504;
-    private boolean renderInputFile = false;
     private Documental documental;
     private List<Marc017> listaMarc017;
     private List<Marc100> listaMarc100;
@@ -80,6 +79,7 @@ public class CajaBean {
     private List<Marc504> listaMarc504;
     private List<Ejemplar> listaEjemplar;
     private Caja objCaja = new Caja();
+    private boolean renderInputFile = false;
     private boolean renderUploadFile = false;
     private boolean renderMensajeIncrustado = true;
     private boolean disabledGrabarCaja = false;
