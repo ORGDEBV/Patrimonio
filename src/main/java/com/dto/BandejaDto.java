@@ -19,8 +19,27 @@ public class BandejaDto {
     private String AREA;
     private String SALA;
     private String FECHA;
+    private String ID_DEPOSITO;
+    private String DEPOSITO;
+    
 
     public BandejaDto() {
+    }
+
+    public String getID_DEPOSITO() {
+        return ID_DEPOSITO;
+    }
+
+    public void setID_DEPOSITO(String ID_DEPOSITO) {
+        this.ID_DEPOSITO = ID_DEPOSITO;
+    }
+
+    public String getDEPOSITO() {
+        return DEPOSITO;
+    }
+
+    public void setDEPOSITO(String DEPOSITO) {
+        this.DEPOSITO = DEPOSITO;
     }
     
 

@@ -20,6 +20,8 @@ public class Constantes {
     public static final int USUARIO = 0;
     public static final int CAJA = 0;
     public static final int DOCUMENTAL = 0;
+    public static final int DEPOSITO = 0;
+    public static final int EJEMPLAR = 0;
     
     
     //Constantes para el CnFactory

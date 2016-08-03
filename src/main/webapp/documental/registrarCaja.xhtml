@@ -12,47 +12,69 @@
             <div class="EmptyBox10"></div>
             <div class="CardTopic Opac90 OvHidden TexAlLeft PadWithBorder10M">Registro de Caja <i class="fa fa-dropbox Fright Fs30"></i></div>
             <div class="Separator"></div>
-            <p:messages id="msgLista" autoUpdate="true" closable="true" showDetail="true" />
+            <p:messages id="msgLista" autoUpdate="true" closable="true" showDetail="true" rendered="#{cajaBean.renderMensajeIncrustado}"/>
             <div class="EmptyBox5"></div>
             <p:fragment>
                 <div class="Container50 Responsive100">
-                    <p:inputText id="txtNumCaja" placeholder="Número de caja" value="#{cajaBean.objCaja.NRO_CAJA}" style="width:75%" required="true" />
+                    <p:inputText id="txtNumCaja" placeholder="Número de caja" value="#{cajaBean.objCaja.NRO_CAJA}" style="width:75%" disabled="#{cajaBean.disabledGrabarCaja}" required="true" />
                     <div class="EmptyBox10"></div>            
-                    <p:spinner id="txtEjemCaja" placeholder="Cantidad de ejemplares" value="#{cajaBean.objCaja.NRO_EJEMPLARES}" style="width:75%" required="true"/>
+                    <p:spinner id="txtEjemCaja" placeholder="Cantidad de ejemplares" value="#{cajaBean.objCaja.NRO_EJEMPLARES}" style="width:75%" disabled="#{cajaBean.disabledGrabarCaja}" required="true"/>
                     <div class="EmptyBox10"></div>
                 </div>
 
                 <div class="Container50 Responsive100">
-                    <p:inputText id="txtMemoCaja" placeholder="Código Memorandum" value="#{cajaBean.objCaja.CODIGO_MEMO}" style="width:78%" required="true"/>
+                    <p:inputText id="txtMemoCaja" placeholder="Código Memorandum" value="#{cajaBean.objCaja.CODIGO_MEMO}" style="width:78%" disabled="#{cajaBean.disabledGrabarCaja}" required="true"/>
                     <div class="EmptyBox10"></div>
-                    <p:selectOneMenu id="cboSalaCaja" widgetVar="cboSalaCaja" value="#{cajaBean.objCaja.SALA}" required="true" styleClass="Wid70Imp">
+                    <p:selectOneMenu id="cboSalaCaja" widgetVar="cboSalaCaja" value="#{cajaBean.objCaja.SALA}" required="true" disabled="#{cajaBean.disabledGrabarCaja}" styleClass="Wid70Imp">
                         <f:selectItem itemLabel="Seleccione una sala" itemValue="-1" noSelectionOption="true" />
                         <f:selectItem itemLabel="Guillermo Lohmann Villena" itemValue="Guillermo Lohmann Villena" />
                     </p:selectOneMenu>
                     <div class="EmptyBox10"></div>
                 </div>
                 <div class="Container100 TexAlLeft" style="padding-left: 7%;">
-                    <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" />               
+                    <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" disabled="#{cajaBean.disabledGrabarCaja}"  />   
+                    <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" disabled="#{cajaBean.disabledGrabarCaja}" />
                 </div>
             </p:fragment>
             <div class="EmptyBox5"></div>       
 
-            <h:panelGroup layout="block" rendered="false">
-                <div class="Container100 Responsive100 TexAlLeft" style="padding-left: 7%;">
-                    <p:fileUpload label="Selecione" uploadLabel="Subir"  cancelLabel="Cancelar"  fileUploadListener="#{cajaBean.handleFileUpload}" 
-                                  mode="advanced" dragDropSupport="false" multiple="true" fileLimitMessage="Solo se permite un archivo"
-                                  sizeLimit="600000" fileLimit="1" allowTypes="/(\.|\/)(xml)$/"
-                                  invalidFileMessage="Archivo no permitido" auto="false" previewWidth="50"
-                                  invalidSizeMessage="Tamaño del archivo excedido " styleClass="Wid80" />
+            <h:panelGroup id="subir" layout="block" rendered="#{cajaBean.renderUploadFile}" >
+                <p:fragment>
+                    <div class="Container100 Responsive100 TexAlLeft" style="padding-left: 7%;">
+                        <p:fileUpload label="Selecione" uploadLabel="Subir"  cancelLabel="Cancelar"  fileUploadListener="#{cajaBean.handleFileUpload}" 
+                                      mode="advanced" dragDropSupport="false" multiple="true" fileLimitMessage="Solo se permite un archivo"
+                                      sizeLimit="600000" fileLimit="1" allowTypes="/(\.|\/)(xml)$/"
+                                      invalidFileMessage="Archivo no permitido" auto="false" previewWidth="50"
+                                      invalidSizeMessage="Tamaño del archivo excedido " styleClass="Wid80" />
 
-                </div>
-                <div class="EmptyBox20"></div>
-                <div class="Container100 TexAlRight">
-                    <p:commandButton styleClass="TealGreenButton MarRight10" value="Procesar" />
-                    <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" />
-                </div>
+                    </div>
+                    <div class="EmptyBox20"></div>
+                    <div class="Container100 TexAlRight">
+                        <p:commandButton styleClass="TealGreenButton MarRight10" value="Procesar" />                    
+                    </div>
+                </p:fragment>
             </h:panelGroup>
 
+            <div class="EmptyBox5"></div>       
+
+            <h:panelGroup id="tabla" layout="block" rendered="#{cajaBean.renderTabla}" >
+                <p:fragment>
+                    <p:dataTable var="tabla" value="#{dtStickyView.cars}" stickyHeader="true">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{car.id}" />
+                        </p:column>
+                        <p:column headerText="Year">
+                            <h:outputText value="#{car.year}" />
+                        </p:column>
+                        <p:column headerText="Brand">
+                            <h:outputText value="#{car.brand}" />
+                        </p:column>
+                        <p:column headerText="Color">
+                            <h:outputText value="#{car.color}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:fragment>
+            </h:panelGroup>
         </h:form>
     </ui:define>
 

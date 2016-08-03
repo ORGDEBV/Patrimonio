@@ -11,14 +11,11 @@
         <h:form id="frmCaja">
 
             <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaPatrimonioDto()}"
-                         paginator="true" paginatorPosition="top" widgetVar="tblcaja"
-                         resizableColumns="false"
-                         resizeMode="false" 
-                         rows="20"
-                        scrollable="true" scrollHeight="50%" scrollWidth="100%"
-                         >
-
-
+                         widgetVar="tblcaja"
+                         scrollable="true" 
+                         scrollHeight="100%" 
+                         scrollWidth="100%"
+                         tableStyle="width:auto;">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar en todos los campos:" />
@@ -27,10 +24,10 @@
                 </f:facet>
                 <p:column width="5%" headerText="PROC." style="text-align: center;" >
                     <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa  fa-cogs">
-                      
+
                     </p:commandButton>
                 </p:column>
-                <p:column width="5%" filterStyle="display:none"  filterBy="#{c.ID_CAJA}" rendered="false" headerText="ID"  style="text-align: center;">
+                <p:column width="5%" filterStyle="display:none"  filterBy="#{c.ID_CAJA}" rendered="true" headerText="ID"  style="text-align: center;">
                     <h:outputText value="#{c.ID_CAJA}"/>
                 </p:column>
                 <p:column width="30%" filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}" rendered="true" headerText="COD_MEMO"  style="text-align: center;">
