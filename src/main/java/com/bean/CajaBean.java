@@ -5,8 +5,8 @@ import com.dao.DocumentalDao;
 import com.dao.impl.DaoFactory;
 import com.dto.BandejaDto;
 import com.entidad.Caja;
+import com.entidad.Documental;
 import com.entidad.Ejemplar;
-import com.entidad.Marc001;
 import com.entidad.Marc017;
 import com.entidad.Marc100;
 import com.entidad.Marc245;
@@ -36,6 +36,7 @@ import org.marc4j.marc.ControlField;
 import org.marc4j.marc.DataField;
 import org.marc4j.marc.Record;
 import org.marc4j.marc.Subfield;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -45,21 +46,36 @@ public class CajaBean {
 
     private final CajaDao cajaDao;
     private final DocumentalDao documentalDao;
-    private Marc001 marc001;
-    private Marc017 marc017;
-    private Marc100 marc100;
-    private Marc245 marc245;
-    private Marc250 marc250;
-    private Marc260 marc260;
-    private Marc300 marc300;
-    private Marc504 marc504;
-    ArrayList<Object[]> lstFilter = new ArrayList<>();
-    List<Marc500> listaMarc500;
-    List<Ejemplar> listaEjemplar;
+    private Documental documental;
+    private List<Marc017> listaMarc017;
+    private List<Marc100> listaMarc100;
+    private List<Marc245> listaMarc245;
+    private List<Marc250> listaMarc250;
+    private List<Marc260> listaMarc260;
+    private List<Marc300> listaMarc300;
+    private List<Marc500> listaMarc500;
+    private List<Marc504> listaMarc504;
+    private List<Ejemplar> listaEjemplar;
     private Caja objCaja = new Caja();
+<<<<<<< HEAD
     private boolean renderInputFile = false;
+=======
+    private boolean renderUploadFile = false;
+    private boolean renderMensajeIncrustado = true;
+    private boolean disabledGrabarCaja = false;
+    private boolean renderTablaXml = false;
+    private boolean renderTabla = false;
+    private String idCaja = "";
+    private final int vacio = 0;
+    private final int error = 0;
+    private final int correcto = 1;
+    private final boolean deshabilitado = false;
+    private final boolean habilitado = true;
+    ArrayList<String> listaErrores = new ArrayList<>();
+>>>>>>> aeb153103dbd613fc339f2d36cd34e508538411d
 
     //lista para bandeja registro
+    ArrayList<Object[]> lstFilter = new ArrayList<>();
     private List<BandejaDto> lbandejacreado;
 
     public CajaBean() {
@@ -77,12 +93,44 @@ public class CajaBean {
         this.objCaja = objCaja;
     }
 
-    public boolean isRenderInputFile() {
-        return renderInputFile;
+    public boolean isRenderMensajeIncrustado() {
+        return renderMensajeIncrustado;
     }
 
-    public void setRenderInputFile(boolean renderInputFile) {
-        this.renderInputFile = renderInputFile;
+    public void setRenderMensajeIncrustado(boolean renderMensajeIncrustado) {
+        this.renderMensajeIncrustado = renderMensajeIncrustado;
+    }
+
+    public boolean isRenderUploadFile() {
+        return renderUploadFile;
+    }
+
+    public void setRenderUploadFile(boolean renderUploadFile) {
+        this.renderUploadFile = renderUploadFile;
+    }
+
+    public boolean isRenderTablaXml() {
+        return renderTablaXml;
+    }
+
+    public void setRenderTablaXml(boolean renderTablaXml) {
+        this.renderTablaXml = renderTablaXml;
+    }
+
+    public boolean isDisabledGrabarCaja() {
+        return disabledGrabarCaja;
+    }
+
+    public void setDisabledGrabarCaja(boolean disabledGrabarCaja) {
+        this.disabledGrabarCaja = disabledGrabarCaja;
+    }
+
+    public boolean isRenderTabla() {
+        return renderTabla;
+    }
+
+    public void setRenderTabla(boolean renderTabla) {
+        this.renderTabla = renderTabla;
     }
 
     public ArrayList<Object[]> getLstFilter() {
@@ -93,258 +141,90 @@ public class CajaBean {
         this.lstFilter = lstFilter;
     }
 
+   public void grabarCaja() {
+        if (objCaja != null) {
+            String resp = "No se creo la caja.";
+            int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
+            objCaja.setID_USUARIO(ID_USUARIO);
+            String[] msg = cajaDao.insertarCaja(objCaja);
+            //int msg = 1;
+            if (Integer.parseInt(msg[0]) == correcto) {
+                resp = msg[1];
+                idCaja = msg[2];
+                renderMensajeIncrustado = deshabilitado;
+                RequestContext.getCurrentInstance().update("frmCaja:msgLista");
+                renderUploadFile = habilitado;
+                disabledGrabarCaja = habilitado;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", resp);
+                FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+                RequestContext.getCurrentInstance().update("gMensaje");
+                RequestContext.getCurrentInstance().update("frmCaja");
+            } else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", resp);
+                FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+                RequestContext.getCurrentInstance().update("gMensaje");
+            }
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrecto", "Ingrese los datos de caja");
+            FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+            RequestContext.getCurrentInstance().update("gMensaje");
+        }
+    }
+
     public void handleFileUpload(FileUploadEvent event) throws FileNotFoundException {
         InputStream in = null;
-
+        int totalResultados = vacio;
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
             in = archivo.getInputstream();
             MarcReader reader = new MarcXmlReader(in);
             while (reader.hasNext()) {
                 Record record = reader.next();
+                int estado = correcto;
+                String msgEstado = "";
 
                 ControlField campo001 = (ControlField) record.getVariableField("001");
-                DataField campo17 = (DataField) record.getVariableField("017");
-                DataField campo100 = (DataField) record.getVariableField("100");
-                DataField campo245 = (DataField) record.getVariableField("245");
-                DataField campo250 = (DataField) record.getVariableField("250");
-                DataField campo260 = (DataField) record.getVariableField("260");
-                DataField campo300 = (DataField) record.getVariableField("300");
+                List campo017 = record.getVariableFields("017");
+                List campo082 = record.getVariableFields("082");
+                List campo100 = record.getVariableFields("100");
+                List campo245 = record.getVariableFields("245");
+                List campo250 = record.getVariableFields("250");
+                List campo260 = record.getVariableFields("260");
+                List campo300 = record.getVariableFields("300");
                 List campo500 = record.getVariableFields("500");
-                DataField campo504 = (DataField) record.getVariableField("504");
+                List campo504 = record.getVariableFields("504");
                 List campo583 = record.getVariableFields("583");
                 List campo852 = record.getVariableFields("852");
 
-                marc001 = new Marc001();
-                marc017 = new Marc017();
-                marc100 = new Marc100();
-                marc245 = new Marc245();
-                marc250 = new Marc250();
-                marc260 = new Marc260();
-                marc300 = new Marc300();
-                marc504 = new Marc504();
+                documental = new Documental();
+                documental.setID_CAJA(Integer.parseInt(idCaja));
+                listaMarc017 = new ArrayList<>();
+                listaMarc100 = new ArrayList<>();
+                listaMarc245 = new ArrayList<>();
+                listaMarc250 = new ArrayList<>();
+                listaMarc260 = new ArrayList<>();
+                listaMarc300 = new ArrayList<>();
+                listaMarc504 = new ArrayList<>();
                 listaMarc500 = new ArrayList<>();
                 listaEjemplar = new ArrayList<>();
 
-                System.out.println("*************************************************FICHA***********************************************************");
-                if (campo100 != null) {
-                    Subfield subcampo100a = campo100.getSubfield('a');
-                    Subfield subcampo100d = campo100.getSubfield('d');
-                    if (subcampo100a != null) {
-                        marc100.setA(subcampo100a.getData().trim());
-                        System.out.print("Campo 100 : " + marc100.getA());
-                    }
-                    if (subcampo100d != null) {
-                        marc100.setD(subcampo100d.getData().trim());
-                        System.out.print(" " + marc100.getD());
-                    }
-                    System.out.println(" ");
-                } else {
-                    System.out.print("Campo 100 : ");
-                    System.out.println("--");
-                }
-                if (campo245 != null) {
-                    Subfield subcampo245a = campo245.getSubfield('a');
-                    Subfield subcampo245b = campo245.getSubfield('b');
-                    Subfield subcampo245c = campo245.getSubfield('c');
-                    if (subcampo245a != null) {
-                        marc245.setA(subcampo245a.getData().trim());
-                        System.out.print("Campo 245 : " + marc245.getA());
-                    }
-                    if (subcampo245b != null) {
-                        marc245.setB(subcampo245b.getData().trim());
-                        System.out.print(" " + marc245.getB());
-                    }
-                    if (subcampo245c != null) {
-                        marc245.setC(subcampo245c.getData().trim());
-                        System.out.print(" " + marc245.getC() + " --");
-                    }
-                    System.out.println(" ");
-                } else {
-                    System.out.print("Campo 245 : ");
-                    System.out.println("--");
-                }
-                if (campo250 != null) {
-                    Subfield subcampo250a = campo250.getSubfield('a');
-                    if (subcampo250a != null) {
-                        marc250.setA(subcampo250a.getData().trim());
-                        System.out.println("Campo 250 : " + marc250.getA() + " -- ");
-                    }
-                } else {
-                    System.out.print("Campo 250 : ");
-                    System.out.println("--");
-                }
-                if (campo260 != null) {
-                    Subfield subcampo260a = campo260.getSubfield('a');
-                    Subfield subcampo260b = campo260.getSubfield('b');
-                    Subfield subcampo260c = campo260.getSubfield('c');
-                    if (subcampo260a != null) {
-                        marc260.setA(subcampo260a.getData().trim());
-                        System.out.print("Campo 260 : " + marc260.getA());
-                    }
-                    if (subcampo260b != null) {
-                        marc260.setB(subcampo260b.getData().trim());
-                        System.out.print(" " + marc260.getB());
-                    }
-                    if (subcampo260c != null) {
-                        marc260.setC(subcampo260c.getData().trim());
-                        System.out.println(" " + marc260.getC() + " ");
-                    }
-                } else {
-                    System.out.print("Campo 260 : ");
-                    System.out.println("--");
-                }
-                if (campo300 != null) {
-                    Subfield subcampo300a = campo300.getSubfield('a');
-                    Subfield subcampo300b = campo300.getSubfield('b');
-                    Subfield subcampo300c = campo300.getSubfield('c');
-                    if (subcampo300a != null) {
-                        marc300.setA(subcampo300a.getData().trim());
-                        System.out.print("Campo 300 : " + marc300.getA());
-                    }
-                    if (subcampo300b != null) {
-                        marc300.setB(subcampo300b.getData().trim());
-                        System.out.print(" " + marc300.getB());
-                    }
-                    if (subcampo300c != null) {
-                        marc300.setC(subcampo300c.getData().trim());
-                        System.out.println(" " + marc300.getC());
-                    }
-                } else {
-                    System.out.print("Campo 300 : ");
-                    System.out.println("--");
-                }
+                leerFichasXML(estado, msgEstado, campo001, campo017, campo082, campo100, campo245, campo250, campo260, campo300, campo500, campo504, campo583, campo852);
 
-                if (!campo500.isEmpty()) {
-                    Marc500 marc500 = new Marc500();
-                    for (int i = 0; i < campo500.size(); i++) {
-                        DataField datox = (DataField) campo500.get(i);
-                        List subcampos = datox.getSubfields();
-                        Iterator it = subcampos.iterator();
-                        System.out.print("Campo 500 : ");
-                        while (it.hasNext()) {
-                            Subfield subfield = (Subfield) it.next();
-                            String code = String.valueOf(subfield.getCode());
-                            String data = subfield.getData().trim();
-                            marc500.setA(data);
-                            listaMarc500.add(marc500);
-                            if (code.equals("a")) {
-                                System.out.println(data);
-                            }
-                        }
-                    }
-                }
-                if (campo504 != null) {
-                    Subfield subcampo504a = campo504.getSubfield('a');
-                    if (subcampo504a != null) {
-                        marc504.setA(subcampo504a.toString().substring(2));
-                        System.out.println("Campo 504 : " + marc504.getA());
-                    }
-                } else {
-                    System.out.print("Campo 504 : ");
-                    System.out.println("--");
-                }
-                if (campo17 != null) {
-                    Subfield subcampo17a = campo17.getSubfield('a');
-                    if (subcampo17a != null) {
-                        marc017.setA(subcampo17a.getData().trim());
-                        System.out.println("Campo 017 : " + "D.L. " + marc017.getA());
-                    }
-                } else {
-                    System.out.print("Campo 017 : ");
-                    System.out.println("--");
-                }
+                int resultado = grabarDocumental(estado, msgEstado, documental, listaMarc017, listaMarc100, listaMarc245, listaMarc250, listaMarc260, listaMarc300, listaMarc504, listaMarc500, listaEjemplar);
+                totalResultados += resultado;
 
-                if (!campo583.isEmpty() && !campo852.isEmpty()) {
-                    Ejemplar ejemplar = new Ejemplar();
-                    if (campo583.size() < campo852.size()) {
-                        System.out.println("Error en campo 583..Faltan " + (campo852.size() - campo583.size()) + " registros");
-                    } else {
-                        for (int i = 0; i < campo852.size(); i++) {
-                            DataField datoi = (DataField) campo852.get(i);
-                            List subcampoi = datoi.getSubfields();
-                            Iterator it = subcampoi.iterator();
-                            while (it.hasNext()) {
-                                Subfield subfield = (Subfield) it.next();
-                                String code = String.valueOf(subfield.getCode());
-                                String data = subfield.getData().trim();
-                                switch (code) {
-                                    case "a":
-                                        ejemplar.setA852(data);
-                                        break;
-                                    case "b":
-                                        ejemplar.setB852(data);
-                                        break;
-                                    case "c":
-                                        ejemplar.setC852(data);
-                                        break;
-                                    case "h":
-                                        ejemplar.setH852(data);
-                                        break;
-                                    case "i":
-                                        ejemplar.setI852(data);
-                                        break;
-                                    case "j":
-                                        ejemplar.setJ852(data);
-                                        break;
-                                    case "p":
-                                        ejemplar.setP852(data);
-                                        break;
-                                    case "q":
-                                        ejemplar.setQ852(data);
-                                        break;
-                                    case "3":
-                                        ejemplar.set852_3(data);
-                                        break;
-                                }
-                            }
-                            datoi = (DataField) campo583.get(i);
-                            subcampoi = datoi.getSubfields();
-                            it = subcampoi.iterator();
-                            while (it.hasNext()) {
-                                Subfield subfield = (Subfield) it.next();
-                                String code = String.valueOf(subfield.getCode());
-                                String data = subfield.getData().trim();
-                                switch (code) {
-                                    case "a":
-                                        ejemplar.setA583(data);
-                                        break;
-                                    case "b":
-                                        ejemplar.setB583(data);
-                                        break;
-                                    case "c":
-                                        ejemplar.setC583(data);
-                                        break;
-                                    case "k":
-                                        ejemplar.setK583(data);
-                                        break;
-                                    case "x":
-                                        ejemplar.setX583(data);
-                                        break;
-                                }
-                            }
-                            if (ejemplar.getA852().equals("BNP") && ejemplar.getC852().equals("Guillermo Lohmann Villena- Libros peruanos")) {
-                                listaEjemplar.add(ejemplar);
-                            }
-                        }
-                        System.out.println("hay " + listaEjemplar.size() + " registros ... deben haber " + campo852.size() + " registros");
-                    }
-                } else {
-                    System.out.print("Campo ejemplar : ");
-                    System.out.println("--");
-                }
-                if (campo001 != null) {
-                    marc001.setA(campo001.getData().trim());
-                    System.out.println("MFN = " + campo001.getData().trim().substring(1));
-                } else {
-                    System.out.print("MFN =");
-                    System.out.println("--");
-                }
-
-                System.out.println("*********************************************FIN-FICHA***********************************************************");
-
-                String msg = grabarFicha();
             }
+            //una ves que se insertan los ejemplares se deshabilita el upload
+            renderUploadFile = deshabilitado;
+            RequestContext.getCurrentInstance().update("frmCaja");
+            //Mensaje de tantos libros agregados con exito
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Se agregaron " + totalResultados + " documentales");
+            FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+            RequestContext.getCurrentInstance().update("gMensaje");
+            //se muestra una lista con los errores si es que los hubieran
+
+            
+            //se muestra una lista con los libros que se subieron
 
         } catch (IOException ex) {
             Logger.getLogger(CajaBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -357,28 +237,377 @@ public class CajaBean {
         }
     }
 
-    public void grabarCaja() {
-        if (objCaja != null) {
-            String msg = cajaDao.insertarCaja(objCaja);
-            FacesMessage message = new FacesMessage("Correcto", msg);
-            FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+    public void leerFichasXML(int estado, String msgEstado, ControlField campo001, List campo017, List campo082, List campo100, List campo245, List campo250, List campo260, List campo300, List campo500, List campo504, List campo583, List campo852) {
+        System.out.println("*************************************************FICHA***********************************************************");
+        if (campo001 != null) {
+            documental.setMFN(campo001.getData().trim());
+            System.out.println("MFN = " + documental.getMFN().substring(1));
         } else {
-            FacesMessage message = new FacesMessage("Incorrecto", "Ingrese los datos de caja");
-            FacesContext.getCurrentInstance().addMessage("gMensaje", message);
+            System.out.print("MFN =");
+            System.out.println("--");
         }
+
+        if (!campo082.isEmpty()) {
+            for (int i = 0; i < campo082.size(); i++) {
+                DataField datox = (DataField) campo082.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 082 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            documental.setA082(data);
+                            System.out.print("Campo 082 : " + documental.getA082());
+                            break;
+                        case "2":
+                            documental.set082_2(data);
+                            System.out.print(" " + documental.get082_2());
+                            break;
+                    }
+                }
+            }
+        } else {
+            System.out.print("Campo 082 : ");
+            System.out.println("--");
+        }
+
+        if (!campo100.isEmpty()) {
+            Marc100 marc100 ;
+            for (int i = 0; i < campo100.size(); i++) {
+                marc100 = new Marc100();
+                DataField datox = (DataField) campo100.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 100 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc100.setA(data);
+                            System.out.print("Campo 100 : " + marc100.getA());
+                            break;
+                        case "d":
+                            marc100.setD(data);
+                            System.out.print(" " + marc100.getD());
+                            break;
+                    }
+                    listaMarc100.add(marc100);
+                }
+            }
+        } else {
+            System.out.print("Campo 100 : ");
+            System.out.println("--");
+        }
+
+        if (!campo245.isEmpty()) {
+            Marc245 marc245 ;
+            for (int i = 0; i < campo245.size(); i++) {
+                marc245 = new Marc245();
+                DataField datox = (DataField) campo245.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 245 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc245.setA(data);
+                            System.out.print("Campo 245 : " + marc245.getA());
+                            break;
+                        case "b":
+                            marc245.setB(data);
+                            System.out.print(" " + marc245.getB());
+                            break;
+                        case "c":
+                            marc245.setC(data);
+                            System.out.print(" " + marc245.getC());
+                            break;
+                    }
+                }
+                listaMarc245.add(marc245);
+            }
+        } else {
+            System.out.print("Campo 245 : ");
+            System.out.println("--");
+        }
+
+        if (!campo250.isEmpty()) {
+            Marc250 marc250 ;
+            for (int i = 0; i < campo250.size(); i++) {
+                marc250 = new Marc250();
+                DataField datox = (DataField) campo250.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 250 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc250.setA(data);
+                            System.out.print("Campo 250 : " + marc250.getA());
+                            break;
+                    }
+                }
+                listaMarc250.add(marc250);
+            }
+        } else {
+            System.out.print("Campo 250 : ");
+            System.out.println("--");
+        }
+
+        if (!campo260.isEmpty()) {
+            Marc260 marc260 ;
+            for (int i = 0; i < campo260.size(); i++) {
+                marc260 = new Marc260();
+                DataField datox = (DataField) campo260.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 260 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc260.setA(data);
+                            System.out.print("Campo 260 : " + marc260.getA());
+                            break;
+                        case "b":
+                            marc260.setB(data);
+                            System.out.print(" " + marc260.getB());
+                            break;
+                        case "c":
+                            marc260.setC(data);
+                            System.out.print(" " + marc260.getC());
+                            break;
+                    }
+                }
+                listaMarc260.add(marc260);
+            }
+        } else {
+            System.out.print("Campo 260 : ");
+            System.out.println("--");
+        }
+
+        if (!campo300.isEmpty()) {
+            Marc300 marc300 ;
+            for (int i = 0; i < campo300.size(); i++) {
+                marc300 = new Marc300();
+                DataField datox = (DataField) campo300.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 300 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc300.setA(data);
+                            System.out.print("Campo 300 : " + marc300.getA());
+                            break;
+                        case "b":
+                            marc300.setB(data);
+                            System.out.print(" " + marc300.getB());
+                            break;
+                        case "c":
+                            marc300.setC(data);
+                            System.out.print(" " + marc300.getC());
+                            break;
+                    }
+                }
+                listaMarc300.add(marc300);
+            }
+        } else {
+            System.out.print("Campo 300 : ");
+            System.out.println("--");
+        }
+
+        if (!campo500.isEmpty()) {
+            Marc500 marc500 ;
+            for (int i = 0; i < campo500.size(); i++) {
+                marc500 = new Marc500();
+                DataField datox = (DataField) campo500.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 500 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    marc500.setA(data);
+                    listaMarc500.add(marc500);
+                    if (code.equals("a")) {
+                        System.out.println(data);
+                    }
+                }
+            }
+        }
+
+        if (!campo504.isEmpty()) {
+            Marc504 marc504 ;
+            for (int i = 0; i < campo504.size(); i++) {
+                marc504 = new Marc504();
+                DataField datox = (DataField) campo504.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 504 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc504.setA(data.substring(2));
+                            System.out.print("Campo 504 : " + marc504.getA());
+                            break;
+                    }
+                }
+                listaMarc504.add(marc504);
+            }
+        } else {
+            System.out.print("Campo 504 : ");
+            System.out.println("--");
+        }
+
+        if (!campo017.isEmpty()) {
+            Marc017 marc017 ;
+            for (int i = 0; i < campo017.size(); i++) {
+                marc017 = new Marc017();
+                DataField datox = (DataField) campo017.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 017 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            marc017.setA(data);
+                            System.out.print("Campo 017 : D.L." + marc017.getA());
+                            break;
+                    }
+                }
+                listaMarc017.add(marc017);
+            }
+        } else {
+            System.out.print("Campo 017 : ");
+            System.out.println("--");
+        }
+
+        if (!campo583.isEmpty() && !campo852.isEmpty()) {
+            Ejemplar ejemplar;
+            if (campo583.size() < campo852.size()) {
+                estado = error;
+                msgEstado = "Ver ABSYSNET: en campo 583..Faltan " + (campo852.size() - campo583.size()) + " registros";
+            } else {
+                for (int i = 0; i < campo852.size(); i++) {
+                    ejemplar = new Ejemplar();
+                    DataField datoi = (DataField) campo852.get(i);
+                    List subcampoi = datoi.getSubfields();
+                    Iterator it = subcampoi.iterator();
+                    while (it.hasNext()) {
+                        Subfield subfield = (Subfield) it.next();
+                        String code = String.valueOf(subfield.getCode());
+                        String data = subfield.getData().trim();
+                        switch (code) {
+                            case "a":
+                                ejemplar.setA852(data);
+                                break;
+                            case "b":
+                                ejemplar.setB852(data);
+                                break;
+                            case "c":
+                                ejemplar.setC852(data);
+                                break;
+                            case "h":
+                                ejemplar.setH852(data);
+                                break;
+                            case "i":
+                                ejemplar.setI852(data);
+                                break;
+                            case "j":
+                                ejemplar.setJ852(data);
+                                break;
+                            case "p":
+                                ejemplar.setP852(data);
+                                break;
+                            case "q":
+                                ejemplar.setQ852(data);
+                                break;
+                            case "3":
+                                ejemplar.set852_3(data);
+                                break;
+                        }
+                    }
+                    datoi = (DataField) campo583.get(i);
+                    subcampoi = datoi.getSubfields();
+                    it = subcampoi.iterator();
+                    while (it.hasNext()) {
+                        Subfield subfield = (Subfield) it.next();
+                        String code = String.valueOf(subfield.getCode());
+                        String data = subfield.getData().trim();
+                        switch (code) {
+                            case "a":
+                                ejemplar.setA583(data);
+                                break;
+                            case "b":
+                                ejemplar.setB583(data);
+                                break;
+                            case "c":
+                                ejemplar.setC583(data);
+                                break;
+                            case "k":
+                                ejemplar.setK583(data);
+                                break;
+                            case "x":
+                                ejemplar.setX583(data);
+                                break;
+                        }
+                    }
+                    if (ejemplar.getA852().equals("BNP") && ejemplar.getC852().equals("Guillermo Lohmann Villena- Libros peruanos")) {
+                        listaEjemplar.add(ejemplar);
+                    }
+                }
+                System.out.println("hay " + listaEjemplar.size() + " registros que van a patrimonio de" + campo852.size() + " que ingresaron a la BNP");
+            }
+        } else {
+            System.out.print("Campo ejemplar : ");
+            System.out.println("--");
+        }
+        System.out.println("*********************************************FIN-FICHA***********************************************************");
+
     }
 
-    public String grabarFicha() {
-        String msgRespuesta = "";
-        return msgRespuesta;
+    public int grabarDocumental(int estado, String msgEstado, Documental documental, List<Marc017> marc017, List<Marc100> listaMarc100, List<Marc245> listaMarc245, List<Marc250> listaMarc250, List<Marc260> listaMarc260, List<Marc300> listaMarc300, List<Marc504> listaMarc504, List<Marc500> listaMarc500, List<Ejemplar> listaEjemplar) {
+        int respuesta = vacio;
+        if (estado == correcto) {
+            respuesta = documentalDao.insertarDocumental(documental, marc017, listaMarc100, listaMarc245, listaMarc250, listaMarc260, listaMarc300, listaMarc504, listaMarc500, listaEjemplar);
+        } else {
+            listaErrores.add(documental.getMFN() + " " + msgEstado);
+        }
+        return respuesta;
     }
+<<<<<<< HEAD
 
-    public ArrayList<BandejaDto> listarBandejaPatrimonioDto() {
-        ArrayList<BandejaDto> lst = new ArrayList<>();
-        lst = cajaDao.bandejaPattrimonio();
-        return lst;
-    }
-
+=======
+    
+    
+    
+    
+    
+    
+>>>>>>> aeb153103dbd613fc339f2d36cd34e508538411d
     public void redireccionar(String Id) {
 
         try {
