@@ -219,6 +219,48 @@ public class CajaDaoImpl implements CajaDao {
     }
 
     @Override
+
+    public int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO) {
+        int insert = 0;
+        Connection cn = cnSQL.getConnection();
+        try {
+            cn.setAutoCommit(false);
+            cs = cn.prepareCall("{CALL [PT].[SP_AREA_CAJA_ESTADO_Insertar](?,?,?,?)}");
+            cs.setInt(1, ace.getID_CAJA());
+            cs.setInt(2, ace.getID_AREA());
+            cs.setInt(3, ace.getID_ESTADO_PROCESO());
+            cs.setInt(4, ace.getID_USUARIO());
+            cs.executeQuery();
+
+            cs = cn.prepareCall("{CALL [PT].[SP_CAJA_DEPOSITO_UPDATE](?,?)}");
+            cs.setInt(1, ace.getID_CAJA());
+            cs.setInt(2, ace.getID_AREA());
+            cs.executeQuery();
+
+            cn.commit();
+            insert = 1;
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            if (cn != null) {
+                try {
+                    cn.rollback();
+                } catch (SQLException ex1) {
+                    System.out.println(ex1.getMessage());
+                }
+            }
+        } finally {
+            try {
+                cn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            return insert;
+        }
+
+    }
+
+    @Override
     public ArrayList<BandejaDto> bandejaDeposito() {
         ArrayList<BandejaDto> lstBandejaPatrimonio = new ArrayList<>();
         Connection cn = cnSQL.getConnection();

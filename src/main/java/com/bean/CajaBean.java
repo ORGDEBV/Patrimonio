@@ -701,10 +701,23 @@ public class CajaBean {
         }
         if (aux > 0) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Existen " + aux + " ejemplares sin validar."));
-        } else if (ID_DEPOSITO != -1) {
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Debe seleccionar un deposito."));
-        } else {
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja se valido correctamente."));
+        } else if (aux == 0) {
+            if (ID_DEPOSITO != -1) {
+                ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
+                AreaCajaEstado ace = new AreaCajaEstado();
+                ace.setID_CAJA(ID_CAJA);
+                ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
+                ace.setID_ESTADO_PROCESO(3);
+                ace.setID_USUARIO(Integer.parseInt(ex.getSessionMap().get("USUARIO_ID_USUARIO").toString()));
+                int insert = cajaDao.cajaDeposito(ace, ID_DEPOSITO);
+                if (insert == 1) {
+                    FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se proceso la caja con éxito."));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ERROR", "Ocurrió un error."));
+                }
+            } else {
+                FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Debe seleccionar un deposito."));
+            }
         }
         RequestContext.getCurrentInstance().update("gMensaje");
     }

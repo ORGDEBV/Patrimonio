@@ -132,13 +132,13 @@
         </h:form>
         <p:dialog id="dlgFicha" header="Modal Dialog" widgetVar="dlgFicha" modal="true" height="350px" width="60%"  showEffect="explode" hideEffect="bounce" resizable="false" closeOnEscape="true">
             <p:outputPanel id="pnlFicha" styleClass="TexAlLeft">
-                <p:panelGrid columns="1" styleClass="Wid100">
+                <p:outputPanel styleClass="Wid100">
                     <p:outputLabel value="#{cajaBean.fichaDocumental.m082a}"/>
                     <p:outputLabel value="#{cajaBean.fichaEjemplar.m852i}"/>
-                </p:panelGrid>
-                <p:panelGrid columns="1" styleClass="Wid70" style="margin-left: 17%;">
+                </p:outputPanel>
+                <p:outputPanel styleClass="Wid70" style="margin-left: 17%;">
                     <p:outputLabel value="#{cajaBean.fichaDocumental.m100a} #{cajaBean.fichaDocumental.m100d}"/>
-                    <p:outputLabel value="#{cajaBean.fichaDocumental.m245a} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m245c} -- #{cajaBean.fichaDocumental.m250a} -- #{cajaBean.fichaDocumental.m260a} #{cajaBean.fichaDocumental.m260b}, #{cajaBean.fichaDocumental.m260c} #{cajaBean.fichaDocumental.m300a} #{cajaBean.fichaDocumental.m300b} #{cajaBean.fichaDocumental.m300c}"/>
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m245a} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m250a} #{cajaBean.fichaDocumental.m260a} #{cajaBean.fichaDocumental.m260b}, #{cajaBean.fichaDocumental.m260c} #{cajaBean.fichaDocumental.m300a} #{cajaBean.fichaDocumental.m300b} #{cajaBean.fichaDocumental.m300c}"/>
                     <ui:repeat var="item" value="#{cajaBean.fichaDocumental.m500a}">
                         <p:outputLabel value="#{item}"/><br/>
                     </ui:repeat>
@@ -147,7 +147,7 @@
                     <p:outputLabel value="D.L. #{cajaBean.fichaDocumental.m017a}"/>
                     <p:outputLabel value="#{cajaBean.fichaEjemplar.m583b} #{cajaBean.fichaEjemplar.m583c}, #{cajaBean.fichaEjemplar.m583k} :"/> 
                     <p:outputLabel value="NI=#{cajaBean.fichaEjemplar.m852j} , #{cajaBean.fichaEjemplar.m852_3} , #{cajaBean.fichaEjemplar.m852c}"/>
-                </p:panelGrid>
+                </p:outputPanel>
             </p:outputPanel>
         </p:dialog>   
     </ui:define>
