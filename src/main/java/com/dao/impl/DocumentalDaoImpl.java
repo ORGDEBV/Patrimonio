@@ -19,8 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DocumentalDaoImpl implements DocumentalDao {
 
@@ -169,6 +167,7 @@ public class DocumentalDaoImpl implements DocumentalDao {
         Connection cn = cnSQL.getConnection();
         FichaDocumentalDto ficha = null;
         List<String> lM500a = new ArrayList<>();
+        List<String> lM017a = new ArrayList<>();
         try {
             cs = cn.prepareCall("{CALL PT.SP_FICHA_BUSCAR(?)}");
             cs.setInt(1, ID_DOCUMENTAL);
@@ -191,7 +190,8 @@ public class DocumentalDaoImpl implements DocumentalDao {
                 lM500a.add(rs.getString(14));
                 ficha.setM500a(lM500a);
                 ficha.setM504a(rs.getString(15));
-                ficha.setM017a(rs.getString(16));
+                lM017a.add(rs.getString(16));
+                ficha.setM017a(lM017a);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

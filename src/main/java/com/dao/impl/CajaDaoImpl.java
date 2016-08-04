@@ -77,11 +77,10 @@ public class CajaDaoImpl implements CajaDao {
                 bp.setID_CAJA(rs.getString(1));
                 bp.setCODIGO_MEMO(rs.getString(2));
                 bp.setNRO_CAJA(rs.getString(3));
-                bp.setCODIGO_LISTADO(rs.getString(4));
-                bp.setNRO_EJEMPLARES(rs.getString(5));
-                bp.setAREA(rs.getString(6));
-                bp.setSALA(rs.getString(7));
-                bp.setFECHA(rs.getString(8));
+                bp.setNRO_EJEMPLARES(rs.getString(4));
+                bp.setAREA(rs.getString(5));
+                bp.setSALA(rs.getString(6));
+                bp.setFECHA(rs.getString(7));
                 lstBandejaPatrimonio.add(bp);
             }
         } catch (SQLException e) {
@@ -111,11 +110,10 @@ public class CajaDaoImpl implements CajaDao {
                 dto.setID_CAJA(rs.getString(1));
                 dto.setCODIGO_MEMO(rs.getString(2));
                 dto.setNRO_CAJA(rs.getString(3));
-                dto.setCODIGO_LISTADO(rs.getString(4));
-                dto.setNRO_EJEMPLARES(rs.getString(5));
-                dto.setAREA(rs.getString(6));
-                dto.setSALA(rs.getString(7));
-                dto.setFECHA(rs.getString(8));
+                dto.setNRO_EJEMPLARES(rs.getString(4));
+                dto.setAREA(rs.getString(5));
+                dto.setSALA(rs.getString(6));
+                dto.setFECHA(rs.getString(7));
                 lCreado.add(dto);
             }
         } catch (SQLException e) {
@@ -171,7 +169,6 @@ public class CajaDaoImpl implements CajaDao {
                 caja.setNRO_CAJA(rs.getString(2));
                 caja.setSALA(rs.getString(3));
                 caja.setCODIGO_MEMO(rs.getString(4));
-                caja.setCODIGO_LISTADO(rs.getString(5));
             }
         } catch (SQLException e) {
             System.out.println("Error de consulta:" + e);

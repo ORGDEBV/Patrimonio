@@ -28,7 +28,7 @@ public class FichaDocumentalDto {
     private String M300c;
     private List<String> M500a;
     private String M504a;
-    private String M017a;
+    private List<String> M017a;
 
     public String getM082a() {
         return M082a;
@@ -150,11 +150,11 @@ public class FichaDocumentalDto {
         this.M504a = M504a;
     }
 
-    public String getM017a() {
+    public List<String> getM017a() {
         return M017a;
     }
 
-    public void setM017a(String M017a) {
+    public void setM017a(List<String> M017a) {
         this.M017a = M017a;
     }
 

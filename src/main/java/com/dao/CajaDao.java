@@ -13,18 +13,19 @@ public interface CajaDao {
     String[] insertarCaja(Caja objCaja);
 
     ArrayList<BandejaDto> bandejaPattrimonio();
-ArrayList<BandejaDto> bandejaDeposito();
+
+    ArrayList<BandejaDto> bandejaDeposito();
+
     ArrayList<BandejaDto> bandejaCreado();
-    
+
     public ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja);
 
     Caja buscarCaja(int ID_CAJA);
-    
+
     List<EjemplarDocumentalDto> listarCajaEjemplarDocumental(int ID_CAJA);
 
-
     int insertarAreaCajaEstado(AreaCajaEstado ace);
-    
+
     int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);
-    
+
 }
