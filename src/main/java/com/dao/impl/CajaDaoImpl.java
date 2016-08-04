@@ -2,6 +2,7 @@ package com.dao.impl;
 
 import com.dao.CajaDao;
 import com.dto.BandejaDto;
+import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
@@ -27,32 +28,35 @@ public class CajaDaoImpl implements CajaDao {
      */
     @Override
     public String[] insertarCaja(Caja objCaja) {
-        String[] arreglo = new String[3];
+        String[] arreglo = new String[5];
         Connection cn = cnSQL.getConnection();
         try {
-            String procedure = "{CALL [PT].[SP_CAJA_Insertar](?,?,?,?,?,?,?)}";
+            String procedure = "{CALL [PT].[SP_CAJA_Insertar](?,?)}";
             cs = cn.prepareCall(procedure);
-            cs.setString(1, objCaja.getNRO_CAJA());
-            cs.setString(2, objCaja.getCODIGO_MEMO());
-            cs.setInt(3, objCaja.getNRO_EJEMPLARES());
-            cs.setInt(4, objCaja.getID_DEPOSITO());
-            cs.setString(5, objCaja.getSALA());
-            cs.setString(6, objCaja.getCODIGO_MEMO());
-            cs.setInt(7, objCaja.getID_USUARIO());
+            //cs.setString(1, objCaja.getNRO_CAJA());
+            //cs.setString(2, objCaja.getCODIGO_MEMO());
+            //cs.setInt(3, objCaja.getNRO_EJEMPLARES());
+            //cs.setInt(1, objCaja.getID_DEPOSITO());
+            cs.setString(1, objCaja.getSALA());
+            //cs.setString(6, objCaja.getCODIGO_MEMO());
+            cs.setInt(2, objCaja.getID_USUARIO());            
             rs = cs.executeQuery();
             if (rs.next()) {
                 arreglo[0] = rs.getString(1);
                 arreglo[1] = rs.getString(2);
                 arreglo[2] = rs.getString(3);
+                arreglo[3] = rs.getString(4);
+                arreglo[4] = rs.getString(5);
+                
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR EN insertarCaja" + e.getMessage());
+            System.out.println("ERROR EN insertarCaja-->" + e.getMessage());
         } finally {
             try {
                 cn.close();
             } catch (SQLException ex) {
-                System.out.println("ERROR sql EN insertarCaja" + ex.getMessage());
+                System.out.println("ERROR sql EN insertarCaja-->" + ex.getMessage());
             }
         }
         return arreglo;
@@ -294,6 +298,34 @@ public class CajaDaoImpl implements CajaDao {
             }
         }
         return lstBandejaPatrimonio;
+    }
+    
+    //pasar id caja en ves de objCAja
+    @Override
+    public ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja){
+        ArrayList<VistaPreviaDto> previa = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        try {
+            VistaPreviaDto dto;
+            String procedure = "{CALL [PT].[SP_CAJA_ListarCajaPrevia](?)}";
+            cs = cn.prepareCall(procedure);
+            cs.setInt(1, objCaja.getID_USUARIO());
+            rs = cs.executeQuery();
+            int i = 1;
+            while (rs.next()) {                
+                dto = new VistaPreviaDto();
+                dto.setID(i);
+                dto.setMFN(rs.getString(2));
+                dto.setCANTIDAD_EJEMPLARES(rs.getString(3));
+                previa.add(dto);
+                i++;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error DAO - vistaPreviaCaja");
+        }
+        
+        return previa;
     }
 
 }

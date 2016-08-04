@@ -5,6 +5,7 @@ import com.dao.DocumentalDao;
 import com.dao.EjemplarDao;
 import com.dao.impl.DaoFactory;
 import com.dto.BandejaDto;
+import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.dto.FichaDocumentalDto;
 import com.dto.FichaEjemplarDto;
@@ -39,6 +40,7 @@ import javax.faces.context.FacesContext;
 
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
+import org.marc4j.MarcException;
 import org.marc4j.marc.ControlField;
 import org.marc4j.marc.DataField;
 import org.marc4j.marc.Record;
@@ -69,6 +71,7 @@ public class CajaBean {
     private Marc300 marc300;
     private Marc504 marc504;
     private Documental documental;
+    private List<Documental> listaDocumental;
     private List<Marc017> listaMarc017;
     private List<Marc100> listaMarc100;
     private List<Marc245> listaMarc245;
@@ -78,6 +81,7 @@ public class CajaBean {
     private List<Marc500> listaMarc500;
     private List<Marc504> listaMarc504;
     private List<Ejemplar> listaEjemplar;
+    private int SESION_ID_USUARIO = 0;
     private Caja objCaja = new Caja();
     private boolean renderInputFile = false;
     private boolean renderUploadFile = false;
@@ -92,12 +96,14 @@ public class CajaBean {
     private final boolean deshabilitado = false;
     private final boolean habilitado = true;
     ArrayList<String> listaErrores = new ArrayList<>();
+    ArrayList<VistaPreviaDto> listaVistaPreviaCaja = new ArrayList<>();
 
     //lista para bandeja registro
     private ArrayList<Object[]> lstFilter = new ArrayList<>();
     private List<BandejaDto> lbandejacreado;
 
     public CajaBean() {
+        SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
         DaoFactory factory = DaoFactory.getInstance();
         cajaDao = factory.getCajaDao(CAJA);
         documentalDao = factory.getDocumentalDao(DOCUMENTAL);
@@ -164,16 +170,27 @@ public class CajaBean {
         this.lstFilter = lstFilter;
     }
 
+
+    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {
+        return listaVistaPreviaCaja;
+    }
+
+    public void setListaVistaPreviaCaja(ArrayList<VistaPreviaDto> listaVistaPreviaCaja) {
+        this.listaVistaPreviaCaja = listaVistaPreviaCaja;
+    }
+
+
     public void grabarCaja() {
         if (objCaja != null) {
             String resp = "No se creo la caja.";
-            int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
-            objCaja.setID_USUARIO(ID_USUARIO);
+            objCaja.setID_USUARIO(SESION_ID_USUARIO);
             String[] msg = cajaDao.insertarCaja(objCaja);
-            //int msg = 1;
+
             if (Integer.parseInt(msg[0]) == correcto) {
                 resp = msg[1];
                 idCaja = msg[2];
+                objCaja.setCODIGO_MEMO(msg[3].toUpperCase());
+                objCaja.setNRO_CAJA(msg[4]);
                 renderMensajeIncrustado = deshabilitado;
                 RequestContext.getCurrentInstance().update("frmCaja:msgLista");
                 renderUploadFile = habilitado;
@@ -194,13 +211,15 @@ public class CajaBean {
         }
     }
 
-    public void handleFileUpload(FileUploadEvent event) throws FileNotFoundException {
+    public void handleFileUpload(FileUploadEvent event) {
         InputStream in = null;
+        MarcReader reader = null;
         int totalResultados = vacio;
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
             in = archivo.getInputstream();
-            MarcReader reader = new MarcXmlReader(in);
+            reader = new MarcXmlReader(in);
+
             while (reader.hasNext()) {
                 Record record = reader.next();
                 int estado = correcto;
@@ -221,6 +240,7 @@ public class CajaBean {
 
                 documental = new Documental();
                 documental.setID_CAJA(Integer.parseInt(idCaja));
+                listaDocumental = new ArrayList<>();
                 listaMarc017 = new ArrayList<>();
                 listaMarc100 = new ArrayList<>();
                 listaMarc245 = new ArrayList<>();
@@ -237,8 +257,12 @@ public class CajaBean {
                 totalResultados += resultado;
 
             }
+            //SE CONSULTA LA BASE DE DATOS PARA EL PREVIEW
+            listaVistaPreviaCaja = cajaDao.vistaPreviaCaja(objCaja);
+            objCaja.setNRO_EJEMPLARES(totalResultados);
             //una ves que se insertan los ejemplares se deshabilita el upload
             renderUploadFile = deshabilitado;
+            renderTabla = habilitado;
             RequestContext.getCurrentInstance().update("frmCaja");
             //Mensaje de tantos libros agregados con exito
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Se agregaron " + totalResultados + " documentales");
@@ -248,13 +272,14 @@ public class CajaBean {
 
             //se muestra una lista con los libros que se subieron
         } catch (IOException ex) {
-            Logger.getLogger(CajaBean.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error" + ex);
         } finally {
             try {
                 in.close();
             } catch (IOException ex) {
-                Logger.getLogger(CajaBean.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("ERROR ** IOException ex ** " + ex);
             }
+
         }
     }
 
