@@ -18,7 +18,6 @@ public class CajaDaoImpl implements CajaDao {
     CallableStatement cs = null;
     ResultSet rs = null;
 
-
     /**
      *
      * Crea un nuevo registro de una caja
@@ -163,7 +162,7 @@ public class CajaDaoImpl implements CajaDao {
             cs = cn.prepareCall("{CALL [PT].[SP_CAJA_BUSCAR](?)}");
             cs.setInt(1, ID_CAJA);
             rs = cs.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 caja.setID_CAJA(ID_CAJA);
                 caja.setNRO_CAJA(rs.getString(2));
                 caja.setSALA(rs.getString(3));
@@ -199,6 +198,11 @@ public class CajaDaoImpl implements CajaDao {
                 ed.setCODIGO_BARRAS(rs.getString(2));
                 ed.setMFN(rs.getString(3));
                 ed.setID_DOCUMENTAL(rs.getInt(4));
+                if (rs.getInt(5) == 1) {
+                    ed.setCLASS_VALIDADO("GreenBack");
+                } else if (rs.getInt(5) == 0) {
+                    ed.setCLASS_VALIDADO("RedBack");
+                }
                 lEjeDocDto.add(ed);
                 aux++;
             }
