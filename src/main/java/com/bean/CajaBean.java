@@ -4,6 +4,7 @@ import com.dao.CajaDao;
 import com.dao.DocumentalDao;
 import com.dao.impl.DaoFactory;
 import com.dto.BandejaDto;
+import com.dto.VistaPreviaDto;
 import com.entidad.Caja;
 import com.entidad.Documental;
 import com.entidad.Ejemplar;
@@ -32,6 +33,7 @@ import javax.faces.context.FacesContext;
 
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
+import org.marc4j.MarcException;
 import org.marc4j.marc.ControlField;
 import org.marc4j.marc.DataField;
 import org.marc4j.marc.Record;
@@ -47,6 +49,7 @@ public class CajaBean {
     private final CajaDao cajaDao;
     private final DocumentalDao documentalDao;
     private Documental documental;
+    private List<Documental> listaDocumental;
     private List<Marc017> listaMarc017;
     private List<Marc100> listaMarc100;
     private List<Marc245> listaMarc245;
@@ -56,6 +59,7 @@ public class CajaBean {
     private List<Marc500> listaMarc500;
     private List<Marc504> listaMarc504;
     private List<Ejemplar> listaEjemplar;
+    private int SESION_ID_USUARIO = 0;
     private Caja objCaja = new Caja();
     private boolean renderUploadFile = false;
     private boolean renderMensajeIncrustado = true;
@@ -69,12 +73,14 @@ public class CajaBean {
     private final boolean deshabilitado = false;
     private final boolean habilitado = true;
     ArrayList<String> listaErrores = new ArrayList<>();
+    ArrayList<VistaPreviaDto> listaVistaPreviaCaja = new ArrayList<>();
 
     //lista para bandeja registro
     ArrayList<Object[]> lstFilter = new ArrayList<>();
     private List<BandejaDto> lbandejacreado;
 
     public CajaBean() {
+        SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
         DaoFactory factory = DaoFactory.getInstance();
         cajaDao = factory.getCajaDao(CAJA);
         documentalDao = factory.getDocumentalDao(DOCUMENTAL);
@@ -137,16 +143,25 @@ public class CajaBean {
         this.lstFilter = lstFilter;
     }
 
-   public void grabarCaja() {
+    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {
+        return listaVistaPreviaCaja;
+    }
+
+    public void setListaVistaPreviaCaja(ArrayList<VistaPreviaDto> listaVistaPreviaCaja) {
+        this.listaVistaPreviaCaja = listaVistaPreviaCaja;
+    }
+
+    public void grabarCaja() {
         if (objCaja != null) {
             String resp = "No se creo la caja.";
-            int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
-            objCaja.setID_USUARIO(ID_USUARIO);
+            objCaja.setID_USUARIO(SESION_ID_USUARIO);
             String[] msg = cajaDao.insertarCaja(objCaja);
-            //int msg = 1;
+
             if (Integer.parseInt(msg[0]) == correcto) {
                 resp = msg[1];
                 idCaja = msg[2];
+                objCaja.setCODIGO_MEMO(msg[3].toUpperCase());
+                objCaja.setNRO_CAJA(msg[4]);
                 renderMensajeIncrustado = deshabilitado;
                 RequestContext.getCurrentInstance().update("frmCaja:msgLista");
                 renderUploadFile = habilitado;
@@ -167,13 +182,15 @@ public class CajaBean {
         }
     }
 
-    public void handleFileUpload(FileUploadEvent event) throws FileNotFoundException {
+    public void handleFileUpload(FileUploadEvent event) {
         InputStream in = null;
+        MarcReader reader = null;
         int totalResultados = vacio;
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
             in = archivo.getInputstream();
-            MarcReader reader = new MarcXmlReader(in);
+            reader = new MarcXmlReader(in);
+
             while (reader.hasNext()) {
                 Record record = reader.next();
                 int estado = correcto;
@@ -194,6 +211,7 @@ public class CajaBean {
 
                 documental = new Documental();
                 documental.setID_CAJA(Integer.parseInt(idCaja));
+                listaDocumental = new ArrayList<>();
                 listaMarc017 = new ArrayList<>();
                 listaMarc100 = new ArrayList<>();
                 listaMarc245 = new ArrayList<>();
@@ -210,26 +228,29 @@ public class CajaBean {
                 totalResultados += resultado;
 
             }
+            //SE CONSULTA LA BASE DE DATOS PARA EL PREVIEW
+            listaVistaPreviaCaja = cajaDao.vistaPreviaCaja(objCaja);
+            objCaja.setNRO_EJEMPLARES(totalResultados);
             //una ves que se insertan los ejemplares se deshabilita el upload
             renderUploadFile = deshabilitado;
+            renderTabla = habilitado;
             RequestContext.getCurrentInstance().update("frmCaja");
             //Mensaje de tantos libros agregados con exito
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Se agregaron " + totalResultados + " documentales");
             FacesContext.getCurrentInstance().addMessage("gMensaje", message);
             RequestContext.getCurrentInstance().update("gMensaje");
             //se muestra una lista con los errores si es que los hubieran
-
-            
             //se muestra una lista con los libros que se subieron
 
         } catch (IOException ex) {
-            Logger.getLogger(CajaBean.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error" + ex);
         } finally {
             try {
                 in.close();
             } catch (IOException ex) {
-                Logger.getLogger(CajaBean.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("ERROR ** IOException ex ** " + ex);
             }
+
         }
     }
 
@@ -271,7 +292,7 @@ public class CajaBean {
         }
 
         if (!campo100.isEmpty()) {
-            Marc100 marc100 ;
+            Marc100 marc100;
             for (int i = 0; i < campo100.size(); i++) {
                 marc100 = new Marc100();
                 DataField datox = (DataField) campo100.get(i);
@@ -301,7 +322,7 @@ public class CajaBean {
         }
 
         if (!campo245.isEmpty()) {
-            Marc245 marc245 ;
+            Marc245 marc245;
             for (int i = 0; i < campo245.size(); i++) {
                 marc245 = new Marc245();
                 DataField datox = (DataField) campo245.get(i);
@@ -335,7 +356,7 @@ public class CajaBean {
         }
 
         if (!campo250.isEmpty()) {
-            Marc250 marc250 ;
+            Marc250 marc250;
             for (int i = 0; i < campo250.size(); i++) {
                 marc250 = new Marc250();
                 DataField datox = (DataField) campo250.get(i);
@@ -361,7 +382,7 @@ public class CajaBean {
         }
 
         if (!campo260.isEmpty()) {
-            Marc260 marc260 ;
+            Marc260 marc260;
             for (int i = 0; i < campo260.size(); i++) {
                 marc260 = new Marc260();
                 DataField datox = (DataField) campo260.get(i);
@@ -395,7 +416,7 @@ public class CajaBean {
         }
 
         if (!campo300.isEmpty()) {
-            Marc300 marc300 ;
+            Marc300 marc300;
             for (int i = 0; i < campo300.size(); i++) {
                 marc300 = new Marc300();
                 DataField datox = (DataField) campo300.get(i);
@@ -429,7 +450,7 @@ public class CajaBean {
         }
 
         if (!campo500.isEmpty()) {
-            Marc500 marc500 ;
+            Marc500 marc500;
             for (int i = 0; i < campo500.size(); i++) {
                 marc500 = new Marc500();
                 DataField datox = (DataField) campo500.get(i);
@@ -450,7 +471,7 @@ public class CajaBean {
         }
 
         if (!campo504.isEmpty()) {
-            Marc504 marc504 ;
+            Marc504 marc504;
             for (int i = 0; i < campo504.size(); i++) {
                 marc504 = new Marc504();
                 DataField datox = (DataField) campo504.get(i);
@@ -476,7 +497,7 @@ public class CajaBean {
         }
 
         if (!campo017.isEmpty()) {
-            Marc017 marc017 ;
+            Marc017 marc017;
             for (int i = 0; i < campo017.size(); i++) {
                 marc017 = new Marc017();
                 DataField datox = (DataField) campo017.get(i);
@@ -594,12 +615,7 @@ public class CajaBean {
         }
         return respuesta;
     }
-    
-    
-    
-    
-    
-    
+
     public void redireccionar(String Id) {
 
         try {
