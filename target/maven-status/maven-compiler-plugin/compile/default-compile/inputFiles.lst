@@ -1,5 +1,6 @@
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\PerfilMenu.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\validator\EmailValidator.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\DepositoDaoImpl.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\UsuarioInterface.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\MenuDaoImpl.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\AreaDaoImpl.java
@@ -7,6 +8,7 @@ C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Documental.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\PerfilDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Marc260.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dto\EjemplarDocumentalDto.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\util\Constantes.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\CajaBean.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Marc500.java
@@ -22,14 +24,18 @@ C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\UsuarioDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dto\BandejaDto.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Marc250.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\DepositoDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\MenuPersonalizadoDaoImpl.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\PruebaBean.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\EjemplarDao.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dto\FichaEjemplarDto.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\AreaDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\AreaBean.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\PerfilBean.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Area.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\DocumentalDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\DocumentalDaoImpl.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\DepositoBean.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\MenuPersonalizadoDao.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Ejemplar.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\PersonalDaoImpl.java
@@ -37,8 +43,10 @@ C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Personal.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Marc017.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\bean\PersonalBean.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dto\FichaDocumentalDto.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Menu.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Perfil.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\EjemplarDaoImpl.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\AreaCajaEstado.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\MenuPersonalizado.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\UsuarioDaoImpl.java
@@ -46,5 +54,6 @@ C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Caja.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Marc504.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\PersonalDao.java
+C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\entidad\Deposito.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\impl\DaoFactory.java
 C:\REPOSITORIO_LOCAL\Patrimonio\VERSION_PATRIMONIO\Patrimonio\src\main\java\com\dao\CajaDao.java

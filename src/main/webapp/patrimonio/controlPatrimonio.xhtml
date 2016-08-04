@@ -6,8 +6,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <f:metadata>
+        <f:viewParam name="ID_CAJA" value="#{cajaBean.ID_CAJA}" />
+        <f:viewAction action="#{cajaBean.detalleCaja()}"/>
+    </f:metadata>
+
     <ui:define name="content">
-          <style>
+
+        <style>
 
             .ui-panelgrid .ui-panelgrid-cell {
                 border-width: 0px;
@@ -18,100 +24,131 @@
                 text-align: left;
             }
 
+            .ui-selectonemenu, .ui-selectcheckboxmenu{
+                padding: 0px 0px 0px 0px !important;
+            }
+            .ui-button.ui-state-focus{
+                background-color: none !important;
+            }
+            .ui-button.ui-state-hover, .ui-buttonset .ui-state-hover{
+                background-color: none !important;
+            }
         </style>
-               <h:form id="frmControlPatrimonio">
-            <p:panel id="pnlCaja" header="..:: CONTROL ::..">
-              
-            <p:panelGrid styleClass="Wid100">
-                <p:row styleClass="Wid100">
+
+        <h:form id="frmControlPatrimonio">
+            <p:panel id="pnlCaja" header="..:: CONTROL CAJA ::..">
+                <p:panelGrid styleClass="Wid100">
+                    <p:row styleClass="Wid100">
                         <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtId" value="ID :"/>                                    
+                            <p:outputLabel for="txtId" value="ID_CAJA:"/>                                    
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:inputText id="txtId"  value="#" styleClass="Wid100 txtId"/>
+                            <p:inputText id="txtId"  value="#{cajaBean.objCaja.ID_CAJA}" styleClass="Wid100 txtId" readonly="true"/>
                         </p:column>
-                       <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtMemo" value="MEMO :"/>                                    
-                        </p:column>
-                        <p:column styleClass="Wid35">
-                            <p:inputText id="txtMemo"  value="#" styleClass="Wid100 txtMemo"/>
-                        </p:column>
-                 </p:row>
-                  <p:row styleClass="Wid100">
                         <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtNroCaja" value="NRO.CAJA :"/>                                    
+                            <p:outputLabel for="txtMemo" value="MEMO:"/>                                    
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:inputText id="txtNroCaja" value="#" styleClass="Wid100 txtNroCaja"/>
-                        </p:column>
-                       <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtCodLista" value="COD.LISTA :"/>                                    
+                            <p:inputText id="txtMemo"  value="#{cajaBean.objCaja.CODIGO_MEMO}" styleClass="Wid100 txtMemo" readonly="true"/>
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:inputText id="txtCodLista"  value="#" styleClass="Wid100 txtCodLista"/>
+                            <p:commandButton value="Validar Caja" styleClass="Wid100" actionListener="#{cajaBean.validaCaja()}"></p:commandButton>
                         </p:column>
-                 </p:row>
-                <p:row styleClass="Wid100">
+                    </p:row>
+                    <p:row styleClass="Wid100">
                         <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtSala" value="SALA :"/>                                    
+                            <p:outputLabel for="txtNroCaja" value="NRO. CAJA:"/>                                    
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:inputText id="txtSala"  value="#" styleClass="Wid100 txtNroCaja"/>
+                            <p:inputText id="txtNroCaja" value="#{cajaBean.objCaja.NRO_CAJA}" styleClass="Wid100 txtNroCaja" readonly="true"/>
                         </p:column>
-                       <p:column styleClass="Wid15">
-                            <p:outputLabel for="txtDeposito" value="DEPOSITO :"/>                                    
+                        <p:column styleClass="Wid15">
+                            <p:outputLabel for="txtCodLista" value="COD. LISTA:"/>                                    
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:inputText id="txtDeposito" value="#" styleClass="Wid100 txtCodLista"/>
+                            <p:inputText id="txtCodLista"  value="#{cajaBean.objCaja.CODIGO_LISTADO}" styleClass="Wid100 txtCodLista" readonly="true"/>
                         </p:column>
-                 </p:row>
-                
-            </p:panelGrid>  
+                        <p:column styleClass="Wid35">
+                            
+                        </p:column>
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid15">
+                            <p:outputLabel for="txtSala" value="SALA:"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid35">
+                            <p:inputText id="txtSala"  value="#{cajaBean.objCaja.SALA}" styleClass="Wid100 txtNroCaja" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid15">
+                            <p:outputLabel for="txtDeposito" value="DEPOSITO:"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid35">
+                            <p:selectOneMenu id="txtDeposito" styleClass="Wid100Imp txtCodLista" value="#{cajaBean.ID_DEPOSITO}">
+                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column styleClass="Wid35">
+                            
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>  
             </p:panel>
-                   <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaPatrimonioDto()}"
-                         paginator="true" paginatorPosition="buton" widgetVar="tblcaja"
-                         resizableColumns="false"
-                         resizeMode="false"
+            <p:dataTable id="tblcaja" 
+                         var="c" 
+                         value="#{cajaBean.lejedocdto}"
+                         widgetVar="tblcaja"
+                         style="margin-top:20px;"
                          tableStyle="width:auto;min-width:100%"
-                         rows="15"
-                        
                          >
-                                             
-                <p:column headerText="EDITAR" style="text-align: center;">
-                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa fa-fw fa-edit">
-                        
-                    </p:commandButton>
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en todos los campos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column headerText="APROBAR" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.validaEjemplar(c.ID_EJEMPLAR)}" icon="fa fa-check-square-o" styleClass="#{c.CLASS_VALIDADO}"></p:commandButton>
                 </p:column>
-                       <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" rendered="false" headerText="ID"  style="text-align: center;">
-                           <h:outputText value="#{c.ID_CAJA}"/>
+                <p:column headerText="DESCRIPCIÓN" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.infoEjemplar(c.ID_DOCUMENTAL,c.ID_EJEMPLAR)}" icon="fa fa-file-text-o" onclick="PF('dlgFicha').show();"></p:commandButton>
                 </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}" rendered="true" headerText="COD_MEMO"  style="text-align: center;">
-                           <h:outputText value="#{c.CODIGO_MEMO}"/>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_DOCUMENTAL}" headerText="ID_DOCUMENTAL" rendered="false"  style="text-align: center;">
+                    <h:outputText value="#{c.ID_DOCUMENTAL}"/>
                 </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="NRO. CAJA"  style="text-align: center;">
-                           <h:outputText value="#{c.NRO_CAJA}"/>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_EJEMPLAR}" headerText="ID_EJEMPLAR" rendered="false"  style="text-align: center;">
+                    <h:outputText value="#{c.ID_EJEMPLAR}"/>
                 </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.CODIGO_LISTADO}" headerText="COD_LISTADO"  style="text-align: center;">
-                           <h:outputText value="#{c.CODIGO_LISTADO}"/>
+                <p:column filterStyle="display:none"  filterBy="#{c.NRO_EJEMPLAR}" headerText="NRO_EJEMPLAR"  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_EJEMPLAR}"/>
                 </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="NRO. EJEMPLARES"  style="text-align: center;">
-                           <h:outputText value="#{c.NRO_EJEMPLARES}"/>
+                <p:column filterStyle="display:none" filterBy="#{c.MFN}" headerText="MFN"  style="text-align: center;">
+                    <h:outputText value="#{c.MFN}"/>
                 </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE"  style="text-align: center;">
-                           <h:outputText value="#{c.AREA}"/>
-                </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA"  style="text-align: center;">
-                           <h:outputText value="#{c.SALA}"/>
-                </p:column>
-                       <p:column filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA"  style="text-align: center;">
-                           <h:outputText value="#{c.FECHA}"/>
+                <p:column filterStyle="display:none" filterBy="#{c.CODIGO_BARRAS}" headerText="CODIGO_BARRAS"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_BARRAS}"/>
                 </p:column>
             </p:dataTable>
-           
-          
-            
         </h:form>
-        
+        <p:dialog id="dlgFicha" header="Modal Dialog" widgetVar="dlgFicha" modal="true" height="350px" width="60%"  showEffect="explode" hideEffect="bounce" resizable="false" closeOnEscape="true">
+            <p:outputPanel id="pnlFicha" styleClass="TexAlLeft">
+                <p:outputPanel styleClass="Wid100">
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m082a}"/>
+                    <p:outputLabel value="#{cajaBean.fichaEjemplar.m852i}"/>
+                </p:outputPanel>
+                <p:outputPanel styleClass="Wid70" style="margin-left: 17%;">
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m100a} #{cajaBean.fichaDocumental.m100d}"/>
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m245a} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m250a} #{cajaBean.fichaDocumental.m260a} #{cajaBean.fichaDocumental.m260b}, #{cajaBean.fichaDocumental.m260c} #{cajaBean.fichaDocumental.m300a} #{cajaBean.fichaDocumental.m300b} #{cajaBean.fichaDocumental.m300c}"/>
+                    <ui:repeat var="item" value="#{cajaBean.fichaDocumental.m500a}">
+                        <p:outputLabel value="#{item}"/><br/>
+                    </ui:repeat>
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m504a}"/>
+                    <br/>
+                    <p:outputLabel value="D.L. #{cajaBean.fichaDocumental.m017a}"/>
+                    <p:outputLabel value="#{cajaBean.fichaEjemplar.m583b} #{cajaBean.fichaEjemplar.m583c}, #{cajaBean.fichaEjemplar.m583k} :"/> 
+                    <p:outputLabel value="NI=#{cajaBean.fichaEjemplar.m852j} , #{cajaBean.fichaEjemplar.m852_3} , #{cajaBean.fichaEjemplar.m852c}"/>
+                </p:outputPanel>
+            </p:outputPanel>
+        </p:dialog>   
     </ui:define>
-
 </ui:composition>

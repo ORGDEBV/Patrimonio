@@ -24,7 +24,7 @@
         <title>DEPDB-BNP</title>
     </h:head>
     <h:body styleClass="BlueBody">
-        
+
         <f:event listener="#{usuarioBean.validaLogIn}" type="preRenderView"/>
         <p:growl id="gMensaje" for="gMensaje" showDetail="true" life="700000" widgetVar="gMensaje" escape="true" />
         <div id="layout-topbar">
@@ -134,6 +134,16 @@
                         </div>
                     </div>
                 </div>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog style="background:none;" 
+                          widgetVar="statusDialog" 
+                          modal="true" 
+                          draggable="false" 
+                          closable="false" 
+                          resizable="false" 
+                          showHeader="false">
+                    <p:graphicImage name="primefaces-tema/outputpanel/images/loading.gif" />
+                </p:dialog>
             </div>
         </div>
     </h:body>

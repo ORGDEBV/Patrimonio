@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.dto.FichaDocumentalDto;
 import com.entidad.Documental;
 import com.entidad.Ejemplar;
 import com.entidad.Marc017;
@@ -16,5 +17,5 @@ public interface DocumentalDao {
     
    int insertarDocumental(Documental documental, List<Marc017> marc017, List<Marc100> listaMarc100, List<Marc245> listaMarc245, List<Marc250> listaMarc250, List<Marc260> listaMarc260, List<Marc300> listaMarc300, List<Marc504> listaMarc504, List<Marc500> listaMarc500, List<Ejemplar> listaEjemplar);
 
-    
+    FichaDocumentalDto buscarFichaDocumental(int ID_DOCUMENTAL);
 }

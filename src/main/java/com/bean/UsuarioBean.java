@@ -67,6 +67,7 @@ public class UsuarioBean implements Serializable {
                     ex.getSessionMap().put("PERSONAL_PATERNO", personal.getPATERNO());
                     ex.getSessionMap().put("PERSONAL_MATERNO", personal.getMATERNO());
                     ex.getSessionMap().put("PERSONAL_CARGO", personal.getCARGO());
+                    ex.getSessionMap().put("PERSONAL_ID_AREA", personal.getID_AREA());
                     ex.redirect("/Patrimonio/depdb/inicio.xhtml");
                 }
             } else {
