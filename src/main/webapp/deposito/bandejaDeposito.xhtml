@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+       <h:form id="frmCaja">
+           
+           <p:panelGrid columns="3" styleClass="Wid100">
+                        <p:column>
+                            <p:outputLabel value="DEPOSITO"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cboDeposito" filter="true" styleClass="Wid100Imp txtCodLista" value="#{cajaBean.ID_DEPOSITO}" widgetVar="cboDeposito">
+                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
+                            </p:selectOneMenu>
+                            
+                           
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="OK" actionListener="#{cajaBean.actualizarBandejaDeposito()}" update="frmCaja" icon="fa fa-edit" iconPos="left">
+                             </p:commandButton>
+
+                        </p:column>
+                    </p:panelGrid>
+
+           <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaDepositoDto()}"
+                         widgetVar="tblcaja"
+                         scrollable="true" 
+                         scrollHeight="100%" 
+                         scrollWidth="100%"
+                         style="height: 100%;max-height: 400px;"
+                         tableStyle="width:auto;">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en todos los campos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column width="5%" headerText="PROC." style="text-align: center;" >
+                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa  fa-cogs">
+
+                    </p:commandButton>
+                </p:column>
+               <p:column width="5%" filterStyle="display:none"  filterBy="#{c.DEPOSITO}" rendered="true" headerText="DEPOSIRO"  style="text-align: center;">
+                    <h:outputText value="#{c.DEPOSITO}"/>
+                </p:column>
+                <p:column width="30%" filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}" rendered="true" headerText="COD_MEMO"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_MEMO}"/>
+                </p:column>
+                <p:column  width="5%" filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="#CAJA"  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_CAJA}"/>
+                </p:column>
+                <p:column  width="10%" filterStyle="display:none" filterBy="#{c.CODIGO_LISTADO}" headerText="COD_LISTADO"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_LISTADO}"/>
+                </p:column>
+                <p:column width="5%" filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="# EJEM."  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_EJEMPLARES}"/>
+                </p:column>
+                <p:column width="20%" filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE"  style="text-align: center;">
+                    <h:outputText value="#{c.AREA}"/>
+                </p:column>
+                <p:column width="20%" filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA"  style="text-align: center;">
+                    <h:outputText value="#{c.SALA}"/>
+                </p:column>
+                <p:column width="10%" filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA"  style="text-align: center;">
+                    <h:outputText value="#{c.FECHA}"/>
+                </p:column>
+            </p:dataTable>
+
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -22,6 +22,7 @@ com\entidad\Ejemplar.class
 com\dao\PerfilDao.class
 com\dao\impl\CajaDaoImpl.class
 com\util\Constantes.class
+com\dto\VistaPreviaDto.class
 com\dao\impl\DocumentalDaoImpl.class
 com\dao\impl\DepositoDaoImpl.class
 com\entidad\Marc017.class

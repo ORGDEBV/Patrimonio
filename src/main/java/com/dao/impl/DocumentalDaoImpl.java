@@ -39,13 +39,13 @@ public class DocumentalDaoImpl implements DocumentalDao {
             cs.setInt(1, documental.getID_CAJA());
             cs.setString(2, documental.getMFN());
             cs.setString(3, documental.getA082());
-            cs.setString(4, documental.get082_2());
+            cs.setString(4, documental.get082_2());            
             rs = cs.executeQuery();
             if (rs.next()) {
                 respuestaSQL[0] = rs.getString(1);
                 respuestaSQL[1] = rs.getString(2);
                 respuestaSQL[2] = rs.getString(3);
-            }
+            }            
             documental.setID_DOCUMENTAL(Integer.parseInt(respuestaSQL[2]));
             
             String procedure2 = "{CALL [PT].[SP_MARC017_Insertar] (?,?)}";
@@ -112,7 +112,7 @@ public class DocumentalDaoImpl implements DocumentalDao {
                 cs.executeQuery();
             }
             
-            String procedure9 = "{CALL [PT].[SP_MARC504_Insertar] (?,?,?,?,?)}";
+            String procedure9 = "{CALL [PT].[SP_MARC504_Insertar] (?,?)}";
             cs = cn.prepareCall(procedure9);
             for(Marc504 m504:listaMarc504){
                 cs.setString(1, m504.getA());
@@ -123,7 +123,7 @@ public class DocumentalDaoImpl implements DocumentalDao {
             String procedure10 = "{CALL [PT].[SP_EJEMPLAR_Insertar] (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
             cs = cn.prepareCall(procedure10);
             for(Ejemplar ejem:listaEjemplar){
-                cs.setString(1, ejem.getC583());
+                cs.setString(1, ejem.getA583());
                 cs.setString(2, ejem.getB583());
                 cs.setString(3, ejem.getC583());
                 cs.setString(4, ejem.getK583());
