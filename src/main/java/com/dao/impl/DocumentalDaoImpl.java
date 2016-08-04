@@ -144,19 +144,19 @@ public class DocumentalDaoImpl implements DocumentalDao {
             cn.commit();
             respuesta = 1;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             if (cn != null) {
                 try {
                     cn.rollback();
                 } catch (SQLException ex1) {
-                    ex1.printStackTrace();
+                    System.out.println(ex1.getMessage());
                 }
             }
         } finally {
             try {
                 cn.setAutoCommit(true);
             } catch (SQLException ex) {
-                Logger.getLogger(DocumentalDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
             return respuesta;
         }
