@@ -27,5 +27,11 @@ public interface CajaDao {
     int insertarAreaCajaEstado(AreaCajaEstado ace);
 
     int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);
+    
+    ArrayList<BandejaDto> bandejaValidado();
+    
+    ArrayList<BandejaDto> bandejaPorAlmacenar(int ID_USUARIO);
+    
+    ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO);
 
 }

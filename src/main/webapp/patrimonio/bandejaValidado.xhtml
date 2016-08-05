@@ -7,52 +7,49 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="frmCaja">
-            <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaDepositoDto()}"
+        <h:form id="frmCajaValidado">
+            <p:dataTable id="tblcaja" 
+                         var="c" 
+                         value="#{cajaBean.lbandejavalidado}"
                          widgetVar="tblcaja"
-                         scrollable="true" 
-                         scrollHeight="100%" 
+                         scrollable="true"
                          scrollWidth="100%"
+                         scrollHeight="100%"
                          style="height: 100%;max-height: 400px;"
-                         tableStyle="width:auto;">
+                         styleClass="width:auto;">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar en todos los campos:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  
+                                     style="width:30%;margin-left:30px;border-radius:18px;" 
+                                     placeholder="Escriba palabra clave"/>
                     </p:outputPanel>
                 </f:facet>
-                <p:column width="5%" headerText="PROC." style="text-align: center;" >
-                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa  fa-cogs">
-
-                    </p:commandButton>
+                <p:column headerText="PROCESAR" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.enviarDeposito(c.ID_CAJA)}" icon="fa fa-cogs"></p:commandButton>
                 </p:column>
-                <p:column width="5%" filterStyle="display:none"  filterBy="#{c.DEPOSITO}" rendered="true" headerText="DEPOSIRO"  style="text-align: center;">
-                    <h:outputText value="#{c.DEPOSITO}"/>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;">
+                    <h:outputText value="#{c.ID_CAJA}"/>
                 </p:column>
-                <p:column width="30%" filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}" rendered="true" headerText="COD_MEMO"  style="text-align: center;">
+                <p:column filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}"  headerText="COD_MEMO" style="text-align: center;">
                     <h:outputText value="#{c.CODIGO_MEMO}"/>
                 </p:column>
-                <p:column  width="5%" filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="#CAJA"  style="text-align: center;">
+                <p:column  filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="NRO_CAJA" style="text-align: center;">
                     <h:outputText value="#{c.NRO_CAJA}"/>
                 </p:column>
-                <p:column  width="10%" filterStyle="display:none" filterBy="#{c.CODIGO_LISTADO}" headerText="COD_LISTADO"  style="text-align: center;">
-                    <h:outputText value="#{c.CODIGO_LISTADO}"/>
-                </p:column>
-                <p:column width="5%" filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="# EJEM."  style="text-align: center;">
+                <p:column filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="NRO_EJEMPLAR" style="text-align: center;" >
                     <h:outputText value="#{c.NRO_EJEMPLARES}"/>
                 </p:column>
-                <p:column width="20%" filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE"  style="text-align: center;">
+                <p:column filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE" style="text-align: center;">
                     <h:outputText value="#{c.AREA}"/>
                 </p:column>
-                <p:column width="20%" filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA"  style="text-align: center;">
+                <p:column filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA" style="text-align: center;">
                     <h:outputText value="#{c.SALA}"/>
                 </p:column>
-                <p:column width="10%" filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA"  style="text-align: center;">
+                <p:column filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA" style="text-align: center;">
                     <h:outputText value="#{c.FECHA}"/>
                 </p:column>
             </p:dataTable>
-
-
         </h:form>
     </ui:define>
 

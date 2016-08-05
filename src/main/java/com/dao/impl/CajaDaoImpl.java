@@ -39,7 +39,7 @@ public class CajaDaoImpl implements CajaDao {
             //cs.setInt(1, objCaja.getID_DEPOSITO());
             cs.setString(1, objCaja.getSALA());
             //cs.setString(6, objCaja.getCODIGO_MEMO());
-            cs.setInt(2, objCaja.getID_USUARIO());            
+            cs.setInt(2, objCaja.getID_USUARIO());
             rs = cs.executeQuery();
             if (rs.next()) {
                 arreglo[0] = rs.getString(1);
@@ -47,7 +47,7 @@ public class CajaDaoImpl implements CajaDao {
                 arreglo[2] = rs.getString(3);
                 arreglo[3] = rs.getString(4);
                 arreglo[4] = rs.getString(5);
-                
+
             }
 
         } catch (Exception e) {
@@ -94,7 +94,6 @@ public class CajaDaoImpl implements CajaDao {
         }
         return lstBandejaPatrimonio;
     }
-    
 
     @Override
     public ArrayList<BandejaDto> bandejaCreado() {
@@ -111,9 +110,10 @@ public class CajaDaoImpl implements CajaDao {
                 dto.setCODIGO_MEMO(rs.getString(2));
                 dto.setNRO_CAJA(rs.getString(3));
                 dto.setNRO_EJEMPLARES(rs.getString(4));
-                dto.setAREA(rs.getString(5));
-                dto.setSALA(rs.getString(6));
-                dto.setFECHA(rs.getString(7));
+                dto.setNRO_VOLUMENES(rs.getString(5));
+                dto.setAREA(rs.getString(6));
+                dto.setSALA(rs.getString(7));
+                dto.setFECHA(rs.getString(8));
                 lCreado.add(dto);
             }
         } catch (SQLException e) {
@@ -143,6 +143,8 @@ public class CajaDaoImpl implements CajaDao {
             if (rs.next()) {
                 out = rs.getInt(1);
                 msg = rs.getString(2);
+                System.out.println(msg);
+                System.out.println(ace.getID_ESTADO_PROCESO());
             }
         } catch (Exception e) {
             System.out.println("Error de consulta: " + e.getMessage());
@@ -199,9 +201,10 @@ public class CajaDaoImpl implements CajaDao {
                 ed.setCODIGO_BARRAS(rs.getString(2));
                 ed.setMFN(rs.getString(3));
                 ed.setID_DOCUMENTAL(rs.getInt(4));
-                if (rs.getInt(5) == 1) {
+                ed.setNRO_INGRESO(rs.getString(5));
+                if (rs.getInt(6) == 1) {
                     ed.setCLASS_VALIDADO("GreenBack");
-                } else if (rs.getInt(5) == 0) {
+                } else if (rs.getInt(6) == 0) {
                     ed.setCLASS_VALIDADO("RedBack");
                 }
                 lEjeDocDto.add(ed);
@@ -296,10 +299,10 @@ public class CajaDaoImpl implements CajaDao {
         }
         return lstBandejaPatrimonio;
     }
-    
+
     //pasar id caja en ves de objCAja
     @Override
-    public ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja){
+    public ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja) {
         ArrayList<VistaPreviaDto> previa = new ArrayList<>();
         Connection cn = cnSQL.getConnection();
         try {
@@ -309,7 +312,7 @@ public class CajaDaoImpl implements CajaDao {
             cs.setInt(1, objCaja.getID_USUARIO());
             rs = cs.executeQuery();
             int i = 1;
-            while (rs.next()) {                
+            while (rs.next()) {
                 dto = new VistaPreviaDto();
                 dto.setID(i);
                 dto.setMFN(rs.getString(2));
@@ -317,12 +320,114 @@ public class CajaDaoImpl implements CajaDao {
                 previa.add(dto);
                 i++;
             }
-            
+
         } catch (Exception e) {
             System.out.println("Error DAO - vistaPreviaCaja");
         }
-        
+
         return previa;
+    }
+
+    @Override
+    public ArrayList<BandejaDto> bandejaValidado() {
+        ArrayList<BandejaDto> lValidado = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        BandejaDto dto = null;
+        try {
+            String procedure = "{CALL PT.SP_CAJA_VALIDADO_LISTAR}";
+            cs = cn.prepareCall(procedure);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                dto = new BandejaDto();
+                dto.setID_CAJA(rs.getString(1));
+                dto.setCODIGO_MEMO(rs.getString(2));
+                dto.setNRO_CAJA(rs.getString(3));
+                dto.setNRO_EJEMPLARES(rs.getString(4));
+                dto.setNRO_VOLUMENES(rs.getString(5));
+                dto.setAREA(rs.getString(6));
+                dto.setSALA(rs.getString(7));
+                dto.setFECHA(rs.getString(8));
+                lValidado.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return lValidado;
+    }
+
+    @Override
+    public ArrayList<BandejaDto> bandejaPorAlmacenar(int ID_USUARIO) {
+        ArrayList<BandejaDto> lPorAlmacenar = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        BandejaDto dto = null;
+        try {
+            String procedure = "{CALL PT.SP_CAJA_POR_ALMACENAR_LISTAR(?)}";
+            cs = cn.prepareCall(procedure);
+            cs.setInt(1, ID_USUARIO);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                dto = new BandejaDto();
+                dto.setID_CAJA(rs.getString(1));
+                dto.setCODIGO_MEMO(rs.getString(2));
+                dto.setNRO_CAJA(rs.getString(3));
+                dto.setNRO_EJEMPLARES(rs.getString(4));
+                dto.setNRO_VOLUMENES(rs.getString(5));
+                dto.setAREA(rs.getString(6));
+                dto.setSALA(rs.getString(7));
+                dto.setFECHA(rs.getString(8));
+                lPorAlmacenar.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return lPorAlmacenar;
+    }
+
+    @Override
+    public ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO) {
+        System.out.println("ACA ESTA EL PINCHE ID"+ID_USUARIO);
+        ArrayList<BandejaDto> lPorAlmacenar = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        BandejaDto dto = null;
+        try {
+            String procedure = "{CALL PT.SP_CAJA_ALMACENADO_LISTAR(?)}";
+            cs = cn.prepareCall(procedure);
+            cs.setInt(1, ID_USUARIO);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                dto = new BandejaDto();
+                dto.setID_CAJA(rs.getString(1));
+                dto.setCODIGO_MEMO(rs.getString(2));
+                dto.setNRO_CAJA(rs.getString(3));
+                dto.setNRO_EJEMPLARES(rs.getString(4));
+                dto.setNRO_VOLUMENES(rs.getString(5));
+                dto.setAREA(rs.getString(6));
+                dto.setSALA(rs.getString(7));
+                dto.setFECHA(rs.getString(8));
+                lPorAlmacenar.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return lPorAlmacenar;
     }
 
 }

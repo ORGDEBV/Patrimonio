@@ -7,11 +7,10 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-
-        <h:form id="frmCajaRegistro">
+        <h:form id="frmCajaPorAlmacenar">
             <p:dataTable id="tblcaja" 
                          var="c" 
-                         value="#{cajaBean.listarBandejaPatrimonioDto()}"
+                         value="#{cajaBean.lbandejaporalmacenar}"
                          widgetVar="tblcaja"
                          scrollable="true"
                          scrollWidth="100%"
@@ -26,8 +25,8 @@
                                      placeholder="Escriba palabra clave"/>
                     </p:outputPanel>
                 </f:facet>
-                <p:column headerText="DETALLE" style="text-align: center;">
-                    <p:commandButton actionListener="#{cajaBean.redireccionar(c.ID_CAJA)}" icon="fa fa-cogs"></p:commandButton>
+                <p:column headerText="PROCESAR" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.almacenar(c.ID_CAJA)}" icon="fa fa-cogs"></p:commandButton>
                 </p:column>
                 <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;">
                     <h:outputText value="#{c.ID_CAJA}"/>
@@ -38,11 +37,8 @@
                 <p:column  filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="NRO_CAJA" style="text-align: center;">
                     <h:outputText value="#{c.NRO_CAJA}"/>
                 </p:column>
-                <p:column filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="NRO_EJEMPLARES" style="text-align: center;" >
+                <p:column filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="NRO_EJEMPLAR" style="text-align: center;" >
                     <h:outputText value="#{c.NRO_EJEMPLARES}"/>
-                </p:column>
-                <p:column filterStyle="display:none" filterBy="#{c.NRO_VOLUMENES}" headerText="NRO_VOLUMENES" style="text-align: center;" >
-                    <h:outputText value="#{c.NRO_VOLUMENES}"/>
                 </p:column>
                 <p:column filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE" style="text-align: center;">
                     <h:outputText value="#{c.AREA}"/>

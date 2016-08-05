@@ -23,14 +23,11 @@ import com.entidad.Marc300;
 import com.entidad.Marc500;
 import com.entidad.Marc504;
 import static com.util.Constantes.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -40,7 +37,6 @@ import javax.faces.context.FacesContext;
 
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
-import org.marc4j.MarcException;
 import org.marc4j.marc.ControlField;
 import org.marc4j.marc.DataField;
 import org.marc4j.marc.Record;
@@ -101,6 +97,9 @@ public class CajaBean {
     //lista para bandeja registro
     private ArrayList<Object[]> lstFilter = new ArrayList<>();
     private List<BandejaDto> lbandejacreado;
+    private List<BandejaDto> lbandejavalidado;
+    private List<BandejaDto> lbandejaporalmacenar;
+    private List<BandejaDto> lbandejaalmacenado;
 
     public CajaBean() {
         SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
@@ -109,6 +108,9 @@ public class CajaBean {
         documentalDao = factory.getDocumentalDao(DOCUMENTAL);
         ejemplarDao = factory.getEjemplarDao(EJEMPLAR);
         lbandejacreado = cajaDao.bandejaCreado();
+        lbandejavalidado = cajaDao.bandejaValidado();
+        lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
+        lbandejaalmacenado = cajaDao.bandejaAlmacenado(SESION_ID_USUARIO);
         selecteddeposito = new Deposito();
         fichaDocumental = new FichaDocumentalDto();
         fichaEjemplar = new FichaEjemplarDto();
@@ -170,7 +172,6 @@ public class CajaBean {
         this.lstFilter = lstFilter;
     }
 
-
     public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {
         return listaVistaPreviaCaja;
     }
@@ -178,7 +179,6 @@ public class CajaBean {
     public void setListaVistaPreviaCaja(ArrayList<VistaPreviaDto> listaVistaPreviaCaja) {
         this.listaVistaPreviaCaja = listaVistaPreviaCaja;
     }
-
 
     public void grabarCaja() {
         if (objCaja != null) {
@@ -650,8 +650,8 @@ public class CajaBean {
         lst = cajaDao.bandejaPattrimonio();
         return lst;
     }
-    
-     public ArrayList<BandejaDto> listarBandejaDepositoDto() {
+
+    public ArrayList<BandejaDto> listarBandejaDepositoDto() {
         ArrayList<BandejaDto> lst = new ArrayList<>();
         lst = cajaDao.bandejaDeposito();
         return lst;
@@ -670,16 +670,15 @@ public class CajaBean {
     }
 
     public void procesarCaja(int ID_CAJA) {
-
         ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
         AreaCajaEstado ace = new AreaCajaEstado();
         ace.setID_CAJA(ID_CAJA);
         ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
         ace.setID_ESTADO_PROCESO(2);
-        ace.setID_USUARIO(Integer.parseInt(ex.getSessionMap().get("USUARIO_ID_USUARIO").toString()));
+        ace.setID_USUARIO(SESION_ID_USUARIO);
         int insert = cajaDao.insertarAreaCajaEstado(ace);
         if (insert == 1) {
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR", "Se procesó la caja correctamente."));
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se procesó la caja correctamente."));
             lbandejacreado = cajaDao.bandejaCreado();
         } else {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
@@ -733,7 +732,7 @@ public class CajaBean {
                 ace.setID_CAJA(ID_CAJA);
                 ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
                 ace.setID_ESTADO_PROCESO(3);
-                ace.setID_USUARIO(Integer.parseInt(ex.getSessionMap().get("USUARIO_ID_USUARIO").toString()));
+                ace.setID_USUARIO(SESION_ID_USUARIO);
                 int insert = cajaDao.cajaDeposito(ace, ID_DEPOSITO);
                 if (insert == 1) {
                     FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se proceso la caja con éxito."));
@@ -744,6 +743,42 @@ public class CajaBean {
                 FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Debe seleccionar un deposito."));
             }
         }
+        RequestContext.getCurrentInstance().update("gMensaje");
+    }
+
+    public void enviarDeposito(int ID_CAJA) {
+        ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
+        AreaCajaEstado ace = new AreaCajaEstado();
+        ace.setID_CAJA(ID_CAJA);
+        ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
+        ace.setID_ESTADO_PROCESO(4);
+        ace.setID_USUARIO(SESION_ID_USUARIO);
+        int insert = cajaDao.insertarAreaCajaEstado(ace);
+        if (insert == 1) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja fue enviada al encargado de deposito."));
+            lbandejacreado = cajaDao.bandejaCreado();
+        } else {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
+        }
+        RequestContext.getCurrentInstance().update("frmCajaValidado");
+        RequestContext.getCurrentInstance().update("gMensaje");
+    }
+
+    public void almacenar(int ID_CAJA) {
+        ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
+        AreaCajaEstado ace = new AreaCajaEstado();
+        ace.setID_CAJA(ID_CAJA);
+        ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
+        ace.setID_ESTADO_PROCESO(5);
+        ace.setID_USUARIO(SESION_ID_USUARIO);
+        int insert = cajaDao.insertarAreaCajaEstado(ace);
+        if (insert == 1) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja fue almacenada correctamente."));
+            lbandejacreado = cajaDao.bandejaCreado();
+        } else {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
+        }
+        RequestContext.getCurrentInstance().update("frmCajaValidado");
         RequestContext.getCurrentInstance().update("gMensaje");
     }
 
@@ -802,9 +837,29 @@ public class CajaBean {
     public void setFichaEjemplar(FichaEjemplarDto fichaEjemplar) {
         this.fichaEjemplar = fichaEjemplar;
     }
-    
-    public void actualizarBandejaDeposito(){
-    
+
+    public List<BandejaDto> getLbandejavalidado() {
+        return lbandejavalidado;
+    }
+
+    public void setLbandejavalidado(List<BandejaDto> lbandejavalidado) {
+        this.lbandejavalidado = lbandejavalidado;
+    }
+
+    public List<BandejaDto> getLbandejaporalmacenar() {
+        return lbandejaporalmacenar;
+    }
+
+    public void setLbandejaporalmacenar(List<BandejaDto> lbandejaporalmacenar) {
+        this.lbandejaporalmacenar = lbandejaporalmacenar;
+    }
+
+    public List<BandejaDto> getLbandejaalmacenado() {
+        return lbandejaalmacenado;
+    }
+
+    public void setLbandejaalmacenado(List<BandejaDto> lbandejaalmacenado) {
+        this.lbandejaalmacenado = lbandejaalmacenado;
     }
 
 }
