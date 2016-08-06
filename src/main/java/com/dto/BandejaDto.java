@@ -16,13 +16,31 @@ public class BandejaDto {
     private String NRO_CAJA;
     private String CODIGO_LISTADO;
     private String NRO_EJEMPLARES;
+    private String NRO_VOLUMENES;
     private String AREA;
     private String SALA;
     private String FECHA;
+    private String ID_DEPOSITO;
+    private String DEPOSITO;
 
     public BandejaDto() {
     }
-    
+
+    public String getID_DEPOSITO() {
+        return ID_DEPOSITO;
+    }
+
+    public void setID_DEPOSITO(String ID_DEPOSITO) {
+        this.ID_DEPOSITO = ID_DEPOSITO;
+    }
+
+    public String getDEPOSITO() {
+        return DEPOSITO;
+    }
+
+    public void setDEPOSITO(String DEPOSITO) {
+        this.DEPOSITO = DEPOSITO;
+    }
 
     public String getID_CAJA() {
         return ID_CAJA;
@@ -64,6 +82,14 @@ public class BandejaDto {
         this.NRO_EJEMPLARES = NRO_EJEMPLARES;
     }
 
+    public String getNRO_VOLUMENES() {
+        return NRO_VOLUMENES;
+    }
+
+    public void setNRO_VOLUMENES(String NRO_VOLUMENES) {
+        this.NRO_VOLUMENES = NRO_VOLUMENES;
+    }
+
     public String getAREA() {
         return AREA;
     }
@@ -88,6 +114,4 @@ public class BandejaDto {
         this.FECHA = FECHA;
     }
 
-    
-    
 }

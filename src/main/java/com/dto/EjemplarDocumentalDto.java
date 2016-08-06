@@ -16,6 +16,7 @@ public class EjemplarDocumentalDto {
     private String CODIGO_BARRAS;
     private String MFN;
     private int ID_DOCUMENTAL;
+    private String NRO_INGRESO;
     private String CLASS_VALIDADO;
 
     public int getNRO_EJEMPLAR() {
@@ -56,6 +57,14 @@ public class EjemplarDocumentalDto {
 
     public void setID_DOCUMENTAL(int ID_DOCUMENTAL) {
         this.ID_DOCUMENTAL = ID_DOCUMENTAL;
+    }
+
+    public String getNRO_INGRESO() {
+        return NRO_INGRESO;
+    }
+
+    public void setNRO_INGRESO(String NRO_INGRESO) {
+        this.NRO_INGRESO = NRO_INGRESO;
     }
 
     public String getCLASS_VALIDADO() {

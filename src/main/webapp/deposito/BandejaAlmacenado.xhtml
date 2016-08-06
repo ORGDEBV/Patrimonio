@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="frmCajaPorAlmacenar">
+            <p:dataTable id="tblcaja" 
+                         var="c" 
+                         value="#{cajaBean.lbandejaalmacenado}"
+                         widgetVar="tblcaja"
+                         scrollable="true"
+                         scrollWidth="100%"
+                         scrollHeight="100%"
+                         style="height: 100%;max-height: 400px;"
+                         styleClass="width:auto;">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en todos los campos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tblcaja').filter()"  
+                                     style="width:30%;margin-left:30px;border-radius:18px;" 
+                                     placeholder="Escriba palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;">
+                    <h:outputText value="#{c.ID_CAJA}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}"  headerText="COD_MEMO" style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_MEMO}"/>
+                </p:column>
+                <p:column  filterStyle="display:none" filterBy="#{c.NRO_CAJA}" headerText="NRO_CAJA" style="text-align: center;">
+                    <h:outputText value="#{c.NRO_CAJA}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.NRO_EJEMPLARES}" headerText="NRO_EJEMPLAR" style="text-align: center;" >
+                    <h:outputText value="#{c.NRO_EJEMPLARES}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.AREA}" headerText="REMITE" style="text-align: center;">
+                    <h:outputText value="#{c.AREA}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.SALA}" headerText="SALA" style="text-align: center;">
+                    <h:outputText value="#{c.SALA}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.FECHA}" headerText="FECHA" style="text-align: center;">
+                    <h:outputText value="#{c.FECHA}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
