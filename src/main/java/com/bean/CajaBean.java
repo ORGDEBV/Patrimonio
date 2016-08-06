@@ -83,6 +83,7 @@ public class CajaBean {
     private boolean renderUploadFile = false;
     private boolean renderMensajeIncrustado = true;
     private boolean disabledGrabarCaja = false;
+    private boolean renderedBtnReportes = false;
     private boolean renderTablaXml = false;
     private boolean renderTabla = false;
     private String idCaja = "";
@@ -92,6 +93,7 @@ public class CajaBean {
     private final boolean deshabilitado = false;
     private final boolean habilitado = true;
     private int totalEjemplares = 0;
+    private int totalVolumenes = 0;
     private String concatEjemplarVolumen = "";
     ArrayList<String> listaErrores = new ArrayList<>();
     ArrayList<VistaPreviaDto> listaVistaPreviaCaja = new ArrayList<>();
@@ -166,6 +168,14 @@ public class CajaBean {
         this.renderTabla = renderTabla;
     }
 
+    public boolean isRenderedBtnReportes() {
+        return renderedBtnReportes;
+    }
+
+    public void setRenderedBtnReportes(boolean renderedBtnReportes) {
+        this.renderedBtnReportes = renderedBtnReportes;
+    }
+        
     public ArrayList<Object[]> getLstFilter() {
         return lstFilter;
     }
@@ -173,8 +183,6 @@ public class CajaBean {
     public void setLstFilter(ArrayList<Object[]> lstFilter) {
         this.lstFilter = lstFilter;
     }
-
-
 
     public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {    
         return listaVistaPreviaCaja;
@@ -230,7 +238,7 @@ public class CajaBean {
     public void handleFileUpload(FileUploadEvent event) {
         InputStream in = null;
         MarcReader reader = null;
-        int totalVolumenes = vacio;
+        
          
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
@@ -284,6 +292,7 @@ public class CajaBean {
             //una ves que se insertan los ejemplares se deshabilita el upload
             renderUploadFile = deshabilitado;
             renderTabla = habilitado;
+            renderedBtnReportes = habilitado;
             RequestContext.getCurrentInstance().update("frmCaja");
             //Mensaje de tantos libros agregados con exito
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", msgUpd[1]);
@@ -691,9 +700,12 @@ public class CajaBean {
         return respuesta;
     }
     //reporte
-    
-    
-    
+    public void exportarListadoEjemplaresPorCaja(){
+        String [] param= {String.valueOf(objCaja.getID_CAJA()),objCaja.getNRO_CAJA(),String.valueOf(totalVolumenes),String.valueOf(totalEjemplares)};
+        cajaDao.reporteListadoEjemplaresCaja("ruta", param);       
+        FacesContext.getCurrentInstance().responseComplete();    
+        
+    }    
     //fin reporte
     public ArrayList<BandejaDto> listarBandejaPatrimonioDto() {
         ArrayList<BandejaDto> lst = new ArrayList<>();

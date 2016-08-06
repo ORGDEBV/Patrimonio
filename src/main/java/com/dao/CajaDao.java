@@ -36,5 +36,6 @@ public interface CajaDao {
     
     ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO);
 
-
+    void reporteListadoEjemplaresCaja(String ruta, String[] param);
+    
 }

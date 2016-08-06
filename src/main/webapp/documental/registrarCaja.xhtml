@@ -33,7 +33,7 @@
                 </div>
                 <div class="Container100 TexAlLeft" style="padding-left: 7%;">
                     <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" disabled="#{cajaBean.disabledGrabarCaja}"  />   
-                    <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" disabled="#{cajaBean.disabledGrabarCaja}" />
+                    <p:commandButton styleClass="RedButton  MarRight10" style="margin-left: 2%" value="Exportar" rendered="#{cajaBean.renderedBtnReportes}" actionListener="#{cajaBean.exportarListadoEjemplaresPorCaja()}"/>
                 </div>
             </p:fragment>
             <div class="EmptyBox5"></div>       
