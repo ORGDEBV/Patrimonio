@@ -22,9 +22,10 @@ public interface CajaDao {
     
     List<EjemplarDocumentalDto> listarCajaEjemplarDocumental(int ID_CAJA);
 
-
     int insertarAreaCajaEstado(AreaCajaEstado ace);
     
     int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);
+    
+    public String[] cajaActualizarVolumenEjemplar(Caja objCaja);
     
 }

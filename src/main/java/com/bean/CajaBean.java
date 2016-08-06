@@ -63,15 +63,15 @@ public class CajaBean {
     private final CajaDao cajaDao;
     private final DocumentalDao documentalDao;
     private final EjemplarDao ejemplarDao;
-    private Marc017 marc017;
-    private Marc100 marc100;
-    private Marc245 marc245;
-    private Marc250 marc250;
-    private Marc260 marc260;
-    private Marc300 marc300;
-    private Marc504 marc504;
+//    private Marc017 marc017;
+//    private Marc100 marc100;
+//    private Marc245 marc245;
+//    private Marc250 marc250;
+//    private Marc260 marc260;
+//    private Marc300 marc300;
+//    private Marc504 marc504;
     private Documental documental;
-    private List<Documental> listaDocumental;
+//    private List<Documental> listaDocumental;
     private List<Marc017> listaMarc017;
     private List<Marc100> listaMarc100;
     private List<Marc245> listaMarc245;
@@ -95,6 +95,8 @@ public class CajaBean {
     private final int correcto = 1;
     private final boolean deshabilitado = false;
     private final boolean habilitado = true;
+    private int totalEjemplares = 0;
+    private String concatEjemplarVolumen = "";
     ArrayList<String> listaErrores = new ArrayList<>();
     ArrayList<VistaPreviaDto> listaVistaPreviaCaja = new ArrayList<>();
 
@@ -171,7 +173,7 @@ public class CajaBean {
     }
 
 
-    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {
+    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {        
         return listaVistaPreviaCaja;
     }
 
@@ -179,6 +181,14 @@ public class CajaBean {
         this.listaVistaPreviaCaja = listaVistaPreviaCaja;
     }
 
+    public String getConcatEjemplarVolumen() {
+        return concatEjemplarVolumen;
+    }
+
+    public void setConcatEjemplarVolumen(String concatEjemplarVolumen) {
+        this.concatEjemplarVolumen = concatEjemplarVolumen;
+    }
+    
 
     public void grabarCaja() {
         if (objCaja != null) {
@@ -189,6 +199,7 @@ public class CajaBean {
             if (Integer.parseInt(msg[0]) == correcto) {
                 resp = msg[1];
                 idCaja = msg[2];
+                objCaja.setID_CAJA(Integer.parseInt(idCaja));
                 objCaja.setCODIGO_MEMO(msg[3].toUpperCase());
                 objCaja.setNRO_CAJA(msg[4]);
                 renderMensajeIncrustado = deshabilitado;
@@ -214,7 +225,8 @@ public class CajaBean {
     public void handleFileUpload(FileUploadEvent event) {
         InputStream in = null;
         MarcReader reader = null;
-        int totalResultados = vacio;
+        int totalVolumenes = vacio;
+         
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
             in = archivo.getInputstream();
@@ -228,6 +240,7 @@ public class CajaBean {
                 ControlField campo001 = (ControlField) record.getVariableField("001");
                 List campo017 = record.getVariableFields("017");
                 List campo082 = record.getVariableFields("082");
+                List campo084 = record.getVariableFields("084");
                 List campo100 = record.getVariableFields("100");
                 List campo245 = record.getVariableFields("245");
                 List campo250 = record.getVariableFields("250");
@@ -239,8 +252,8 @@ public class CajaBean {
                 List campo852 = record.getVariableFields("852");
 
                 documental = new Documental();
-                documental.setID_CAJA(Integer.parseInt(idCaja));
-                listaDocumental = new ArrayList<>();
+                documental.setID_CAJA(Integer.parseInt(idCaja));                
+                //listaDocumental = new ArrayList<>();
                 listaMarc017 = new ArrayList<>();
                 listaMarc100 = new ArrayList<>();
                 listaMarc245 = new ArrayList<>();
@@ -251,21 +264,24 @@ public class CajaBean {
                 listaMarc500 = new ArrayList<>();
                 listaEjemplar = new ArrayList<>();
 
-                leerFichasXML(estado, msgEstado, campo001, campo017, campo082, campo100, campo245, campo250, campo260, campo300, campo500, campo504, campo583, campo852);
+                leerFichasXML(estado, msgEstado, campo001, campo017, campo082, campo084, campo100, campo245, campo250, campo260, campo300, campo500, campo504, campo583, campo852);
 
                 int resultado = grabarDocumental(estado, msgEstado, documental, listaMarc017, listaMarc100, listaMarc245, listaMarc250, listaMarc260, listaMarc300, listaMarc504, listaMarc500, listaEjemplar);
-                totalResultados += resultado;
+                totalVolumenes += resultado;
 
             }
             //SE CONSULTA LA BASE DE DATOS PARA EL PREVIEW
             listaVistaPreviaCaja = cajaDao.vistaPreviaCaja(objCaja);
-            objCaja.setNRO_EJEMPLARES(totalResultados);
+            objCaja.setNRO_EJEMPLARES(totalEjemplares);
+            objCaja.setNRO_VOLUMENES(totalVolumenes);
+            concatEjemplarVolumen = "Nro. de volumenes : "+totalVolumenes+" / Nro. de ejemplares : " +totalEjemplares;
+            String[] msgUpd=cajaDao.cajaActualizarVolumenEjemplar(objCaja);
             //una ves que se insertan los ejemplares se deshabilita el upload
             renderUploadFile = deshabilitado;
             renderTabla = habilitado;
             RequestContext.getCurrentInstance().update("frmCaja");
             //Mensaje de tantos libros agregados con exito
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Se agregaron " + totalResultados + " documentales");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", msgUpd[1]);
             FacesContext.getCurrentInstance().addMessage("gMensaje", message);
             RequestContext.getCurrentInstance().update("gMensaje");
             //se muestra una lista con los errores si es que los hubieran
@@ -283,7 +299,7 @@ public class CajaBean {
         }
     }
 
-    public void leerFichasXML(int estado, String msgEstado, ControlField campo001, List campo017, List campo082, List campo100, List campo245, List campo250, List campo260, List campo300, List campo500, List campo504, List campo583, List campo852) {
+    public void leerFichasXML(int estado, String msgEstado, ControlField campo001, List campo017, List campo082, List campo084, List campo100, List campo245, List campo250, List campo260, List campo300, List campo500, List campo504, List campo583, List campo852) {        
         System.out.println("*************************************************FICHA***********************************************************");
         if (campo001 != null) {
             documental.setMFN(campo001.getData().trim());
@@ -319,7 +335,30 @@ public class CajaBean {
             System.out.print("Campo 082 : ");
             System.out.println("--");
         }
-
+        /* campo 084   */
+        if (!campo084.isEmpty()) {
+            for (int i = 0; i < campo084.size(); i++) {
+                DataField datox = (DataField) campo084.get(i);
+                List subcampos = datox.getSubfields();
+                Iterator it = subcampos.iterator();
+                System.out.print("Campo 084 : ");
+                while (it.hasNext()) {
+                    Subfield subfield = (Subfield) it.next();
+                    String code = String.valueOf(subfield.getCode());
+                    String data = subfield.getData().trim();
+                    switch (code) {
+                        case "a":
+                            documental.setA084(data);
+                            System.out.print("Campo 084 : " + documental.getA084());
+                            break;
+                    }
+                }
+            }
+        } else {
+            System.out.print("Campo 084 : ");
+            System.out.println("--");
+        }
+        
         if (!campo100.isEmpty()) {
             Marc100 marc100;
             for (int i = 0; i < campo100.size(); i++) {
@@ -625,6 +664,8 @@ public class CajaBean {
                         listaEjemplar.add(ejemplar);
                     }
                 }
+                //sumar los ejemplares 
+                totalEjemplares = totalEjemplares + listaEjemplar.size();
                 System.out.println("hay " + listaEjemplar.size() + " registros que van a patrimonio de" + campo852.size() + " que ingresaron a la BNP");
             }
         } else {

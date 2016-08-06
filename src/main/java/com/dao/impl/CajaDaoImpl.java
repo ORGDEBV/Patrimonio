@@ -288,5 +288,28 @@ public class CajaDaoImpl implements CajaDao {
         
         return previa;
     }
+    
+    @Override
+    public String[] cajaActualizarVolumenEjemplar(Caja objCaja){
+        String[] arreglo = new String[2];
+        Connection cn = cnSQL.getConnection();
+        try {
+            String procedure = "{CALL [PT].[SP_CAJA_ActualizarVolumenEjemplar] (?,?,?)}";
+            cs = cn.prepareCall(procedure);
+            cs.setInt(1, objCaja.getID_CAJA());
+            cs.setInt(2, objCaja.getNRO_VOLUMENES());
+            cs.setInt(3, objCaja.getNRO_EJEMPLARES());
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                arreglo[0] = rs.getString(1);
+                arreglo[1] = rs.getString(2);
+            }
+            
+        }catch(Exception ex){
+            System.out.println("error"+ ex.getMessage());
+        }
+        return arreglo;
+    }
+    
 
 }
