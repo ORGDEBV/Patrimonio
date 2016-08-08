@@ -42,7 +42,9 @@
                             <p:menuitem value="Mensajes" icon="fa fa-envelope-o"/>
                             <p:menuitem value="Notas" icon="fa fa-file-zip-o"/>
                             <p:separator />
-                            <p:menuitem value="Cerrar Sesión" icon="fa fa-key"/>
+                            <p:menuitem value="Cerrar Sesión" icon="fa fa-key" action="#{usuarioBean.cierraSesion()}">
+                                
+                            </p:menuitem>
                         </p:splitButton> 
                     </h:form>
                 </div>

@@ -74,7 +74,8 @@ private boolean cboDeposito;
                 System.out.println("USUARIO NO ENCONTRADO PAPU");
             }
         } else {
-            System.out.println("USUARIO Y/O CONTRASEÑA INCORRECTA PRRO");
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Usuario y/o contraseña incorrecta."));
+            RequestContext.getCurrentInstance().update("gMensaje");
         }
     }
 
@@ -365,6 +366,15 @@ private boolean cboDeposito;
         } catch (IOException ex) {
             System.out.println("error" + ex);
         }
+    }
+    
+    public void cierraSesion() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/");
+//        int cambioContrasena = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cambioContrasena").toString());
+//        if (cambioContrasena == 0) {
+//            FacesContext.getCurrentInstance().addMessage("gMsj", new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", "No ha actualizado su contraseña por defecto."));
+//        }
     }
 
 }
