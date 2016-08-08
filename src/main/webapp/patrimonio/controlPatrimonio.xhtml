@@ -99,7 +99,7 @@
                     </p:outputPanel>
                 </f:facet>
                 <p:column headerText="APROBAR" style="text-align: center;">
-                    <p:commandButton actionListener="#{cajaBean.validaEjemplar(c.ID_EJEMPLAR)}" icon="fa fa-check-square-o" styleClass="#{c.CLASS_VALIDADO}"></p:commandButton>
+                    <p:commandButton actionListener="#{cajaBean.validaEjemplar(c.ID_EJEMPLAR,c.CLASS_VALIDADO)}" icon="fa fa-check-square-o" styleClass="#{c.CLASS_VALIDADO}"></p:commandButton>
                 </p:column>
                 <p:column headerText="DESCRIPCIÓN" style="text-align: center;">
                     <p:commandButton actionListener="#{cajaBean.infoEjemplar(c.ID_DOCUMENTAL,c.ID_EJEMPLAR)}" icon="fa fa-file-text-o" onclick="PF('dlgFicha').show();"></p:commandButton>
