@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h:form id="frmCaja">
             <div class="EmptyBox10"></div>
-            <div class="CardTopic Opac90 OvHidden TexAlLeft PadWithBorder10M">Registro de Caja <i class="fa fa-dropbox Fright Fs30"></i></div>
+            <div class="CardTopic Opac90 OvHidden TexAlLeft PadWithBorder10M" style="padding: 0px 20px 0px;">Registro de Caja <i class="fa fa-dropbox Fright Fs30"></i></div>
             <div class="Separator"></div>
             <p:messages id="msgLista" autoUpdate="true" closable="true" showDetail="true" rendered="#{cajaBean.renderMensajeIncrustado}"/>
             <div class="EmptyBox5"></div>
@@ -18,7 +18,7 @@
                 <div class="Container50 Responsive100">
                     <p:inputText id="txtNumCaja" placeholder="Número de caja" value="Número de caja : #{cajaBean.objCaja.NRO_CAJA}" style="width:75%" disabled="true" />
                     <div class="EmptyBox10"></div>            
-                    <p:inputText id="txtEjemCaja" placeholder="Cantidad de ejemplares" value="Cantidad de ejemplares : #{cajaBean.objCaja.NRO_EJEMPLARES}" style="width:75%" disabled="true" />
+                    <p:inputText id="txtEjemCaja" placeholder="Nro. de volumenes / Nro. de ejemplares" value="#{cajaBean.concatEjemplarVolumen}" style="width:75%" disabled="true" />
                     <div class="EmptyBox10"></div>
                 </div>
 
@@ -33,7 +33,7 @@
                 </div>
                 <div class="Container100 TexAlLeft" style="padding-left: 7%;">
                     <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" disabled="#{cajaBean.disabledGrabarCaja}"  />   
-                    <p:commandButton styleClass="RedButton  MarRight10" value="Limpiar" disabled="#{cajaBean.disabledGrabarCaja}" />
+                    <p:commandButton styleClass="RedButton  MarRight10" style="margin-left: 2%" value="Exportar" rendered="#{cajaBean.renderedBtnReportes}" actionListener="#{cajaBean.exportarListadoEjemplaresPorCaja()}"/>
                 </div>
             </p:fragment>
             <div class="EmptyBox5"></div>       
@@ -60,15 +60,22 @@
             <h:panelGroup id="tabla" layout="block" rendered="#{cajaBean.renderTabla}" >
                 <p:fragment>
                     <p:dataTable var="prev" value="#{cajaBean.listaVistaPreviaCaja}" stickyHeader="true">
-                        <p:column headerText="# ORDEN">
+                        <p:column headerText="# ORDEN" style="text-align: center">
                             <h:outputText value="#{prev.ID}" />
                         </p:column>
-                        <p:column headerText="MFN POR TITULO">
+                        <p:column headerText="MFN POR TITULO" style="text-align: center" >
                             <h:outputText value="#{prev.MFN}" />
                         </p:column>
-                        <p:column headerText="CANTIDAD DE EJEMPLARES">
+                        <p:column headerText="CANTIDAD DE EJEMPLARES" style="text-align: center">
                             <h:outputText value="#{prev.CANTIDAD_EJEMPLARES}" />
-                        </p:column>                        
+                        </p:column> 
+
+                        <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column style="text-align:center;font-weight:bold" footerText="TOTAL EJEMPLARES : " colspan="2"/>
+                            <p:column style="font-weight:bold" footerText="#{cajaBean.objCaja.NRO_EJEMPLARES}"/>
+                        </p:row>
+                    </p:columnGroup>
                     </p:dataTable>
                 </p:fragment>
             </h:panelGroup>

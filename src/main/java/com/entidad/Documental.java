@@ -10,6 +10,7 @@ public class Documental implements Serializable{
     private String MFN;
     private String A082;
     private String _082_2;
+    private String A084;
 
     public Documental() {
     }
@@ -62,8 +63,14 @@ public class Documental implements Serializable{
         this._082_2 = _082_2;
     }
 
-    
-    
+    public String getA084() {
+        return A084;
+    }
+
+    public void setA084(String A084) {
+        this.A084 = A084;
+    }
+
     
     
 

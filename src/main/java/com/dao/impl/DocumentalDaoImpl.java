@@ -19,8 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DocumentalDaoImpl implements DocumentalDao {
 
@@ -34,12 +32,13 @@ public class DocumentalDaoImpl implements DocumentalDao {
         Connection cn = cnSQL.getConnection();
         try {
             cn.setAutoCommit(false);
-            String procedure = "{CALL [PT].[SP_DOCUMENTAL_Insertar] (?,?,?,?)}";
+            String procedure = "{CALL [PT].[SP_DOCUMENTAL_Insertar] (?,?,?,?,?)}";
             cs = cn.prepareCall(procedure);
             cs.setInt(1, documental.getID_CAJA());
             cs.setString(2, documental.getMFN());
             cs.setString(3, documental.getA082());
             cs.setString(4, documental.get082_2());            
+            cs.setString(5, documental.getA084());            
             rs = cs.executeQuery();
             if (rs.next()) {
                 respuestaSQL[0] = rs.getString(1);
@@ -169,6 +168,7 @@ public class DocumentalDaoImpl implements DocumentalDao {
         Connection cn = cnSQL.getConnection();
         FichaDocumentalDto ficha = null;
         List<String> lM500a = new ArrayList<>();
+        List<String> lM017a = new ArrayList<>();
         try {
             cs = cn.prepareCall("{CALL PT.SP_FICHA_BUSCAR(?)}");
             cs.setInt(1, ID_DOCUMENTAL);
@@ -191,7 +191,8 @@ public class DocumentalDaoImpl implements DocumentalDao {
                 lM500a.add(rs.getString(14));
                 ficha.setM500a(lM500a);
                 ficha.setM504a(rs.getString(15));
-                ficha.setM017a(rs.getString(16));
+                lM017a.add(rs.getString(16));
+                ficha.setM017a(lM017a);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

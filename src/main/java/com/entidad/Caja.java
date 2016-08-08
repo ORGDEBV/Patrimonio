@@ -13,6 +13,7 @@ public class Caja implements Serializable{
     private String CODIGO_MEMO;
     private int ID_USUARIO;
     private String FECHA_REGISTRO;
+    private int NRO_VOLUMENES;
 
     public Caja() {
     }
@@ -88,5 +89,15 @@ public class Caja implements Serializable{
     public void setFECHA_REGISTRO(String FECHA_REGISTRO) {
         this.FECHA_REGISTRO = FECHA_REGISTRO;
     }
+
+    public int getNRO_VOLUMENES() {
+        return NRO_VOLUMENES;
+    }
+
+    public void setNRO_VOLUMENES(int NRO_VOLUMENES) {
+        this.NRO_VOLUMENES = NRO_VOLUMENES;
+    }
+    
+    
 
 }
