@@ -32,12 +32,13 @@ public class DocumentalDaoImpl implements DocumentalDao {
         Connection cn = cnSQL.getConnection();
         try {
             cn.setAutoCommit(false);
-            String procedure = "{CALL [PT].[SP_DOCUMENTAL_Insertar] (?,?,?,?)}";
+            String procedure = "{CALL [PT].[SP_DOCUMENTAL_Insertar] (?,?,?,?,?)}";
             cs = cn.prepareCall(procedure);
             cs.setInt(1, documental.getID_CAJA());
             cs.setString(2, documental.getMFN());
             cs.setString(3, documental.getA082());
             cs.setString(4, documental.get082_2());            
+            cs.setString(5, documental.getA084());            
             rs = cs.executeQuery();
             if (rs.next()) {
                 respuestaSQL[0] = rs.getString(1);

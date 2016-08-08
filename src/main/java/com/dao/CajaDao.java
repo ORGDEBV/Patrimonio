@@ -26,12 +26,16 @@ public interface CajaDao {
 
     int insertarAreaCajaEstado(AreaCajaEstado ace);
 
-    int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);
-    
+    int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);    
+
+    public String[] cajaActualizarVolumenEjemplar(Caja objCaja);    
+
     ArrayList<BandejaDto> bandejaValidado();
     
     ArrayList<BandejaDto> bandejaPorAlmacenar(int ID_USUARIO);
     
     ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO);
 
+    void reporteListadoEjemplaresCaja(String ruta, String[] param);
+    
 }
