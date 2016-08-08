@@ -175,7 +175,7 @@ public class CajaBean {
     public void setRenderedBtnReportes(boolean renderedBtnReportes) {
         this.renderedBtnReportes = renderedBtnReportes;
     }
-        
+
     public ArrayList<Object[]> getLstFilter() {
         return lstFilter;
     }
@@ -184,14 +184,13 @@ public class CajaBean {
         this.lstFilter = lstFilter;
     }
 
-    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {    
+    public ArrayList<VistaPreviaDto> getListaVistaPreviaCaja() {
         return listaVistaPreviaCaja;
     }
 
     public void setListaVistaPreviaCaja(ArrayList<VistaPreviaDto> listaVistaPreviaCaja) {
         this.listaVistaPreviaCaja = listaVistaPreviaCaja;
     }
-
 
     public String getConcatEjemplarVolumen() {
         return concatEjemplarVolumen;
@@ -200,8 +199,6 @@ public class CajaBean {
     public void setConcatEjemplarVolumen(String concatEjemplarVolumen) {
         this.concatEjemplarVolumen = concatEjemplarVolumen;
     }
-    
-
 
     public void grabarCaja() {
         if (objCaja != null) {
@@ -238,8 +235,7 @@ public class CajaBean {
     public void handleFileUpload(FileUploadEvent event) {
         InputStream in = null;
         MarcReader reader = null;
-        
-         
+
         try {
             UploadedFile archivo = (UploadedFile) event.getFile();
             in = archivo.getInputstream();
@@ -265,7 +261,7 @@ public class CajaBean {
                 List campo852 = record.getVariableFields("852");
 
                 documental = new Documental();
-                documental.setID_CAJA(Integer.parseInt(idCaja));                
+                documental.setID_CAJA(Integer.parseInt(idCaja));
                 //listaDocumental = new ArrayList<>();
                 listaMarc017 = new ArrayList<>();
                 listaMarc100 = new ArrayList<>();
@@ -287,8 +283,8 @@ public class CajaBean {
             listaVistaPreviaCaja = cajaDao.vistaPreviaCaja(objCaja);
             objCaja.setNRO_EJEMPLARES(totalEjemplares);
             objCaja.setNRO_VOLUMENES(totalVolumenes);
-            concatEjemplarVolumen = "Nro. de volumenes : "+totalVolumenes+" / Nro. de ejemplares : " +totalEjemplares;
-            String[] msgUpd=cajaDao.cajaActualizarVolumenEjemplar(objCaja);
+            concatEjemplarVolumen = "Nro. de volumenes : " + totalVolumenes + " / Nro. de ejemplares : " + totalEjemplares;
+            String[] msgUpd = cajaDao.cajaActualizarVolumenEjemplar(objCaja);
             //una ves que se insertan los ejemplares se deshabilita el upload
             renderUploadFile = deshabilitado;
             renderTabla = habilitado;
@@ -313,7 +309,7 @@ public class CajaBean {
         }
     }
 
-    public void leerFichasXML(int estado, String msgEstado, ControlField campo001, List campo017, List campo082, List campo084, List campo100, List campo245, List campo250, List campo260, List campo300, List campo500, List campo504, List campo583, List campo852) {        
+    public void leerFichasXML(int estado, String msgEstado, ControlField campo001, List campo017, List campo082, List campo084, List campo100, List campo245, List campo250, List campo260, List campo300, List campo500, List campo504, List campo583, List campo852) {
         System.out.println("*************************************************FICHA***********************************************************");
         if (campo001 != null) {
             documental.setMFN(campo001.getData().trim());
@@ -372,7 +368,7 @@ public class CajaBean {
             System.out.print("Campo 084 : ");
             System.out.println("--");
         }
-        
+
         if (!campo100.isEmpty()) {
             Marc100 marc100;
             for (int i = 0; i < campo100.size(); i++) {
@@ -699,13 +695,15 @@ public class CajaBean {
         }
         return respuesta;
     }
+
     //reporte
-    public void exportarListadoEjemplaresPorCaja(){
-        String [] param= {String.valueOf(objCaja.getID_CAJA()),objCaja.getNRO_CAJA(),String.valueOf(totalVolumenes),String.valueOf(totalEjemplares)};
-        cajaDao.reporteListadoEjemplaresCaja("ruta", param);       
-        FacesContext.getCurrentInstance().responseComplete();    
-        
-    }    
+    public void exportarListadoEjemplaresPorCaja() {
+        String[] param = {String.valueOf(objCaja.getID_CAJA()), objCaja.getNRO_CAJA(), String.valueOf(totalVolumenes), String.valueOf(totalEjemplares)};
+        cajaDao.reporteListadoEjemplaresCaja("ruta", param);
+        FacesContext.getCurrentInstance().responseComplete();
+
+    }
+
     //fin reporte
     public ArrayList<BandejaDto> listarBandejaPatrimonioDto() {
         ArrayList<BandejaDto> lst = new ArrayList<>();
@@ -764,16 +762,20 @@ public class CajaBean {
         RequestContext.getCurrentInstance().update("pnlFicha");
     }
 
-    public void validaEjemplar(int ID_EJEMPLAR) {
-        int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
-        int insert = ejemplarDao.validarEjemplar(ID_EJEMPLAR, ID_USUARIO);
-        if (insert == 1) {
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se validó el ejemplar correctamente."));
-            lbandejacreado = cajaDao.bandejaCreado();
+    public void validaEjemplar(int ID_EJEMPLAR, String CLASS_VALIDADO) {
+        if (CLASS_VALIDADO.equals("GreenBack")) {
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "El ejemplar seleccionado ya ha sido aprobado."));
         } else {
-            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
+            int ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
+            int insert = ejemplarDao.validarEjemplar(ID_EJEMPLAR, ID_USUARIO);
+            if (insert == 1) {
+                FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se validó el ejemplar correctamente."));
+                lbandejacreado = cajaDao.bandejaCreado();
+            } else {
+                FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error."));
+            }
+            lejedocdto = cajaDao.listarCajaEjemplarDocumental(ID_CAJA);
         }
-        lejedocdto = cajaDao.listarCajaEjemplarDocumental(ID_CAJA);
         RequestContext.getCurrentInstance().update("frmControlPatrimonio:tblcaja");
         RequestContext.getCurrentInstance().update("gMensaje");
     }
@@ -818,10 +820,10 @@ public class CajaBean {
         int insert = cajaDao.insertarAreaCajaEstado(ace);
         if (insert == 1) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja fue enviada al encargado de deposito."));
-            lbandejacreado = cajaDao.bandejaCreado();
         } else {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
         }
+        lbandejavalidado = cajaDao.bandejaValidado();
         RequestContext.getCurrentInstance().update("frmCajaValidado");
         RequestContext.getCurrentInstance().update("gMensaje");
     }
@@ -836,11 +838,11 @@ public class CajaBean {
         int insert = cajaDao.insertarAreaCajaEstado(ace);
         if (insert == 1) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "La caja fue almacenada correctamente."));
-            lbandejacreado = cajaDao.bandejaCreado();
         } else {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error"));
         }
-        RequestContext.getCurrentInstance().update("frmCajaValidado");
+        lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
+        RequestContext.getCurrentInstance().update("frmCajaPorAlmacenar");
         RequestContext.getCurrentInstance().update("gMensaje");
     }
 
