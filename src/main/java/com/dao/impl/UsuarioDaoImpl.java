@@ -119,8 +119,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
             cs.setString(1, u.getUSUARIO());
             rs = cs.executeQuery();
             if (rs.next()) {
-                cs = cn.prepareCall("{CALL PT.SP_VALIDA_CONTRASENA(?)}");
+                cs = cn.prepareCall("{CALL PT.SP_VALIDA_CONTRASENA(?,?)}");
                 cs.setString(1, u.getCONTRASENA());
+                cs.setString(2, u.getUSUARIO());
                 rs = cs.executeQuery();
                 if (rs.next()) {
                     usuario = new Usuario();

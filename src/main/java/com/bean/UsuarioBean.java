@@ -74,7 +74,8 @@ public class UsuarioBean implements Serializable {
                 System.out.println("USUARIO NO ENCONTRADO PAPU");
             }
         } else {
-            System.out.println("USUARIO Y/O CONTRASEÑA INCORRECTA PRRO");
+            FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Usuario y/o contraseña incorrecta."));
+            RequestContext.getCurrentInstance().update("gMensaje");
         }
     }
 
