@@ -46,7 +46,7 @@
                                              styleClass="Wid100Imp cboArea"
                                              style="float:left;margin-right:15px;">
                                 <f:selectItem itemLabel="Seleccione Personal" itemValue="-1" noSelectionOption="true" />
-                                <f:selectItems value="#{personaBean.cboPersonal}"/>
+                                <f:selectItems value="#{personalBean.cboPersonal}"/>
                                 <f:validateLongRange minimum="1"/>
                             </p:selectOneMenu>
 
@@ -119,6 +119,7 @@
                                              value="#{usuarioBean.u.ID_PERFIL}"
                                              styleClass="Wid100Imp cboPerfil"
                                              style="float:left;margin-right:15px;">
+                                <p:ajax listener="#{usuarioBean.mostrarCboDeposito()}" />
                                 <f:selectItem itemLabel="Seleccione Perfil" itemValue="-1" noSelectionOption="true" />
                                 <f:selectItems value="#{perfilBean.cboPerfil}"/>
                                 <f:validateLongRange minimum="1"/>
@@ -141,6 +142,23 @@
                         </p:column>
 
 
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    
+                    <p:row styleClass="Wid100 clasDeposito">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="cboDeposito"  value="DEPOSITO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:selectOneMenu id="cboDeposito" styleClass="Wid100Imp txtCodLista" value="#{usuarioBean.u.ID_DEPOSITO}">
+                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
                         <p:column styleClass="Wid20">
                             <p:spacer/>
                         </p:column>

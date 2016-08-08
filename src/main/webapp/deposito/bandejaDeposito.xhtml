@@ -29,12 +29,11 @@
                     </p:panelGrid>
 
            <p:dataTable id="tblcaja" var="c" value="#{cajaBean.listarBandejaDepositoDto()}"
+                        stickyHeader="true"
                          widgetVar="tblcaja"
-                         scrollable="true" 
-                         scrollHeight="100%" 
-                         scrollWidth="100%"
+                      
                          style="height: 100%;max-height: 400px;"
-                         tableStyle="width:auto;">
+                       >
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Buscar en todos los campos:" />

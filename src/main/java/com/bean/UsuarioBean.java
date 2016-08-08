@@ -41,7 +41,7 @@ public class UsuarioBean implements Serializable {
 
     private boolean bPersonal;
     private String bContActual;
-
+private boolean cboDeposito;
     List<Object[]> lstUsuario = new ArrayList<>();
 
     public UsuarioBean() {
@@ -93,6 +93,26 @@ public class UsuarioBean implements Serializable {
 
     public String getContrasenaActual() {
         return contrasenaActual;
+    }
+
+    public void mostrarCboDeposito()
+    {
+    if(u.getID_PERFIL()==4){
+       
+        
+        RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'table-row'}); ");
+        
+    }else{
+       RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'none'}); ");
+    }
+        
+    }
+    public boolean isCboDeposito() {
+        return cboDeposito;
+    }
+
+    public void setCboDeposito(boolean cboDeposito) {
+        this.cboDeposito = cboDeposito;
     }
 
     public void setContrasenaActual(String contrasenaActual) {

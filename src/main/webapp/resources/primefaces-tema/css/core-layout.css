@@ -517,3 +517,8 @@ input[type="text"], input[type="password"], textarea{ -webkit-appearance: none; 
 .Container:after {
     clear: both; 
 }
+/* clase para ocultar cbodeposito */
+.clasDeposito{
+    display: none;
+    
+}
