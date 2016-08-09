@@ -2,12 +2,12 @@ package com.dao.impl;
 
 import com.dao.CajaDao;
 import com.dto.BandejaDto;
+import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import com.util.cnSQL;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.CallableStatement;
@@ -21,13 +21,10 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class CajaDaoImpl implements CajaDao {
@@ -254,7 +251,7 @@ public class CajaDaoImpl implements CajaDao {
 
             cs = cn.prepareCall("{CALL [PT].[SP_CAJA_DEPOSITO_UPDATE](?,?)}");
             cs.setInt(1, ace.getID_CAJA());
-            cs.setInt(2, ace.getID_AREA());
+            cs.setInt(2, ID_DEPOSITO);
             cs.executeQuery();
 
             cn.commit();
@@ -435,7 +432,6 @@ public class CajaDaoImpl implements CajaDao {
 
     @Override
     public ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO) {
-        System.out.println("ACA ESTA EL PINCHE ID" + ID_USUARIO);
         ArrayList<BandejaDto> lPorAlmacenar = new ArrayList<>();
         Connection cn = cnSQL.getConnection();
         BandejaDto dto = null;
@@ -470,42 +466,82 @@ public class CajaDaoImpl implements CajaDao {
 
     @Override
     public void reporteListadoEjemplaresCaja(String ruta, String[] param) {
-         Connection cn = cnSQL.getConnection();
+        Connection cn = cnSQL.getConnection();
         try {
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             OutputStream os = response.getOutputStream();
-            
-            Map<String,Object> parametros = new HashMap<>();
+
+            Map<String, Object> parametros = new HashMap<>();
             parametros.put("pID_CAJA", param[0]);
             parametros.put("pNroCaja", param[1]);
             parametros.put("pTotalVolumenes", param[2]);
             parametros.put("pTotalEjemplares", param[3]);
-            
+
             //File file = new File(ruta);
             String ruta2 = "/RPT_listadoEjemplaresCaja.jasper";
-                       
+
             String nombreArchivo = "Reporte_EjemplaresPorCaja";
 
-            JasperReport jasperReport = (JasperReport)JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(ruta2));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(ruta2));
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, cn);
-            
+
             JasperExportManager.exportReportToPdfStream(jasperPrint, os);
             response.setContentType("application/pdf");
             nombreArchivo += ".pdf";
-            
-            response.setHeader("Content-Disposition", "Attachment; filename=\""+nombreArchivo+"\"");
 
-            os.close();            
+            response.setHeader("Content-Disposition", "Attachment; filename=\"" + nombreArchivo + "\"");
+
+            os.close();
 
         } catch (IOException | JRException e) {
-            System.out.println("Error"+e.getMessage());
-        } finally {            
+            System.out.println("Error" + e.getMessage());
+        } finally {
             try {
                 cn.close();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    @Override
+    public List<ConsultaGeneral> bandejaGeneral(String FILTRO) {
+        List<ConsultaGeneral> lGeneral = new ArrayList<>();
+        Connection cn = cnSQL.getConnection();
+        ConsultaGeneral dto = null;
+        try {
+            String procedure = "{CALL [PT].[SP_ADMINISTRADOR_EJEMPLAR_LISTAR](?)}";
+            cs = cn.prepareCall(procedure);
+            cs.setString(1, FILTRO);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                dto = new ConsultaGeneral();
+                dto.setMFN(rs.getString(1));
+                dto.setNRO_INGRESO(rs.getString(2));
+                dto.setCODIGO_BARRAS(rs.getString(3));
+                dto.setCODIGO_MEMO(rs.getString(4));
+                dto.setESTADO(rs.getString(5));
+                dto.setAREA(rs.getString(6));
+                dto.setDEPOSITO(rs.getString(7));
+                dto.setID_CAJA(rs.getInt(8));
+                dto.setID_DOCUMENTAL(rs.getInt(9));
+                dto.setID_EJEMPLAR(rs.getInt(10));
+                dto.setID_ESTADO_PROCESO(rs.getInt(11));
+                if (rs.getInt(11) > 1) {
+                    dto.setAREA("Patrimonio");
+                }
+                lGeneral.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return lGeneral;
     }
 
 }

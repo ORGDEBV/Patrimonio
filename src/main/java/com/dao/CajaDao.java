@@ -1,6 +1,7 @@
 package com.dao;
 
 import com.dto.BandejaDto;
+import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.entidad.AreaCajaEstado;
@@ -18,7 +19,7 @@ public interface CajaDao {
 
     ArrayList<BandejaDto> bandejaCreado();
 
-    public ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja);
+    ArrayList<VistaPreviaDto> vistaPreviaCaja(Caja objCaja);
 
     Caja buscarCaja(int ID_CAJA);
 
@@ -28,7 +29,7 @@ public interface CajaDao {
 
     int cajaDeposito(AreaCajaEstado ace, int ID_DEPOSITO);    
 
-    public String[] cajaActualizarVolumenEjemplar(Caja objCaja);    
+    String[] cajaActualizarVolumenEjemplar(Caja objCaja);    
 
     ArrayList<BandejaDto> bandejaValidado();
     
@@ -37,5 +38,7 @@ public interface CajaDao {
     ArrayList<BandejaDto> bandejaAlmacenado(int ID_USUARIO);
 
     void reporteListadoEjemplaresCaja(String ruta, String[] param);
+    
+    List<ConsultaGeneral> bandejaGeneral(String FILTRO);
     
 }

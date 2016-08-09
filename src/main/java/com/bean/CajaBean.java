@@ -5,6 +5,7 @@ import com.dao.DocumentalDao;
 import com.dao.EjemplarDao;
 import com.dao.impl.DaoFactory;
 import com.dto.BandejaDto;
+import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.dto.FichaDocumentalDto;
@@ -104,6 +105,8 @@ public class CajaBean {
     private List<BandejaDto> lbandejavalidado;
     private List<BandejaDto> lbandejaporalmacenar;
     private List<BandejaDto> lbandejaalmacenado;
+    private List<ConsultaGeneral> lconsultageneral;
+    private String FILTRO_GENERAL;
 
     public CajaBean() {
         SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
@@ -115,6 +118,7 @@ public class CajaBean {
         lbandejavalidado = cajaDao.bandejaValidado();
         lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
         lbandejaalmacenado = cajaDao.bandejaAlmacenado(SESION_ID_USUARIO);
+        lconsultageneral = cajaDao.bandejaGeneral("");
         selecteddeposito = new Deposito();
         fichaDocumental = new FichaDocumentalDto();
         fichaEjemplar = new FichaEjemplarDto();
@@ -846,6 +850,11 @@ public class CajaBean {
         RequestContext.getCurrentInstance().update("gMensaje");
     }
 
+    public void filtroGeneral() {
+        lconsultageneral = cajaDao.bandejaGeneral(FILTRO_GENERAL);
+        RequestContext.getCurrentInstance().update("frmTable");
+    }
+
     public List<BandejaDto> getLbandejacreado() {
         return lbandejacreado;
     }
@@ -924,6 +933,22 @@ public class CajaBean {
 
     public void setLbandejaalmacenado(List<BandejaDto> lbandejaalmacenado) {
         this.lbandejaalmacenado = lbandejaalmacenado;
+    }
+
+    public List<ConsultaGeneral> getLconsultageneral() {
+        return lconsultageneral;
+    }
+
+    public void setLconsultageneral(List<ConsultaGeneral> lconsultageneral) {
+        this.lconsultageneral = lconsultageneral;
+    }
+
+    public String getFILTRO_GENERAL() {
+        return FILTRO_GENERAL;
+    }
+
+    public void setFILTRO_GENERAL(String FILTRO_GENERAL) {
+        this.FILTRO_GENERAL = FILTRO_GENERAL;
     }
 
 }

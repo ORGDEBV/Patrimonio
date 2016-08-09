@@ -23,6 +23,7 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body styleClass="BlueBody">
+        <p:growl id="gMensaje" for="gMensaje" showDetail="true" life="700000" widgetVar="gMensaje" escape="true" />
         <f:event listener="#{usuarioBean.validaLogOut}" type="preRenderView"/>
         <div class="Container100">
             <div class="Container100">
