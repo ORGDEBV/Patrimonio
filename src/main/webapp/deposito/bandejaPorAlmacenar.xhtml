@@ -28,7 +28,7 @@
                 <p:column headerText="PROCESAR" style="text-align: center;">
                     <p:commandButton actionListener="#{cajaBean.almacenar(c.ID_CAJA)}" icon="fa fa-cogs"></p:commandButton>
                 </p:column>
-                <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;">
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_CAJA}" headerText="ID" style="text-align: center;" rendered="false">
                     <h:outputText value="#{c.ID_CAJA}"/>
                 </p:column>
                 <p:column filterStyle="display:none" filterBy="#{c.CODIGO_MEMO}"  headerText="COD_MEMO" style="text-align: center;">

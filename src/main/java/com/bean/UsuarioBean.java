@@ -41,7 +41,8 @@ public class UsuarioBean implements Serializable {
 
     private boolean bPersonal;
     private String bContActual;
-private boolean cboDeposito;
+    private String strTareas;
+    private boolean cboDeposito;
     List<Object[]> lstUsuario = new ArrayList<>();
 
     public UsuarioBean() {
@@ -79,14 +80,25 @@ private boolean cboDeposito;
         }
     }
 
+    public String getStrTareas() {
+        return strTareas;
+    }
+
+    public void setStrTareas(String strTareas) {
+        this.strTareas = strTareas;
+    }
+
     public void validaLogIn() throws IOException {
         ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
+
         Object ID_USUARIO = ex.getSessionMap().get("USUARIO_ID_USUARIO");
+
         if (ID_USUARIO != null) {
             p.setNOMBRE((String) ex.getSessionMap().get("PERSONAL_NOMBRE"));
             p.setPATERNO((String) ex.getSessionMap().get("PERSONAL_PATERNO"));
             p.setMATERNO((String) ex.getSessionMap().get("PERSONAL_MATERNO"));
             p.setCARGO((String) ex.getSessionMap().get("PERSONAL_CARGO"));
+            strTareas = uDao.tareasPorUsuario(String.valueOf(ID_USUARIO));
         } else {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/");
         }
@@ -96,18 +108,17 @@ private boolean cboDeposito;
         return contrasenaActual;
     }
 
-    public void mostrarCboDeposito()
-    {
-    if(u.getID_PERFIL()==4){
-       
-        
-        RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'table-row'}); ");
-        
-    }else{
-       RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'none'}); ");
+    public void mostrarCboDeposito() {
+        if (u.getID_PERFIL() == 4) {
+
+            RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'table-row'}); ");
+
+        } else {
+            RequestContext.getCurrentInstance().execute(" $('.clasDeposito').css({'display':'none'}); ");
+        }
+
     }
-        
-    }
+
     public boolean isCboDeposito() {
         return cboDeposito;
     }
@@ -149,6 +160,15 @@ private boolean cboDeposito;
         if (ID_USUARIO != null) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/inicio.xhtml");
         }
+    }
+
+    public void redirecUsuarioSesion() throws IOException {
+        Object ID_USUARIO = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO");
+        if (ID_USUARIO != null) {
+            String idUsuario = String.valueOf(ID_USUARIO);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/depdb/usuario/usuarioSesion.xhtml?ID=" + idUsuario + "");
+        }
+
     }
 
     public Usuario getU() {
@@ -295,6 +315,54 @@ private boolean cboDeposito;
 
     }
 
+    public void editarUsuarioSesion() {
+
+        String ID_USUARIO = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO"));
+        String id = String.valueOf(u.getID_USUARIO());
+        if (ID_USUARIO.equals(id)) {
+
+            ArrayList<String> arrayErrores = listValidacion();
+            if (arrayErrores.isEmpty()) {
+                //codigo para registrar
+                if (contrasenaNueva.trim().length() > 0) {
+                    u.setCONTRASENA(contrasenaNueva.trim());
+                }
+                if (usuarioNuevo.trim().length() > 0) {
+                    u.setUSUARIO(usuarioNuevo);
+                }
+                int out = uDao.insertar(u);
+                if (out == 1) {
+                    limpiarCampos();
+                    FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "PROCESO COMPLETADO", "Usuario se procesado con éxito."));
+                    RequestContext.getCurrentInstance().update("frmPersonalUnsertUpd");
+                    RequestContext.getCurrentInstance().update("gMensaje");
+                    System.out.println(" registro exitoso");
+                } else {
+                    limpiarCampos();
+                    FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error "));
+                    RequestContext.getCurrentInstance().update("frmPersonalUnsertUpd");
+                    RequestContext.getCurrentInstance().update("gMensaje");
+                }
+            } else {
+                String mensaje = "No se pudo insertar el documento.\nPor los motivos:<br/>";
+                for (int i = 0; i < arrayErrores.size(); i++) {
+                    String motivo = "-" + arrayErrores.get(i) + "<br/>";
+                    mensaje = mensaje + motivo;
+                }
+                msjError("gMensaje", mensaje);
+                RequestContext.getCurrentInstance().update("gMensaje");
+            }
+
+        }else{
+            limpiarCampos();
+                    FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Ocurrió un error: NO PUEDE EDITAR DATOS DE OTROS USUARIOS "));
+                    RequestContext.getCurrentInstance().update("frmPersonalUnsertUpd");
+                    RequestContext.getCurrentInstance().update("gMensaje");
+        
+        }
+
+    }
+
     public void limpiarCampos() {
         u.setID_PERSONAL(-1);
         u.setID_USUARIO(0);
@@ -367,7 +435,7 @@ private boolean cboDeposito;
             System.out.println("error" + ex);
         }
     }
-    
+
     public void cierraSesion() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
         FacesContext.getCurrentInstance().getExternalContext().redirect("/Patrimonio/");
