@@ -517,8 +517,22 @@ input[type="text"], input[type="password"], textarea{ -webkit-appearance: none; 
 .Container:after {
     clear: both; 
 }
+
 /* clase para ocultar cbodeposito */
 .clasDeposito{
     display: none;
     
 }
+
+
+/*link */
+.enlaceboton {    
+    
+    padding: 8px 25px;
+    color: white;
+    border-radius: 3px
+} 
+.enlaceboton:hover { 
+    border-bottom: 1px solid #cccccc; 
+}
+

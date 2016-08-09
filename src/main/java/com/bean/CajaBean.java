@@ -5,6 +5,7 @@ import com.dao.DocumentalDao;
 import com.dao.EjemplarDao;
 import com.dao.impl.DaoFactory;
 import com.dto.BandejaDto;
+import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.dto.FichaDocumentalDto;
@@ -25,6 +26,7 @@ import com.entidad.Marc504;
 import static com.util.Constantes.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +36,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
@@ -104,6 +107,8 @@ public class CajaBean {
     private List<BandejaDto> lbandejavalidado;
     private List<BandejaDto> lbandejaporalmacenar;
     private List<BandejaDto> lbandejaalmacenado;
+    private List<ConsultaGeneral> lconsultageneral;
+    private String FILTRO_GENERAL;
 
     public CajaBean() {
         SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
@@ -115,6 +120,7 @@ public class CajaBean {
         lbandejavalidado = cajaDao.bandejaValidado();
         lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
         lbandejaalmacenado = cajaDao.bandejaAlmacenado(SESION_ID_USUARIO);
+        lconsultageneral = cajaDao.bandejaGeneral("");
         selecteddeposito = new Deposito();
         fichaDocumental = new FichaDocumentalDto();
         fichaEjemplar = new FichaEjemplarDto();
@@ -698,8 +704,11 @@ public class CajaBean {
 
     //reporte
     public void exportarListadoEjemplaresPorCaja() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+        String ruta = servletContext.getRealPath("/reportes/RPT_listadoEjemplaresCaja.jasper");
         String[] param = {String.valueOf(objCaja.getID_CAJA()), objCaja.getNRO_CAJA(), String.valueOf(totalVolumenes), String.valueOf(totalEjemplares)};
-        cajaDao.reporteListadoEjemplaresCaja("ruta", param);
+        cajaDao.reporteListadoEjemplaresCaja(ruta, param);
         FacesContext.getCurrentInstance().responseComplete();
 
     }
@@ -846,6 +855,11 @@ public class CajaBean {
         RequestContext.getCurrentInstance().update("gMensaje");
     }
 
+    public void filtroGeneral() {
+        lconsultageneral = cajaDao.bandejaGeneral(FILTRO_GENERAL);
+        RequestContext.getCurrentInstance().update("frmTable");
+    }
+
     public List<BandejaDto> getLbandejacreado() {
         return lbandejacreado;
     }
@@ -924,6 +938,22 @@ public class CajaBean {
 
     public void setLbandejaalmacenado(List<BandejaDto> lbandejaalmacenado) {
         this.lbandejaalmacenado = lbandejaalmacenado;
+    }
+
+    public List<ConsultaGeneral> getLconsultageneral() {
+        return lconsultageneral;
+    }
+
+    public void setLconsultageneral(List<ConsultaGeneral> lconsultageneral) {
+        this.lconsultageneral = lconsultageneral;
+    }
+
+    public String getFILTRO_GENERAL() {
+        return FILTRO_GENERAL;
+    }
+
+    public void setFILTRO_GENERAL(String FILTRO_GENERAL) {
+        this.FILTRO_GENERAL = FILTRO_GENERAL;
     }
 
 }

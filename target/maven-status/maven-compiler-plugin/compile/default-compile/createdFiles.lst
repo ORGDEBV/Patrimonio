@@ -13,6 +13,7 @@ com\dao\PersonalDao.class
 com\dao\impl\PerfilDaoImpl.class
 com\dto\BandejaDto.class
 com\dao\DocumentalDao.class
+com\dto\ConsultaGeneral.class
 com\bean\UsuarioBean.class
 com\entidad\MenuPersonalizado.class
 com\entidad\UsuarioInterface.class

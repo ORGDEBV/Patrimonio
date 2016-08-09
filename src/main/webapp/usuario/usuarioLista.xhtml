@@ -20,51 +20,55 @@
                          >
                 <p:column filterStyle="display:none"  headerText="Editar"  style="text-align: center;">
                     <p:commandButton  actionListener="#{usuarioBean.redireccionar(u[0])}" 
-                                       icon="fa fa-fw fa-edit" >
+                                      icon="fa fa-fw fa-edit" >
                     </p:commandButton>
                 </p:column>
-                 <p:column filterStyle="display:none"  rendered="true" headerText="Id Usuario"  style="text-align: center;">
+                <p:column filterStyle="display:none"  rendered="true" headerText="Id Usuario"  style="text-align: center;">
                     <h:outputText value="#{u[0]}"/>
                 </p:column>
                 <p:column filterStyle="display:none" rendered="false" headerText="Id Personal"  style="text-align: center;">
                     <h:outputText value="#{u[1]}"/>
                 </p:column>
-                  <p:column filterStyle="display:none"  headerText="Nombres-Apellidos"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Nombres-Apellidos"  style="text-align: center;">
                     <h:outputText value="#{u[2]}"/>
                 </p:column>
-                  <p:column filterStyle="display:none"  headerText="Usuario"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Usuario"  style="text-align: center;">
                     <h:outputText value="#{u[3]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Contraseña"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Contraseña"  style="text-align: center;">
                     <h:outputText value="#{u[4]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Id Perfil"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Id Perfil"  style="text-align: center;">
                     <h:outputText value="#{u[5]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Perfil"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Perfil"  style="text-align: center;">
                     <h:outputText value="#{u[6]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Perfil-Personalizado"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Perfil-Personalizado"  style="text-align: center;">
                     <h:outputText value="#{u[7]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="cambio-Contraseña"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="cambio-Contraseña"  style="text-align: center;">
                     <h:outputText value="#{u[8]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Activo"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Activo"  style="text-align: center;">
                     <h:outputText value="#{u[9]}"/>
                 </p:column>
-                 <p:column filterStyle="display:none"  headerText="Fecha Registro"  style="text-align: center;">
+                <p:column filterStyle="display:none"  headerText="Fecha Registro"  style="text-align: center;">
                     <h:outputText value="#{u[10]}"/>
                 </p:column>
                 <p:column filterStyle="display:none"  headerText="Menu"  style="text-align: center;">
                     <p:commandButton  actionListener="#{usuarioBean.redireccionarPersMenu(u[0])}" 
-                                       icon="fa fa-fw fa-edit" >
+                                      icon="fa fa-fw fa-edit" >
                     </p:commandButton>
                 </p:column>
-                
+
             </p:dataTable>
-            
-            
+
+            <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                <p:printer target="tblUsuario" />
+            </p:commandButton>
+
+          
         </h:form>
     </ui:define>
 

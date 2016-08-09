@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="frmBusqueda">
+            <p:panelGrid columns="5" layout="grid" style="display:flex;align-items: center;">
+                <h:outputLabel value="Ingrese parámetros de búsqueda: " style="font-size:15px;"/>
+                <p:inputText value="#{cajaBean.FILTRO_GENERAL}"/> 
+                <p:commandButton actionListener="#{cajaBean.filtroGeneral()}" value="FILTRAR"></p:commandButton>
+            </p:panelGrid>
+        </h:form>
+        <h:form id="frmTable">
+             <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                <p:printer target="tblGeneral" />
+            </p:commandButton>
+            <p:dataTable id="tblGeneral" 
+                         var="c" 
+                         widgetVar="tblcaja"
+                         style="margin-top:20px;height: 100%;"
+                         value="#{cajaBean.lconsultageneral}"
+                         scrollable="false"
+                         
+                         >
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en la tabla: " />
+                        <p:inputText onkeyup="PF('tblcaja').filter()"  style="width:30%;margin-left:30px;border-radius:18px;" placeholder="Escriba palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column headerText="DESCRIPCIÓN" style="text-align: center;">
+                    <p:commandButton actionListener="#{cajaBean.infoEjemplar(c.ID_DOCUMENTAL,c.ID_EJEMPLAR)}" icon="fa fa-file-text-o" onclick="PF('dlgFicha').show();"></p:commandButton>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.MFN}" headerText="MFN" style="text-align: center;">
+                    <h:outputText value="#{c.MFN}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.NRO_INGRESO}" headerText="NRO INGRESO" style="text-align: center;">
+                    <h:outputText value="#{c.NRO_INGRESO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.CODIGO_BARRAS}" headerText="CODIGO BARRAS" rendered="true"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_BARRAS}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.CODIGO_MEMO}" headerText="CODIGO MEMO" rendered="false"  style="text-align: center;">
+                    <h:outputText value="#{c.CODIGO_MEMO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.AREA}" headerText="UBICACIÓN"  style="text-align: center;">
+                    <h:outputText value="#{c.AREA}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.ESTADO}" headerText="ESTADO"  style="text-align: center;">
+                    <h:outputText value="#{c.ESTADO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.DEPOSITO}" headerText="DEPOSITO"  style="text-align: center;">
+                    <h:outputText value="#{c.DEPOSITO}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_DOCUMENTAL}" rendered="false" headerText="DEPOSITO"  style="text-align: center;">
+                    <h:outputText value="#{c.ID_DOCUMENTAL}"/>
+                </p:column>
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_EJEMPLAR}" rendered="false" headerText="DEPOSITO"  style="text-align: center;">
+                    <h:outputText value="#{c.ID_EJEMPLAR}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog id="dlgFicha" header="Ficha Ejemplar" widgetVar="dlgFicha" modal="true" height="200" width="60%"  showEffect="fade" hideEffect="fade" resizable="false" closeOnEscape="true">
+            <p:outputPanel id="pnlFicha" styleClass="TexAlLeft">
+                <p:outputPanel styleClass="Wid100">
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m082a}"/>
+                    <p:outputLabel value="#{cajaBean.fichaEjemplar.m852i}"/>
+                </p:outputPanel>
+                <p:outputPanel styleClass="Wid70" style="margin-left: 17%;">
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m100a} #{cajaBean.fichaDocumental.m100d}"/>
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m245a} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m245c} #{cajaBean.fichaDocumental.m250a} #{cajaBean.fichaDocumental.m260a} #{cajaBean.fichaDocumental.m260b}, #{cajaBean.fichaDocumental.m260c} #{cajaBean.fichaDocumental.m300a} #{cajaBean.fichaDocumental.m300b} #{cajaBean.fichaDocumental.m300c}"/>
+                    <ui:repeat var="item" value="#{cajaBean.fichaDocumental.m500a}">
+                        <p:outputLabel value="#{item}"/>
+                    </ui:repeat>
+                    <p:outputLabel value="#{cajaBean.fichaDocumental.m504a}"/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="D.L. #{cajaBean.fichaDocumental.m017a}"/>
+                    <p:outputLabel value="#{cajaBean.fichaEjemplar.m583b} #{cajaBean.fichaEjemplar.m583c}, #{cajaBean.fichaEjemplar.m583k} :"/> 
+                    <p:outputLabel value="NI=#{cajaBean.fichaEjemplar.m852j} , #{cajaBean.fichaEjemplar.m852_3} , #{cajaBean.fichaEjemplar.m852c}"/>
+                </p:outputPanel>
+            </p:outputPanel>
+        </p:dialog>   
+    </ui:define>
+
+</ui:composition>
