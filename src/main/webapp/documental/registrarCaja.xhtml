@@ -7,6 +7,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    
     <ui:define name="content">
         <h:form id="frmCaja">
             <div class="EmptyBox10"></div>
@@ -33,7 +34,7 @@
                 </div>
                 <div class="Container100 TexAlLeft" style="padding-left: 7%;">
                     <p:commandButton styleClass="TealGreenButton MarRight10" value="Crear Caja" actionListener="#{cajaBean.grabarCaja()}" disabled="#{cajaBean.disabledGrabarCaja}"  />   
-                    <p:commandButton styleClass="RedButton  MarRight10" style="margin-left: 2%" value="Exportar" rendered="#{cajaBean.renderedBtnReportes}" actionListener="#{cajaBean.exportarListadoEjemplaresPorCaja()}"/>
+                    <h:commandLink id="reporte2"  styleClass="RedButton  MarRight10 enlaceboton" target="_blank" value="Exportar" rendered="#{cajaBean.renderedBtnReportes}" actionListener="#{cajaBean.exportarListadoEjemplaresPorCaja()}"/>
                 </div>
             </p:fragment>
             <div class="EmptyBox5"></div>       
@@ -71,11 +72,11 @@
                         </p:column> 
 
                         <p:columnGroup type="footer">
-                        <p:row>
-                            <p:column style="text-align:center;font-weight:bold" footerText="TOTAL EJEMPLARES : " colspan="2"/>
-                            <p:column style="font-weight:bold" footerText="#{cajaBean.objCaja.NRO_EJEMPLARES}"/>
-                        </p:row>
-                    </p:columnGroup>
+                            <p:row>
+                                <p:column style="text-align:center;font-weight:bold" footerText="TOTAL EJEMPLARES : " colspan="2"/>
+                                <p:column style="font-weight:bold" footerText="#{cajaBean.objCaja.NRO_EJEMPLARES}"/>
+                            </p:row>
+                        </p:columnGroup>
                     </p:dataTable>
                 </p:fragment>
             </h:panelGroup>

@@ -26,6 +26,7 @@ import com.entidad.Marc504;
 import static com.util.Constantes.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.marc4j.MarcReader;
 import org.marc4j.MarcXmlReader;
@@ -702,8 +704,11 @@ public class CajaBean {
 
     //reporte
     public void exportarListadoEjemplaresPorCaja() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+        String ruta = servletContext.getRealPath("/reportes/RPT_listadoEjemplaresCaja.jasper");
         String[] param = {String.valueOf(objCaja.getID_CAJA()), objCaja.getNRO_CAJA(), String.valueOf(totalVolumenes), String.valueOf(totalEjemplares)};
-        cajaDao.reporteListadoEjemplaresCaja("ruta", param);
+        cajaDao.reporteListadoEjemplaresCaja(ruta, param);
         FacesContext.getCurrentInstance().responseComplete();
 
     }
