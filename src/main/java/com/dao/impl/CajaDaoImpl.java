@@ -470,15 +470,14 @@ public class CajaDaoImpl implements CajaDao {
 
     @Override
     public void reporteListadoEjemplaresCaja(String ruta, String[] param) {
-        
+
         Connection cn = cnSQL.getConnection();
-        
-        Map parameter = new HashMap();        
-        parameter.put( "pID_CAJA", param[0] );
-        parameter.put( "pNroCaja", param[1] );
-        parameter.put( "pTotalVolumenes", param[2] );
-        parameter.put( "pTotalEjemplares", param[3] );
-             
+
+        Map parameter = new HashMap();
+        parameter.put("pID_CAJA", param[0]);
+        parameter.put("pNroCaja", param[1]);
+        parameter.put("pTotalVolumenes", param[2]);
+        parameter.put("pTotalEjemplares", param[3]);
 
         try {
             File file = new File(ruta);
@@ -492,21 +491,15 @@ public class CajaDaoImpl implements CajaDao {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, cn);
 
-            JRExporter jrExporter = null;                      
-            jrExporter = new JRPdfExporter();
+            JRExporter jrExporter = new JRPdfExporter();
             jrExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            jrExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, httpServletResponse.getOutputStream());
+            jrExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, httpServletResponse.getOutputStream());           
+            
+            jrExporter.exportReport();
+            
 
-            if (jrExporter != null) {
-                try {
-                    jrExporter.exportReport();
-                } catch (JRException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error :"+e.getMessage());
+        } catch (JRException | IOException e) {
+            System.out.println("Error :" + e.getMessage());
         } finally {
             try {
                 cn.close();
@@ -514,45 +507,7 @@ public class CajaDaoImpl implements CajaDao {
                 System.out.println(ex.getMessage());
             }
         }
-        
-        
-        
-//         Connection cn = cnSQL.getConnection();
-//        try {
-//            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-//            OutputStream os = response.getOutputStream();
-//            
-//            Map<String,Object> parametros = new HashMap<>();
-//            parametros.put("pID_CAJA", param[0]);
-//            parametros.put("pNroCaja", param[1]);
-//            parametros.put("pTotalVolumenes", param[2]);
-//            parametros.put("pTotalEjemplares", param[3]);
-//            
-//            //File file = new File(ruta);
-//            String ruta2 = "/RPT_listadoEjemplaresCaja.jasper";
-//                       
-//            String nombreArchivo = "Reporte_EjemplaresPorCaja";
-//
-//            JasperReport jasperReport = (JasperReport)JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(ruta2));
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, cn);
-//            
-//            JasperExportManager.exportReportToPdfStream(jasperPrint, os);
-//            response.setContentType("application/pdf");
-//            nombreArchivo += ".pdf";
-//            
-//            response.setHeader("Content-Disposition", "Attachment; filename=\""+nombreArchivo+"\"");
-//
-//            os.close();            
-//
-//        } catch (IOException | JRException e) {
-//            System.out.println("Error"+e.getMessage());
-//        } finally {            
-//            try {
-//                cn.close();
-//            } catch (SQLException ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//        }
+
     }
 
 }
