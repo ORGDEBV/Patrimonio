@@ -473,7 +473,7 @@ public class CajaDaoImpl implements CajaDao {
 
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("pID_CAJA", param[0]);
-            parametros.put("pNroCaja", param[1]);
+            parametros.put("pMemo", param[1]);
             parametros.put("pTotalVolumenes", param[2]);
             parametros.put("pTotalEjemplares", param[3]);
 
