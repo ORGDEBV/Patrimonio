@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/templatePatrimonio.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="ID" value="#{usuarioBean.u.ID_USUARIO}" />
+    </f:metadata>
+
+    <ui:define name="content">
+        <style>
+
+            .ui-panelgrid .ui-panelgrid-cell {
+                border-width: 0px;
+                border-style: solid; 
+                border-color: inherit;
+                padding: 2px 15px;
+                background-color: white; 
+                text-align: left;
+            }
+
+        </style>
+        <f:event listener="#{usuarioBean.listarUsuarioId()}" type="preRenderView"/>
+        <h:form id="frmPersonalUnsertUpd">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" redisplay="false"/>
+            <p:panel id="pnlContenido" header="DATOS DE USUARIO">
+
+                <p:panelGrid styleClass="Wid100">
+
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="cboPersonal"  value="PERSONAL :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:selectOneMenu id="cboPersonal" 
+                                             filter="true"
+                                             filterMatchMode="contains"
+                                             required="true"
+                                             
+                                             disabled="#{usuarioBean.isbPersonal()}"
+                                             widgetVar="cboPersonal"
+                                             value="#{usuarioBean.u.ID_PERSONAL}"
+                                             styleClass="Wid100Imp cboArea"
+                                             style="float:left;margin-right:15px;">
+                                <f:selectItem itemLabel="Seleccione Personal" itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{personalBean.cboPersonal}"/>
+                                <f:validateLongRange minimum="1"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtUsuario" value="USUARIO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtUsuario" required="true" value="#{usuarioBean.usuarioNuevo}" styleClass="Wid100 txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100" rendered="#{usuarioBean.getbContActual()}">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtContraseñaAnterior" value="CONTRASEÑA ACTUAL :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtContraseñaAnterior" value="#{usuarioBean.contrasenaActual}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtContraseña" value=" NUEVA CONTRASEÑA :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtContraseña" value="#{usuarioBean.contrasenaNueva}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtContraseñaConf" value="CONFIRMAR CONTRASEÑA :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:inputText id="txtContraseñaConf" value="#{usuarioBean.contrasenaConf}" styleClass="Wid100  txtNombre"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+
+
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="cboPerfil"  value="PERFIL :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:selectOneMenu id="cboPerfil" 
+                                             filter="true"
+                                             filterMatchMode="contains"
+                                             required="true"
+                                             widgetVar="cboPerfil"
+                                             value="#{usuarioBean.u.ID_PERFIL}"
+                                             styleClass="Wid100Imp cboPerfil"
+                                             style="float:left;margin-right:15px;">
+                                <p:ajax listener="#{usuarioBean.mostrarCboDeposito()}" />
+                                <f:selectItem itemLabel="Seleccione Perfil" itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{perfilBean.cboPerfil}"/>
+                                <f:validateLongRange minimum="1"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+
+                    <p:row styleClass="Wid100">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="txtActivo" value="ACTIVO :"/>                                    
+                        </p:column>
+
+                        <p:column styleClass="Wid60">
+                            <p:selectBooleanCheckbox id="txtActivo" value="#{usuarioBean.u.boolActivo}" disabled="false"/>
+                        </p:column>
+
+
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+                    
+                    <p:row styleClass="Wid100 clasDeposito">
+                        <p:column styleClass="Wid20">
+                            <p:outputLabel for="cboDeposito"  value="DEPOSITO :"/>                                    
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <p:selectOneMenu id="cboDeposito" styleClass="Wid100Imp txtCodLista" value="#{usuarioBean.u.ID_DEPOSITO}">
+                                <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
+                                <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <p:spacer/>
+                        </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+            </p:panel>
+            <p:panelGrid>                
+                <p:commandButton  value="REGISTRAR" actionListener="#{usuarioBean.registrarUsuario()}"  ajax="true"  styleClass="Wid100"/>         
+
+            </p:panelGrid>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -30,19 +30,15 @@
         <div id="layout-topbar">
             <div id="layout-topbar-indent">
                 <a id="menu-button"><i class="icon-th-menu"></i></a>
-                <a href="/Patrimonio/depdb/inicio.xhtml"><img id="logo" src="/Patrimonio/resources/primefaces-tema/images/logo.svg" /></a>
+                <a href="/Patrimonio/depdb/inicio.xhtml"><img id="logo" src="/Patrimonio/resources/primefaces-tema/images/imagPatrimonio/Logo_Cabecera.svg" style="height:50px; margin-top: 5px"   /></a>
                 <div class="DispInlBlock Fright" style="margin:10px 10px 0px 0px;" id="toprightmenu">
                     <h:form class="DispInline">
                         <p:splitButton value="Menu" icon="fa fa-cog">
-                            <p:menuitem value="Usuarios" icon="fa fa-user"/>
-                            <p:menuitem value="Reportes" icon="fa fa-file-text-o"/>
-                            <p:menuitem value="Gráficos" icon="fa fa-line-chart"/>
+                            <p:menuitem value="Usuarios" icon="fa fa-user" action="#{usuarioBean.redirecUsuarioSesion()}"/>
                             <p:separator />
-                            <p:menuitem value="Tareas" icon="fa fa-tasks"/>
-                            <p:menuitem value="Mensajes" icon="fa fa-envelope-o"/>
-                            <p:menuitem value="Notas" icon="fa fa-file-zip-o"/>
-                            <p:separator />
-                            <p:menuitem value="Cerrar Sesión" icon="fa fa-key"/>
+                            <p:menuitem value="Cerrar Sesión" icon="fa fa-key" action="#{usuarioBean.cierraSesion()}" style="padding-top: 3px;">
+
+                            </p:menuitem>
                         </p:splitButton> 
                     </h:form>
                 </div>
@@ -54,14 +50,9 @@
             <li style="float:left; border:none;">
                 <a href="#"><i class="icon-vcard Opac80"></i><span><span class="Fs16">#{usuarioBean.p.NOMBRE} #{usuarioBean.p.PATERNO} #{usuarioBean.p.MATERNO}</span> <br /> <span class="Opac50 Fs12">#{usuarioBean.p.CARGO}</span></span></a>
             </li>
+
             <li>
-                <a href="#"><i class="icon-printer2 Opac80"></i><span><span class="Fs16">Orders</span> <br /> <span class="Opac50 Fs12">Totally 23 Orders</span></span></a>
-            </li>
-            <li>
-                <a href="#"><i class="icon-paperclip Opac80"></i><span><span class="Fs16">Notes</span> <br /> <span class="Opac50 Fs12">241 Notes</span></span></a>
-            </li>
-            <li>
-                <a href="#"><i class="icon-stopwatch Opac80"></i><span><span class="Fs16">Tasks</span> <br /> <span class="Opac50 Fs12">26 Unread Tasks</span></span></a>
+                <a href="#"><i class="icon-stopwatch Opac80"></i><span><span class="Fs16">Tareas</span> <br /> <span class="Opac50 Fs12">#{usuarioBean.strTareas}</span></span></a>
             </li>
         </ul>
         <!-- TOPMENU END -->
@@ -108,27 +99,19 @@
                             </div>
                             <!-- FOOTER  -->
                             <div class="Container100" style="border-top:solid 1px #CCCCCC; margin-top:20px;" id="footerlinks">
-                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">TERMS OF CONDITIONS</a>
+                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">POLITICAS DE PRIVACIDAD</a>
                                 <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
-                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">SITEMAP</a>
-                                <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
-                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">PRIVACY</a>
-                                <span class="Fleft Leaden Fs12" style="padding:0px 5px;">|</span>
-                                <a href="#" class="DispInlBlock FontSourceSansLight Leaden Fs12 Fleft HoverEffect">LINKING POLICY</a>
+
+
                                 <div class="EmptyBox10 ShowOnMobile"></div>
-                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight FloatNoneOnMobile"> PrimeFaces Volt Theme And Layout</span>
+                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight FloatNoneOnMobile"> Dirección Ejecutiva de Patrimonio Documental Bibliográfico</span>
                             </div>
                             <div class="Container50 Responsive100">
-                                <img src="/Patrimonio/resources/primefaces-tema/images/logo.svg" style="height:20px;" class="Fleft" />
-                                <div class="Container100 NoIndent">
-                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-facebook-square"></i></a>
-                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-twitter-square"></i></a>
-                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-linkedin-square"></i></a>
-                                    <a href="#layout-footer" class="Leaden Fs30"><i class="fa fa-google-plus-square"></i></a>
-                                </div>
+                                <img src="/Patrimonio/resources/primefaces-tema/images/imagPatrimonio/Logo_Cabecera3.svg" style="height:40px;" class="Fleft" />
+
                             </div>
                             <div class="Container50 Responsive100">
-                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight">+1 888 123 4567 <br /> info@voltvolt.com</span>
+                                <span class="DispInlBlock FontSourceSansLight Leaden Fs12 Fright HoverEffect TexAlRight"> Telefono: +51 1 5136900 Anexo: 7145 <br />depdb@bnp.gob.pe </span>
                             </div>
                             <div class="EmptyBox10"></div>
                         </div>

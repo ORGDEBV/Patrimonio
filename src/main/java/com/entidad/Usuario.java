@@ -15,7 +15,17 @@ public class Usuario implements Serializable{
     private String ACTIVO;
     private Date FECHA_REGISTRO;
     
+    /// AUX
+    private Integer ID_DEPOSITO;
     private boolean boolActivo;
+
+    public Integer getID_DEPOSITO() {
+        return ID_DEPOSITO;
+    }
+
+    public void setID_DEPOSITO(Integer ID_DEPOSITO) {
+        this.ID_DEPOSITO = ID_DEPOSITO;
+    }
 
     public Integer getID_USUARIO() {
         return ID_USUARIO;

@@ -13,4 +13,5 @@ public interface UsuarioDao {
     Usuario buscar(Integer codigo);
     Usuario logIn(Usuario u);
     boolean validaUsuario(String usuario);
+    public String tareasPorUsuario(String usuario);
 }

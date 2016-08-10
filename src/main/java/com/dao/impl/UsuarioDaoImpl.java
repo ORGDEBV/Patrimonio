@@ -22,7 +22,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
         String msg = "";
         Connection cn = SQL.getConnection();
         try {
-            cs = cn.prepareCall("{CALL [PT].[SP_USUARIO_InsertarModificar](?,?,?,?,?,?)}");
+            cs = cn.prepareCall("{CALL [PT].[SP_USUARIO_InsertarModificar](?,?,?,?,?,?,?)}");
             if (u.getID_USUARIO() == null) {
                 u.setID_USUARIO(0);
             }
@@ -37,6 +37,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 u.setACTIVO("0");
             }
             cs.setString(6, u.getACTIVO());
+            cs.setInt(7, u.getID_DEPOSITO());
             rs = cs.executeQuery();
             if (rs.next()) {
                 out = rs.getInt(1);
@@ -166,6 +167,27 @@ public class UsuarioDaoImpl implements UsuarioDao {
             System.out.println("Erro :" + e);
         }
         return flag;
+    }
+
+    @Override
+    public String tareasPorUsuario(String usuario) {
+        String Tareas="";
+        Connection cn = SQL.getConnection();
+        try {
+            cs = cn.prepareCall("{CALL PT.SP_AREA_CAJA_ESTADO_Tareas(?)}");
+            cs.setString(1, usuario);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                Tareas = rs.getString(1);
+            } else {
+                Tareas="";
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro :" + e);
+        }
+    
+    return Tareas;
     }
 
 }
