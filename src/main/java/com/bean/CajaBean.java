@@ -707,7 +707,7 @@ public class CajaBean {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
         String ruta = servletContext.getRealPath("/reportes/RPT_listadoEjemplaresCaja.jasper");
-        String[] param = {String.valueOf(objCaja.getID_CAJA()), objCaja.getNRO_CAJA(), String.valueOf(totalVolumenes), String.valueOf(totalEjemplares)};
+        String[] param = {String.valueOf(objCaja.getID_CAJA()), objCaja.getCODIGO_MEMO(), String.valueOf(totalVolumenes), String.valueOf(totalEjemplares)};
         cajaDao.reporteListadoEjemplaresCaja(ruta, param);
         FacesContext.getCurrentInstance().responseComplete();
 
