@@ -91,9 +91,10 @@ public class CajaDaoImpl implements CajaDao {
                 bp.setCODIGO_MEMO(rs.getString(2));
                 bp.setNRO_CAJA(rs.getString(3));
                 bp.setNRO_EJEMPLARES(rs.getString(4));
-                bp.setAREA(rs.getString(5));
-                bp.setSALA(rs.getString(6));
-                bp.setFECHA(rs.getString(7));
+                bp.setNRO_VOLUMENES(rs.getString(5));
+                bp.setAREA(rs.getString(6));
+                bp.setSALA(rs.getString(7));
+                bp.setFECHA(rs.getString(8));
                 lstBandejaPatrimonio.add(bp);
             }
         } catch (SQLException e) {

@@ -104,7 +104,7 @@
                 <p:column headerText="DESCRIPCIÓN" style="text-align: center;">
                     <p:commandButton actionListener="#{cajaBean.infoEjemplar(c.ID_DOCUMENTAL,c.ID_EJEMPLAR)}" icon="fa fa-file-text-o" onclick="PF('dlgFicha').show();"></p:commandButton>
                 </p:column>
-                <p:column filterStyle="display:none"  filterBy="#{c.ID_DOCUMENTAL}" headerText="ID_DOCUMENTAL" rendered="true"  style="text-align: center;">
+                <p:column filterStyle="display:none"  filterBy="#{c.ID_DOCUMENTAL}" headerText="ID_DOCUMENTAL" rendered="false"  style="text-align: center;">
                     <h:outputText value="#{c.ID_DOCUMENTAL}"/>
                 </p:column>
                 <p:column filterStyle="display:none"  filterBy="#{c.ID_EJEMPLAR}" headerText="ID_EJEMPLAR" rendered="false"  style="text-align: center;">
@@ -118,6 +118,9 @@
                 </p:column>
                 <p:column filterStyle="display:none" filterBy="#{c.CODIGO_BARRAS}" headerText="CODIGO_BARRAS"  style="text-align: center;">
                     <h:outputText value="#{c.CODIGO_BARRAS}"/>
+                </p:column>
+                <p:column filterStyle="display:none" filterBy="#{c.NRO_INGRESO}" headerText="NRO_INGRESO"  style="text-align: center;">
+                    <h:outputText value="#{c.NRO_INGRESO}"/>
                 </p:column>
             </p:dataTable>
         </h:form>
