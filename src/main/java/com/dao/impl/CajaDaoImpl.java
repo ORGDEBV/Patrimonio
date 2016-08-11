@@ -8,6 +8,7 @@ import com.dto.EjemplarDocumentalDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import com.util.cnSQL;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.CallableStatement;
@@ -21,10 +22,13 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class CajaDaoImpl implements CajaDao {
@@ -465,11 +469,9 @@ public class CajaDaoImpl implements CajaDao {
     }
 
     @Override
-    public void reporteListadoEjemplaresCaja(String ruta, String[] param) {
+   public void reporteListadoEjemplaresCaja(String ruta, String[] param) {
         Connection cn = cnSQL.getConnection();
         try {
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            OutputStream os = response.getOutputStream();
 
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("pID_CAJA", param[0]);
@@ -477,21 +479,22 @@ public class CajaDaoImpl implements CajaDao {
             parametros.put("pTotalVolumenes", param[2]);
             parametros.put("pTotalEjemplares", param[3]);
 
-            //File file = new File(ruta);
-            String ruta2 = "/RPT_listadoEjemplaresCaja.jasper";
+            File file = new File(ruta);
 
-            String nombreArchivo = "Reporte_EjemplaresPorCaja";
-
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(ruta2));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, cn);
-
-            JasperExportManager.exportReportToPdfStream(jasperPrint, os);
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+             String nombreArchivo = "Reporte_"+param[1]+".pdf";
             response.setContentType("application/pdf");
-            nombreArchivo += ".pdf";
-
             response.setHeader("Content-Disposition", "Attachment; filename=\"" + nombreArchivo + "\"");
 
-            os.close();
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, cn);
+
+            JRExporter jrExporter = new JRPdfExporter();
+            jrExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            jrExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
+
+            jrExporter.exportReport();
 
         } catch (IOException | JRException e) {
             System.out.println("Error" + e.getMessage());
@@ -503,6 +506,7 @@ public class CajaDaoImpl implements CajaDao {
             }
         }
     }
+
 
     @Override
     public List<ConsultaGeneral> bandejaGeneral(String FILTRO) {
