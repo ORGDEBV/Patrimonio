@@ -4,6 +4,7 @@ import com.dto.BandejaDto;
 import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
+import com.dto.FiltroDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import java.util.ArrayList;
@@ -39,6 +40,6 @@ public interface CajaDao {
 
     void reporteListadoEjemplaresCaja(String ruta, String[] param);
     
-    List<ConsultaGeneral> bandejaGeneral(String FILTRO);
+    List<ConsultaGeneral> bandejaGeneral(FiltroDto filtro);
     
 }

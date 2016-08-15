@@ -63,7 +63,7 @@
                             <p:outputLabel for="txtDeposito" value="DEPOSITO:"/>                                    
                         </p:column>
                         <p:column styleClass="Wid35">
-                            <p:selectOneMenu id="txtDeposito" styleClass="Wid100Imp txtCodLista" value="#{cajaBean.ID_DEPOSITO}">
+                            <p:selectOneMenu id="txtDeposito" styleClass="Wid100Imp txtCodLista" value="#{cajaBean.filtro.ID_DEPOSITO}">
                                 <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
                                 <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
                             </p:selectOneMenu>

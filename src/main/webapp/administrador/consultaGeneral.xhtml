@@ -5,13 +5,74 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-
     <ui:define name="content">
+        <style>
+            .ui-panelgrid .ui-panelgrid-cell{
+                border-width: 0px;
+            }
+        </style>
+        <f:event listener="#{cajaBean.cargaConsultaGeneral()}" type="preRenderComponent"/>
         <h:form id="frmBusqueda">
-            <p:panelGrid columns="5" layout="grid" style="display:flex;align-items: center;">
-                <h:outputLabel value="Ingrese parámetros de búsqueda: " style="font-size:15px;"/>
-                <p:inputText value="#{cajaBean.FILTRO_GENERAL}"/> 
-                <p:commandButton actionListener="#{cajaBean.filtroGeneral()}" value="FILTRAR"></p:commandButton>
+            <p:panelGrid styleClass="Wid100">
+                <p:row styleClass="Wid100">
+                    <p:column styleClass="Wid25">
+                        <h:outputLabel value="Ingrese parámetros de búsqueda: "/>
+                    </p:column>
+                    <p:column styleClass="Wid25">
+                        <p:inputText value="#{cajaBean.filtro.CAMPO}" styleClass="Wid100"/> 
+                    </p:column>
+                    <p:column styleClass="Wid25">
+                        <p:separator></p:separator>
+                    </p:column>
+                    <p:column styleClass="Wid25">
+                        <p:separator></p:separator>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="Deposito: "/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu styleClass="Wid100Imp" value="#{cajaBean.filtro.ID_DEPOSITO}">
+                            <f:selectItem itemLabel="Seleccione un deposito..." itemValue="-1" noSelectionOption="true" />
+                            <f:selectItems value="#{depositoBean.ldeposito}" var="x" itemLabel="#{x.DEPOSITO}" itemValue="#{x.ID_DEPOSITO}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="Estado: "/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu styleClass="Wid100Imp" value="#{cajaBean.filtro.ID_ESTADO}">
+                            <f:selectItem itemLabel="Seleccione un estado..." itemValue="-1" noSelectionOption="true" />
+                            <f:selectItems value="#{estadoBean.lestado}" var="x" itemLabel="#{x.DESCRIPCION}" itemValue="#{x.ID_ESTADO}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="Fecha Inicio: "/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es" pattern="dd-MM-yyyy" mask="true" styleClass="Wid100Imp" value="#{cajaBean.filtro.FECHA_INI}">
+                            <f:convertDateTime type="date"  dateStyle="short" pattern="dd-MM-yyyy"/>
+                        </p:calendar>
+                    </p:column>
+                    <p:column>
+                        <h:outputLabel value="Fecha Fin: "/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es" pattern="dd-MM-yyyy" mask="true" styleClass="Wid100Imp" value="#{cajaBean.filtro.FECHA_FIN}">
+                            <f:convertDateTime type="date"  dateStyle="short" pattern="dd-MM-yyyy"/>
+                        </p:calendar>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:commandButton actionListener="#{cajaBean.filtroGeneral()}" value="FILTRAR"></p:commandButton>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
         </h:form>
         <h:form id="frmTable">

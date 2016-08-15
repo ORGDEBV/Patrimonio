@@ -5,6 +5,7 @@ import com.dto.BandejaDto;
 import com.dto.ConsultaGeneral;
 import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
+import com.dto.FiltroDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import com.util.cnSQL;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +34,11 @@ public class CajaDaoImpl implements CajaDao {
     CallableStatement cs = null;
     ResultSet rs = null;
 
-    /**
-     *
-     * Crea un nuevo registro de una caja
-     *
-     * @param objCaja Objeto de la entidad Caja
-     * @return respuesta de insercion
-     */
+    public java.sql.Date formatFecha(java.util.Date fecha) {
+        java.sql.Date sqlDate = new java.sql.Date(fecha.getTime());
+        return sqlDate;
+    }
+    
     @Override
     public String[] insertarCaja(Caja objCaja) {
         String[] arreglo = new String[5];
@@ -506,14 +506,26 @@ public class CajaDaoImpl implements CajaDao {
     }
 
     @Override
-    public List<ConsultaGeneral> bandejaGeneral(String FILTRO) {
+    public List<ConsultaGeneral> bandejaGeneral(FiltroDto filtro) {
         List<ConsultaGeneral> lGeneral = new ArrayList<>();
         Connection cn = cnSQL.getConnection();
         ConsultaGeneral dto = null;
         try {
-            String procedure = "{CALL [PT].[SP_ADMINISTRADOR_EJEMPLAR_LISTAR](?)}";
+            String procedure = "{CALL [PT].[SP_ADMINISTRADOR_EJEMPLAR_LISTAR](?,?,?,?,?)}";
             cs = cn.prepareCall(procedure);
-            cs.setString(1, FILTRO);
+            cs.setString(1, filtro.getCAMPO());
+            cs.setInt(2, filtro.getID_DEPOSITO());
+            cs.setInt(3, filtro.getID_ESTADO());
+            if(filtro.getFECHA_INI() != null){
+                cs.setDate(4, formatFecha(filtro.getFECHA_INI()));
+            }else{
+                cs.setDate(4, null);
+            }
+            if(filtro.getFECHA_FIN()!= null){
+                cs.setDate(5, formatFecha(filtro.getFECHA_FIN()));
+            }else{
+                cs.setDate(5, null);
+            }
             rs = cs.executeQuery();
             while (rs.next()) {
                 dto = new ConsultaGeneral();

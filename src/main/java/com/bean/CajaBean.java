@@ -10,6 +10,7 @@ import com.dto.VistaPreviaDto;
 import com.dto.EjemplarDocumentalDto;
 import com.dto.FichaDocumentalDto;
 import com.dto.FichaEjemplarDto;
+import com.dto.FiltroDto;
 import com.entidad.AreaCajaEstado;
 import com.entidad.Caja;
 import com.entidad.Deposito;
@@ -26,7 +27,6 @@ import com.entidad.Marc504;
 import static com.util.Constantes.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,12 +52,13 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class CajaBean {
 
+    private FiltroDto filtro;
+
     private FichaDocumentalDto fichaDocumental;
     private FichaEjemplarDto fichaEjemplar;
 
     List<EjemplarDocumentalDto> lejedocdto = new ArrayList<>();
     private Deposito selecteddeposito;
-    private int ID_DEPOSITO;
     private int ID_CAJA;
     private final CajaDao cajaDao;
     private final DocumentalDao documentalDao;
@@ -108,7 +109,6 @@ public class CajaBean {
     private List<BandejaDto> lbandejaporalmacenar;
     private List<BandejaDto> lbandejaalmacenado;
     private List<ConsultaGeneral> lconsultageneral;
-    private String FILTRO_GENERAL;
 
     public CajaBean() {
         SESION_ID_USUARIO = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("USUARIO_ID_USUARIO").toString());
@@ -116,14 +116,30 @@ public class CajaBean {
         cajaDao = factory.getCajaDao(CAJA);
         documentalDao = factory.getDocumentalDao(DOCUMENTAL);
         ejemplarDao = factory.getEjemplarDao(EJEMPLAR);
-        lbandejacreado = cajaDao.bandejaCreado();
-        lbandejavalidado = cajaDao.bandejaValidado();
-        lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
-        lbandejaalmacenado = cajaDao.bandejaAlmacenado(SESION_ID_USUARIO);
-        lconsultageneral = cajaDao.bandejaGeneral("");
         selecteddeposito = new Deposito();
         fichaDocumental = new FichaDocumentalDto();
         fichaEjemplar = new FichaEjemplarDto();
+    }
+
+    public void cargaConsultaGeneral() {
+        filtro = new FiltroDto();
+        lconsultageneral = cajaDao.bandejaGeneral(filtro);
+    }
+
+    public void cargaBandejaAlmacenado() {
+        lbandejaalmacenado = cajaDao.bandejaAlmacenado(SESION_ID_USUARIO);
+    }
+
+    public void cargaBandejaPorAlmacenar() {
+        lbandejaporalmacenar = cajaDao.bandejaPorAlmacenar(SESION_ID_USUARIO);
+    }
+
+    public void cargaBandejaValidado() {
+        lbandejavalidado = cajaDao.bandejaValidado();
+    }
+
+    public void cargaBandejaCreado() {
+        lbandejacreado = cajaDao.bandejaCreado();
     }
 
     public Caja getObjCaja() {
@@ -758,6 +774,7 @@ public class CajaBean {
 
     public void detalleCaja() {
         if (ID_CAJA != 0) {
+            filtro = new FiltroDto();
             objCaja = cajaDao.buscarCaja(ID_CAJA);
             lejedocdto = cajaDao.listarCajaEjemplarDocumental(ID_CAJA);
         } else {
@@ -799,14 +816,14 @@ public class CajaBean {
         if (aux > 0) {
             FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_WARN, "ADVERTENCIA", "Existen " + aux + " ejemplares sin validar."));
         } else if (aux == 0) {
-            if (ID_DEPOSITO != -1) {
+            if (filtro.getID_DEPOSITO() != -1) {
                 ExternalContext ex = FacesContext.getCurrentInstance().getExternalContext();
                 AreaCajaEstado ace = new AreaCajaEstado();
                 ace.setID_CAJA(ID_CAJA);
                 ace.setID_AREA(Integer.parseInt(ex.getSessionMap().get("PERSONAL_ID_AREA").toString()));
                 ace.setID_ESTADO_PROCESO(3);
                 ace.setID_USUARIO(SESION_ID_USUARIO);
-                int insert = cajaDao.cajaDeposito(ace, ID_DEPOSITO);
+                int insert = cajaDao.cajaDeposito(ace, filtro.getID_DEPOSITO());
                 if (insert == 1) {
                     FacesContext.getCurrentInstance().addMessage("gMensaje", new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO", "Se proceso la caja con éxito."));
                 } else {
@@ -856,7 +873,7 @@ public class CajaBean {
     }
 
     public void filtroGeneral() {
-        lconsultageneral = cajaDao.bandejaGeneral(FILTRO_GENERAL);
+        lconsultageneral = cajaDao.bandejaGeneral(filtro);
         RequestContext.getCurrentInstance().update("frmTable");
     }
 
@@ -882,14 +899,6 @@ public class CajaBean {
 
     public void setSelecteddeposito(Deposito selecteddeposito) {
         this.selecteddeposito = selecteddeposito;
-    }
-
-    public int getID_DEPOSITO() {
-        return ID_DEPOSITO;
-    }
-
-    public void setID_DEPOSITO(int ID_DEPOSITO) {
-        this.ID_DEPOSITO = ID_DEPOSITO;
     }
 
     public List<EjemplarDocumentalDto> getLejedocdto() {
@@ -948,12 +957,12 @@ public class CajaBean {
         this.lconsultageneral = lconsultageneral;
     }
 
-    public String getFILTRO_GENERAL() {
-        return FILTRO_GENERAL;
+    public FiltroDto getFiltro() {
+        return filtro;
     }
 
-    public void setFILTRO_GENERAL(String FILTRO_GENERAL) {
-        this.FILTRO_GENERAL = FILTRO_GENERAL;
+    public void setFiltro(FiltroDto filtro) {
+        this.filtro = filtro;
     }
 
 }

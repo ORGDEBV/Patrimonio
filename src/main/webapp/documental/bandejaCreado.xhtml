@@ -7,6 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="content">
+        <f:event listener="#{cajaBean.cargaBandejaCreado()}" type="preRenderComponent"/>
         <h:form id="frmCajaRegistro">
             <p:dataTable id="tblcaja" 
                          var="c" 

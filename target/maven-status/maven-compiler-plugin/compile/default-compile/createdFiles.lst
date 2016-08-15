@@ -25,6 +25,7 @@ com\dao\impl\CajaDaoImpl.class
 com\util\Constantes.class
 com\dto\VistaPreviaDto.class
 com\dao\impl\DocumentalDaoImpl.class
+com\entidad\EstadoProceso.class
 com\dao\impl\DepositoDaoImpl.class
 com\entidad\Marc017.class
 com\entidad\Marc245.class
@@ -34,10 +35,13 @@ com\entidad\Usuario.class
 com\dto\FichaEjemplarDto.class
 com\entidad\Documental.class
 com\entidad\Marc100.class
+com\dto\FiltroDto.class
 com\entidad\Marc260.class
 com\bean\AreaBean.class
 com\dao\impl\DaoFactory$1.class
 com\entidad\Marc250.class
+com\dao\impl\EstadoDaoImpl.class
+com\bean\EstadoBean.class
 com\dao\EjemplarDao.class
 com\bean\PerfilBean.class
 com\dao\CajaDao.class
@@ -49,6 +53,7 @@ com\dao\UsuarioDao.class
 com\entidad\Deposito.class
 com\dto\EjemplarDocumentalDto.class
 com\dao\DepositoDao.class
+com\dao\EstadoDao.class
 com\dao\impl\MenuDaoImpl.class
 com\bean\PersonalBean.class
 com\dao\impl\EjemplarDaoImpl.class

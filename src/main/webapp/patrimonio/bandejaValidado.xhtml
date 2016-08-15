@@ -7,6 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+        <f:event listener="#{cajaBean.cargaBandejaValidado()}" type="preRenderComponent"/>
         <h:form id="frmCajaValidado">
             <p:dataTable id="tblcaja" 
                          var="c" 

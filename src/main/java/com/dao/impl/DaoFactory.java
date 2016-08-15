@@ -131,6 +131,18 @@ public class DaoFactory {
         }
         return dao;
     }
+    
+    public EstadoDao getEstadoDao(int tipo) {
+        EstadoDao dao;
+        switch (tipo) {
+            case EJEMPLAR:
+                dao = new EstadoDaoImpl();
+                break;
+            default:
+                dao = null;
+        }
+        return dao;
+    }
 
     public static DaoFactory getInstance() {
         return DaoFactoryHolder.INSTANCE;

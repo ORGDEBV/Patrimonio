@@ -7,6 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+        <f:event listener="#{cajaBean.cargaBandejaAlmacenado()}" type="preRenderComponent"/>
         <h:form id="frmCajaPorAlmacenar">
             <p:dataTable id="tblcaja" 
                          var="c" 
